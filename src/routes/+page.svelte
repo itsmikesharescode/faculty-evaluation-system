@@ -70,27 +70,6 @@
 				<Button onclick={() => goto('/student-login')}>Student</Button>
 				<Button disabled>Faculty Member</Button>
 				<Button disabled>Supervisor</Button>
-
-				<!-- <a
-					href="/student-login"
-					class="flex items-center justify-center rounded-sm bg-primary p-[10px] font-semibold text-white"
-				>
-					Student
-				</a>
-
-				<a
-					href="/"
-					class="flex items-center justify-center rounded-sm bg-primary/50 p-[10px] font-semibold text-white"
-				>
-					Faculty Member
-				</a>
-
-				<a
-					href="/"
-					class="flex items-center justify-center rounded-sm bg-primary/50 p-[10px] font-semibold text-white"
-				>
-					Supervisor
-				</a> -->
 			</div>
 		</div>
 	</div>
