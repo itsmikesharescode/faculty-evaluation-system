@@ -3,6 +3,7 @@
 	import { fade, fly } from 'svelte/transition';
 	import fes_icon from '../assets/fes_icon.png?enhanced';
 	import { X } from 'lucide-svelte';
+	import { goto } from '$app/navigation';
 
 	let loginModal = $state(false);
 </script>
@@ -66,11 +67,11 @@
 			<p class="text-base font-semibold leading-7">Log in as</p>
 
 			<div class="mt-[20px] flex flex-col gap-[10px]">
-				<!-- <Button>Student</Button>
+				<Button onclick={() => goto('/student-login')}>Student</Button>
 				<Button disabled>Faculty Member</Button>
-				<Button disabled>Supervisor</Button> -->
+				<Button disabled>Supervisor</Button>
 
-				<a
+				<!-- <a
 					href="/student-login"
 					class="flex items-center justify-center rounded-sm bg-primary p-[10px] font-semibold text-white"
 				>
@@ -89,7 +90,7 @@
 					class="flex items-center justify-center rounded-sm bg-primary/50 p-[10px] font-semibold text-white"
 				>
 					Supervisor
-				</a>
+				</a> -->
 			</div>
 		</div>
 	</div>
