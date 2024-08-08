@@ -22,7 +22,9 @@
 	<div class="flex flex-col items-center justify-center gap-[10px]">
 		<enhanced:img src={fes_icon} class="h-[150px] w-[150px]" alt="landing_icon"></enhanced:img>
 		<p class="text-center text-3xl">Faculty <strong>Evaluation</strong> System</p>
-		<Button class="rounded-none font-semibold">EVALUATE NOW</Button>
+		<Button class="rounded-none font-semibold" onclick={() => (loginModal = true)}
+			>EVALUATE NOW</Button
+		>
 	</div>
 </div>
 <div class="h-[70px] w-full rounded-b-[100%] bg-green-500"></div>
