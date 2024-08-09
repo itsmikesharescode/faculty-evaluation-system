@@ -1,7 +1,7 @@
 <script lang="ts">
 	import fes_icon from '$lib/assets/fes_icon.png?enhanced';
 	import type { Snippet } from 'svelte';
-	import { Rocket, CircleUser, LogOut, Menu } from 'lucide-svelte';
+	import { Rocket, CircleUser, LogOut, Menu, ArrowUpNarrowWide } from 'lucide-svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { fly } from 'svelte/transition';
 	import * as Sheet from '$lib/components/ui/sheet/index.js';
@@ -48,10 +48,8 @@
 			></enhanced:img>
 			<div class="flex flex-col items-center justify-center gap-[10px]">
 				<button
-					onclick={() => setRouteFunc('/student-dashboard')}
-					class="{route.getRoute() === '/student-dashboard'
-						? 'bg-primary text-white'
-						: 'text-black'} 
+					onclick={() => setRouteFunc('/admin-dashboard')}
+					class="{route.getRoute() === '/admin-dashboard' ? 'bg-primary text-white' : 'text-black'} 
 					p-[10px]"
 				>
 					<Rocket class="h-[25px] w-[25px]" />
@@ -60,8 +58,20 @@
 				<Separator />
 
 				<button
-					onclick={() => setRouteFunc('/student-manage-account')}
-					class="{route.getRoute() === '/student-manage-account'
+					onclick={() => setRouteFunc('/admin-departments')}
+					class="{route.getRoute() === '/admin-departments'
+						? 'bg-primary text-white'
+						: 'text-black'}
+					p-[10px]"
+				>
+					<ArrowUpNarrowWide class="h-[25px] w-[25px]" />
+				</button>
+
+				<Separator />
+
+				<button
+					onclick={() => setRouteFunc('/admin-manage-accounts')}
+					class="{route.getRoute() === '/admin-manage-accounts'
 						? 'bg-primary text-white'
 						: 'text-black'}
 					p-[10px]"
@@ -91,24 +101,35 @@
 				class="absolute z-30 ml-[3.3rem] flex h-screen flex-col gap-[10px] bg-white pr-[10px] pt-[70px]"
 			>
 				<button
-					onclick={() => setRouteFunc('/student-dashboard')}
-					class="{route.getRoute() === '/student-dashboard'
-						? 'bg-primary text-white'
-						: 'text-black'}
+					onclick={() => setRouteFunc('/admin-dashboard')}
+					class="{route.getRoute() === '/admin-dashboard' ? 'bg-primary text-white' : 'text-black'}
 					p-[10px] text-left"
 				>
 					<p class="h-[25px]">Dashboard</p>
 				</button>
 
 				<Separator />
+
 				<button
-					onclick={() => setRouteFunc('/student-manage-account')}
-					class="{route.getRoute() === '/student-manage-account'
+					onclick={() => setRouteFunc('/admin-departments')}
+					class="{route.getRoute() === '/admin-departments'
 						? 'bg-primary text-white'
 						: 'text-black'}
 					p-[10px] text-left"
 				>
-					<p class="h-[25px] truncate">Manage Account</p>
+					<p class="h-[25px] truncate">Departments</p>
+				</button>
+
+				<Separator />
+
+				<button
+					onclick={() => setRouteFunc('/admin-manage-accounts')}
+					class="{route.getRoute() === '/admin-manage-accounts'
+						? 'bg-primary text-white'
+						: 'text-black'}
+					p-[10px] text-left"
+				>
+					<p class="h-[25px] truncate">Manage Accounts</p>
 				</button>
 
 				<Separator />
@@ -134,7 +155,7 @@
 			<p class="text-xl leading-7 text-primary"><strong>ProfEval</strong> System</p>
 
 			<div class="hidden items-center gap-[5px] text-xl md:flex">
-				<p class=" leading-7 text-muted-foreground">Student</p>
+				<p class=" leading-7 text-muted-foreground">Admin</p>
 				<p class=" leading-7">Eviota, Mike John B.</p>
 			</div>
 
@@ -155,12 +176,12 @@
 		<Sheet.Content side="left">
 			<Sheet.Header class="mt-[5dvh]">
 				<Sheet.Title>Eviota, Mike John B</Sheet.Title>
-				<Sheet.Description>Student</Sheet.Description>
+				<Sheet.Description>Admin</Sheet.Description>
 			</Sheet.Header>
 			<div class="grid gap-4 py-4">
 				<button
-					onclick={() => setRouteFunc('/student-dashboard')}
-					class="{route.getRoute() === '/student-dashboard'
+					onclick={() => setRouteFunc('/admin-dashboard')}
+					class="{route.getRoute() === '/admin-dashboard'
 						? 'bg-primary text-white'
 						: ''} flex items-center gap-[5px] p-[10px]"
 				>
@@ -171,8 +192,20 @@
 				<Separator />
 
 				<button
-					onclick={() => setRouteFunc('/student-manage-account')}
-					class="{route.getRoute() === '/student-manage-account'
+					onclick={() => setRouteFunc('/admin-departments')}
+					class="{route.getRoute() === '/admin-departments'
+						? 'bg-primary text-white'
+						: ''} flex items-center gap-[5px] p-[10px]"
+				>
+					<ArrowUpNarrowWide class="h-[25px] w-[25px]" />
+					<p class="w-full text-center">Departments</p>
+				</button>
+
+				<Separator />
+
+				<button
+					onclick={() => setRouteFunc('/admin-manage-accounts')}
+					class="{route.getRoute() === '/admin-manage-accounts'
 						? 'bg-primary text-white'
 						: ''} flex items-center gap-[5px] p-[10px]"
 				>

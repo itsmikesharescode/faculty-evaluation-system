@@ -1,1 +1,43 @@
-admin dashhyy
+<script lang="ts">
+	import { fromAdminRouteState } from '../_states/fromAdminRoute.svelte';
+	import AdminBarChart from './_components/AdminBarChart.svelte';
+	import AdminCountCard from './_components/AdminCountCard.svelte';
+	import AdminLineChart from './_components/AdminLineChart.svelte';
+
+	const route = fromAdminRouteState();
+
+	route.setRoute('/admin-dashboard');
+</script>
+
+<div class="p-[10px]">
+	<div class="grid gap-[20px] md:grid-cols-2">
+		<div class="h-[30dvh]">
+			<AdminBarChart totalStudents={30} totalProfessors={80} totalEvaluated={25} />
+		</div>
+
+		<div class="h-[30dvh]">
+			<AdminLineChart totalStudents={30} totalProfessors={80} totalEvaluated={25} />
+		</div>
+	</div>
+
+	<div class="mt-[20px] grid gap-[20px] md:grid-cols-3">
+		<AdminCountCard
+			title="Total Student"
+			selection="totalStudents"
+			count={60}
+			link="/admin-manage-accounts"
+		/>
+		<AdminCountCard
+			title="Total Evaluated"
+			selection="totalEvaluated"
+			count={40}
+			link="/admin-departments"
+		/>
+		<AdminCountCard
+			title="Total Professor"
+			selection="totalProfessors"
+			count={70}
+			link="/admin-departments"
+		/>
+	</div>
+</div>
