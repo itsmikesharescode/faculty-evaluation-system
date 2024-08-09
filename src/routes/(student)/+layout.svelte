@@ -1,5 +1,14 @@
 <script lang="ts">
+	import StudentNav from './components/StudentNav.svelte';
+	import { page } from '$app/stores';
+
 	const { children } = $props();
 </script>
 
-{@render children()}
+{#if !($page.url.pathname === '/student-login')}
+	<StudentNav {children} />
+{/if}
+
+{#if !['/student-dashboard', '/student-manage-account'].includes($page.url.pathname)}
+	{@render children()}
+{/if}

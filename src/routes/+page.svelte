@@ -1,7 +1,8 @@
 <script lang="ts">
 	import Button from '$lib/components/ui/button/button.svelte';
-	import { fade, fly } from 'svelte/transition';
-	import fes_icon from '../assets/fes_icon.png?enhanced';
+	import { fly } from 'svelte/transition';
+	import fes_icon from '$lib/assets/fes_icon.png?enhanced';
+	import bg_image from '$lib/assets/bg.webp?enhanced';
 	import { X } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 
@@ -9,7 +10,7 @@
 </script>
 
 <!--BOUND NAV-->
-<nav class="sticky top-0 flex w-full items-center justify-between p-[10px] backdrop-blur-sm">
+<nav class="sticky top-0 z-10 flex w-full items-center justify-between p-[10px] backdrop-blur-sm">
 	<p class="font-semibold">OCC</p>
 	<div class="flex items-center gap-[10px]">
 		<button>Manual</button>
@@ -18,29 +19,24 @@
 		>
 	</div>
 </nav>
-<div class="flex h-[50dvh] flex-col items-center justify-center bg-green-500">
-	<div class="flex flex-col items-center justify-center gap-[10px]">
-		<enhanced:img src={fes_icon} class="h-[150px] w-[150px]" alt="landing_icon"></enhanced:img>
-		<p class="text-center text-3xl">Faculty <strong>Evaluation</strong> System</p>
-		<Button class="rounded-none font-semibold" onclick={() => (loginModal = true)}
-			>EVALUATE NOW</Button
-		>
-	</div>
-</div>
-<div class="h-[70px] w-full rounded-b-[100%] bg-green-500"></div>
+<div class="relative h-screen w-full">
+	<!-- Background Image -->
+	<enhanced:img
+		src={bg_image}
+		alt="bg_image"
+		class="absolute inset-0 h-full w-full object-cover grayscale-[60%] filter"
+	/>
 
-<div class="mt-[30px] flex flex-col gap-[20px] p-[20px] md:flex-row md:justify-center">
-	<div class="rounded-lg shadow-lg">
-		<p class="rounded-t-sm bg-green-500 p-[10px] text-center font-semibold">PEER EVALUATION</p>
-		<div class="p-[20px]">
-			<p class="text-center leading-7">Faculty members evaluate their peers/colleagues.</p>
-		</div>
-	</div>
-
-	<div class="rounded-lg shadow-lg">
-		<p class="rounded-t-sm bg-green-500 p-[10px] text-center font-semibold">PEER EVALUATION</p>
-		<div class="p-[20px]">
-			<p class="text-center leading-7">Faculty members evaluate their peers/colleagues.</p>
+	<!-- Centered Content -->
+	<div class="absolute inset-0 flex flex-col items-center justify-center gap-[10px]">
+		<div class="flex flex-col items-center gap-[20px] rounded-lg bg-[#ffffffc0] p-[20px]">
+			<enhanced:img src={fes_icon} class="h-[150px] w-[150px]" alt="landing_icon" />
+			<p class="text-center text-3xl">
+				<strong>ProfEval</strong> System
+			</p>
+			<Button class="rounded-none font-semibold" onclick={() => (loginModal = true)}>
+				EVALUATE NOW
+			</Button>
 		</div>
 	</div>
 </div>
@@ -50,7 +46,7 @@
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div
-		class="fixed bottom-0 left-0 right-0 top-0 bg-[#00000050] p-[10px]"
+		class="fixed bottom-0 left-0 right-0 top-0 z-20 bg-[#00000050] p-[10px]"
 		onclick={() => (loginModal = false)}
 	>
 		<div
@@ -70,8 +66,7 @@
 
 			<div class="mt-[20px] flex flex-col gap-[10px]">
 				<Button onclick={() => goto('/student-login')}>Student</Button>
-				<Button disabled>Faculty Member</Button>
-				<Button disabled>Supervisor</Button>
+				<Button>Admin</Button>
 			</div>
 		</div>
 	</div>
