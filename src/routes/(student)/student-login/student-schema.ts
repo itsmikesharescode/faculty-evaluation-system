@@ -19,8 +19,13 @@ export const studentCreateSchema = z
 		gender: z
 			.string()
 			.refine((v) => ['Male', 'Female'].includes(v), { message: 'Must enter a valid gender.' }),
-		college: z.string().min(1, { message: 'Must enter college.' }),
+		yearLevel: z
+			.string()
+			.refine((v) => ['First Year', 'Second Year', 'Third Year', 'Fourth Year'].includes(v), {
+				message: 'Must enter a valid year level'
+			}),
 		course: z.string().min(1, { message: 'Must enter course.' }),
+		section: z.string().min(1, { message: 'Must enter your section.' }),
 		password: z.string().min(8, { message: 'Must choose a strong password.' }),
 		confirmPassword: z.string()
 	})

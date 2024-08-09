@@ -1,8 +1,11 @@
 <script lang="ts">
-	import StudentNav from './components/StudentNav.svelte';
+	import StudentNav from './_components/StudentNav.svelte';
 	import { page } from '$app/stores';
+	import { initStudentRoute } from './_states/fromStudentRoute.svelte';
 
 	const { children } = $props();
+
+	initStudentRoute();
 </script>
 
 {#if !($page.url.pathname === '/student-login')}

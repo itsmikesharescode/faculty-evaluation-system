@@ -27,6 +27,15 @@
 				}
 			: undefined
 	);
+
+	const yearLevel = $derived(
+		$formData.yearLevel
+			? {
+					label: $formData.yearLevel,
+					value: $formData.yearLevel
+				}
+			: undefined
+	);
 </script>
 
 <p class="p-[20px] text-center text-xl font-semibold leading-7">Student Registration</p>
@@ -65,7 +74,7 @@
 	<Form.Field {form} name="lastName">
 		<Form.Control let:attrs>
 			<Form.Label>Last Name</Form.Label>
-			<Input {...attrs} bind:value={$formData.lastName} placeholder="Enter your last initial" />
+			<Input {...attrs} bind:value={$formData.lastName} placeholder="Enter your last name" />
 		</Form.Control>
 
 		<Form.FieldErrors />
@@ -88,16 +97,32 @@
 					<Select.Item value="Female" label="Female" />
 				</Select.Content>
 			</Select.Root>
-			<input hidden bind:value={$formData.email} name={attrs.name} />
+			<input hidden bind:value={$formData.gender} name={attrs.name} />
 		</Form.Control>
 
 		<Form.FieldErrors />
 	</Form.Field>
 
-	<Form.Field {form} name="college">
+	<Form.Field {form} name="yearLevel">
 		<Form.Control let:attrs>
-			<Form.Label>College</Form.Label>
-			<Input {...attrs} bind:value={$formData.college} placeholder="Enter your college" />
+			<Form.Label>Year Level</Form.Label>
+			<Select.Root
+				selected={yearLevel}
+				onSelectedChange={(v) => {
+					v && ($formData.yearLevel = v.value);
+				}}
+			>
+				<Select.Trigger {...attrs}>
+					<Select.Value placeholder="Select your year level" />
+				</Select.Trigger>
+				<Select.Content>
+					<Select.Item value="First Year" label="First Year" />
+					<Select.Item value="Second Year" label="Second Year" />
+					<Select.Item value="Third Year" label="Third Year" />
+					<Select.Item value="Fourth Year" label="Fourth Year" />
+				</Select.Content>
+			</Select.Root>
+			<input hidden bind:value={$formData.yearLevel} name={attrs.name} />
 		</Form.Control>
 
 		<Form.FieldErrors />
@@ -107,6 +132,15 @@
 		<Form.Control let:attrs>
 			<Form.Label>Course</Form.Label>
 			<Input {...attrs} bind:value={$formData.course} placeholder="Enter your course" />
+		</Form.Control>
+
+		<Form.FieldErrors />
+	</Form.Field>
+
+	<Form.Field {form} name="section">
+		<Form.Control let:attrs>
+			<Form.Label>Section</Form.Label>
+			<Input {...attrs} bind:value={$formData.section} placeholder="Enter your section" />
 		</Form.Control>
 
 		<Form.FieldErrors />

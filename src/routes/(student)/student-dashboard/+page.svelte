@@ -1,9 +1,13 @@
 <script lang="ts">
 	import { BellRing } from 'lucide-svelte';
+	import { fromStudentRouteState } from '../_states/fromStudentRoute.svelte';
+
+	const route = fromStudentRouteState();
+	route.setRoute('/student-dashboard');
 </script>
 
 <div class="min-h-screen">
-	<div class="md:p-[1.25rem]] bg-slate-100 p-[0.625rem]">
+	<div class="bg-slate-100 p-[0.625rem] md:p-[1.25rem]">
 		<div class="flex flex-wrap items-center gap-[20px] bg-[#89CFF0] p-[10px] md:flex-nowrap">
 			<BellRing class="h-full w-[60px] bg-[#89CFF0] p-[10px] text-black" />
 			<div class="text-black">
@@ -17,7 +21,7 @@
 		</div>
 	</div>
 
-	<div class="md:p-[1.25rem]] p-[0.625rem]">
+	<div class="">
 		<div class="flex items-center gap-[20px] bg-slate-100 p-[10px]">
 			<p class="">
 				Below are the subjects and faculty members that you need to evaluate. click the evaluate

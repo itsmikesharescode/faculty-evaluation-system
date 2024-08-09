@@ -4,6 +4,10 @@
 	import * as RadioGroup from '$lib/components/ui/radio-group/index.js';
 	import { Label } from '$lib/components/ui/label/index.js';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import { fromStudentRouteState } from '../../_states/fromStudentRoute.svelte';
+
+	const route = fromStudentRouteState();
+	route.setRoute('/student-dashboard');
 
 	let value = 0;
 	onMount(() => {
