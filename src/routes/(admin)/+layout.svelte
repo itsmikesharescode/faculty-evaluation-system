@@ -12,6 +12,6 @@
 	<AdminNav {children} />
 {/if}
 
-{#if !['/admin-dashboard', '/admin-manage-accounts'].includes($page.url.pathname)}
+{#if !['/admin-dashboard', '/admin-manage-accounts', '/admin-departments'].includes($page.url.pathname)}
 	{@render children()}
 {/if}

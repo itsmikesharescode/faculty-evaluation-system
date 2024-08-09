@@ -6,7 +6,7 @@
 	route.setRoute('/student-dashboard');
 </script>
 
-<div class="min-h-screen">
+<div class="min-h-screen border-l-[1px] border-slate-300">
 	<div class="bg-slate-100 p-[0.625rem] md:p-[1.25rem]">
 		<div class="flex flex-wrap items-center gap-[20px] bg-primary p-[10px] md:flex-nowrap">
 			<BellRing class="h-full w-[60px] p-[10px] text-white " />

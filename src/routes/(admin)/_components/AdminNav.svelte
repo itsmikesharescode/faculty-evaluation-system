@@ -39,7 +39,7 @@
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 
 	<div
-		class="sticky top-0 z-20 hidden h-[70dvh] border-r-[1px] border-slate-300 md:flex"
+		class="sticky top-0 z-20 hidden h-[70dvh] md:flex"
 		onmouseleave={() => (showSideBar = false)}
 		onmouseenter={() => (showSideBar = true)}
 	>
