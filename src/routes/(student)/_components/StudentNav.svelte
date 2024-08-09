@@ -7,6 +7,7 @@
 	import * as Sheet from '$lib/components/ui/sheet/index.js';
 	import { fromStudentRouteState } from '../_states/fromStudentRoute.svelte';
 	import { goto } from '$app/navigation';
+	import Logout from './Logout.svelte';
 
 	interface Props {
 		children: Snippet;
@@ -18,6 +19,7 @@
 
 	let showSideBar = $state(false);
 	let showMobileMenu = $state(false);
+	let showLogout = $state(false);
 
 	let nativeWidth = $state(0);
 
@@ -68,7 +70,13 @@
 
 				<Separator />
 
-				<button class=" p-[10px]">
+				<button
+					class=" p-[10px]"
+					onclick={() => {
+						showLogout = true;
+						showMobileMenu = false;
+					}}
+				>
 					<LogOut class="h-[25px] w-[25px]" />
 				</button>
 
@@ -104,7 +112,13 @@
 
 				<Separator />
 
-				<button class="p-[10px] text-left">
+				<button
+					class="p-[10px] text-left"
+					onclick={() => {
+						showLogout = true;
+						showMobileMenu = false;
+					}}
+				>
 					<p class="h-[25px]">Logout</p>
 				</button>
 
@@ -167,7 +181,13 @@
 
 				<Separator />
 
-				<button class="flex items-center gap-[5px] p-[10px]">
+				<button
+					class="flex items-center gap-[5px] p-[10px]"
+					onclick={() => {
+						showLogout = true;
+						showMobileMenu = false;
+					}}
+				>
 					<LogOut class="h-[25px] w-[25px]" />
 					<p class="w-full text-center">Log out</p>
 				</button>
@@ -178,3 +198,6 @@
 		</Sheet.Content>
 	</Sheet.Root>
 {/if}
+
+<!--Show Logout-->
+<Logout bind:showLogout />

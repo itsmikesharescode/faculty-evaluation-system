@@ -38,7 +38,7 @@
 	);
 </script>
 
-<p class="p-[20px] text-center text-xl font-semibold leading-7">Basic Information</p>
+<p class="p-[20px] text-center text-xl font-semibold leading-7">Update Information</p>
 <form method="POST" use:enhance class="flex flex-col gap-[10px]">
 	<Form.Field {form} name="firstName">
 		<Form.Control let:attrs>
