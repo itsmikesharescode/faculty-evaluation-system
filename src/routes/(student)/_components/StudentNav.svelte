@@ -38,7 +38,7 @@
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 
 	<div
-		class="sticky top-0 z-20 hidden h-[70dvh] md:flex"
+		class="sticky top-0 z-20 hidden h-[70dvh] border-r-[1px] border-slate-300 md:flex"
 		onmouseleave={() => (showSideBar = false)}
 		onmouseenter={() => (showSideBar = true)}
 	>
@@ -87,7 +87,7 @@
 		{#if showSideBar}
 			<div
 				transition:fly={{ x: -10, duration: 500 }}
-				class="absolute z-30 ml-[3.3rem] flex h-screen flex-col gap-[10px] bg-white pr-[10px] pt-[70px]"
+				class="absolute z-30 ml-[3.3rem] flex h-screen flex-col gap-[10px] border-r-[1px] border-slate-300 bg-white pr-[10px] pt-[70px]"
 			>
 				<button
 					onclick={() => setRouteFunc('/student-dashboard')}
