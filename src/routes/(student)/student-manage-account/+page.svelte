@@ -3,6 +3,7 @@
 	import { CircleUser } from 'lucide-svelte';
 	import UpdateAccountInformation from './_components/UpdateAccountInformation.svelte';
 	import UpdateAccountPassword from './_components/UpdateAccountPassword.svelte';
+	import UpdateAccountEmail from './_components/UpdateAccountEmail.svelte';
 
 	const { data } = $props();
 
@@ -28,8 +29,10 @@
 		<div class="bg-white p-[2rem]">
 			<UpdateAccountInformation updateAccInfoForm={data.updateAccInfoForm} />
 		</div>
-		<div class="bg-white p-[2rem]">
+		<div class="flex flex-col gap-[20px] bg-white p-[2rem]">
 			<UpdateAccountPassword updatePwdForm={data.updatePwdForm} />
+
+			<UpdateAccountEmail updateEmailForm={data.updateEmailForm} />
 		</div>
 	</div>
 </div>

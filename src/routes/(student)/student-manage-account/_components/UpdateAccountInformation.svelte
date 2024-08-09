@@ -71,6 +71,15 @@
 		<Form.FieldErrors />
 	</Form.Field>
 
+	<Form.Field {form} name="nameSuffix">
+		<Form.Control let:attrs>
+			<Form.Label>Name Suffix (optional)</Form.Label>
+			<Input {...attrs} bind:value={$formData.nameSuffix} placeholder="Enter your name suffix" />
+		</Form.Control>
+
+		<Form.FieldErrors />
+	</Form.Field>
+
 	<Form.Field {form} name="gender">
 		<Form.Control let:attrs>
 			<Form.Label>Gender</Form.Label>
@@ -137,5 +146,18 @@
 		<Form.FieldErrors />
 	</Form.Field>
 
-	<Form.Button class="mx-auto w-full sm:w-[300px]">Update</Form.Button>
+	<Form.Field {form} name="contactNumber">
+		<Form.Control let:attrs>
+			<Form.Label>Contact Number (optional)</Form.Label>
+			<Input
+				{...attrs}
+				bind:value={$formData.contactNumber}
+				placeholder="Enter your contact number"
+			/>
+		</Form.Control>
+
+		<Form.FieldErrors />
+	</Form.Field>
+
+	<Form.Button class="mx-auto w-full sm:w-[300px]">Update Information</Form.Button>
 </form>

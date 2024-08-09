@@ -50,5 +50,5 @@
 		<Form.FieldErrors />
 	</Form.Field>
 
-	<Form.Button class="mx-auto w-full sm:w-[300px]">Update</Form.Button>
+	<Form.Button class="mx-auto w-full sm:w-[300px]">Update Password</Form.Button>
 </form>

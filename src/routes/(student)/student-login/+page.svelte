@@ -1,11 +1,11 @@
 <script lang="ts">
 	import fes_icon from '$lib/assets/fes_icon.png?enhanced';
 	import bg_image from '$lib/assets/bg.webp?enhanced';
-	import Login from './components/Login.svelte';
+	import Login from './_components/Login.svelte';
 	import { page } from '$app/stores';
-	import Register from './components/Register.svelte';
+	import Register from './_components/Register.svelte';
 	import { Undo2 } from 'lucide-svelte';
-	import ForgotPassword from './components/ForgotPassword.svelte';
+	import ForgotPassword from './_components/ForgotPassword.svelte';
 
 	const { data } = $props();
 </script>

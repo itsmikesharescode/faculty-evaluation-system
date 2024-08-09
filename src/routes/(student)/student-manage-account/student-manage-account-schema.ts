@@ -27,6 +27,10 @@ export const updateAccInfoSchema = z.object({
 	address: z.string().optional()
 });
 
+export const updateEmailSchema = z.object({
+	newEmail: z.string().email({ message: 'Must enter a valid email.' })
+});
+
 export const updatePwdSchema = z
 	.object({
 		newPwd: z.string().min(8, { message: 'Must choose a strong password.' }),
@@ -43,4 +47,5 @@ export const updatePwdSchema = z
 	});
 
 export type UpdateAccInfoSchema = typeof updateAccInfoSchema;
+export type UpdateEmailSchema = typeof updateEmailSchema;
 export type UpdatePwdSchema = typeof updatePwdSchema;

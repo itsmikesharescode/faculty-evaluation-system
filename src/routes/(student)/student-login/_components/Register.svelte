@@ -80,6 +80,15 @@
 		<Form.FieldErrors />
 	</Form.Field>
 
+	<Form.Field {form} name="nameSuffix">
+		<Form.Control let:attrs>
+			<Form.Label>Name Suffix (optional)</Form.Label>
+			<Input {...attrs} bind:value={$formData.nameSuffix} placeholder="Enter your name suffix" />
+		</Form.Control>
+
+		<Form.FieldErrors />
+	</Form.Field>
+
 	<Form.Field {form} name="gender">
 		<Form.Control let:attrs>
 			<Form.Label>Gender</Form.Label>

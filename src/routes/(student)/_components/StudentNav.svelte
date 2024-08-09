@@ -118,9 +118,9 @@
 		>
 			<p class="text-xl leading-7 text-primary"><strong>ProfEval</strong> System</p>
 
-			<div class="hidden items-center gap-[5px] md:flex">
-				<p class="text-sm leading-7 text-muted-foreground">Student</p>
-				<p class="text-sm leading-7">Eviota, Mike John B.</p>
+			<div class="hidden items-center gap-[5px] text-xl md:flex">
+				<p class=" leading-7 text-muted-foreground">Student</p>
+				<p class=" leading-7">Eviota, Mike John B.</p>
 			</div>
 
 			<button class="md:hidden" onclick={() => (showMobileMenu = true)}>
