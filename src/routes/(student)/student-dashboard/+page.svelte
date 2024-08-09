@@ -1,13 +1,12 @@
 <script lang="ts">
-	import Button from '$lib/components/ui/button/button.svelte';
 	import { BellRing } from 'lucide-svelte';
 </script>
 
 <div class="min-h-screen">
 	<div class="md:p-[1.25rem]] bg-slate-100 p-[0.625rem]">
-		<div class="flex flex-wrap items-center gap-[20px] bg-green-500 p-[10px] md:flex-nowrap">
-			<BellRing class="h-full w-[60px] bg-[#89CFF0] p-[10px] text-white" />
-			<div class="text-white">
+		<div class="flex flex-wrap items-center gap-[20px] bg-[#89CFF0] p-[10px] md:flex-nowrap">
+			<BellRing class="h-full w-[60px] bg-[#89CFF0] p-[10px] text-black" />
+			<div class="text-black">
 				<p class="font-semibold leading-7">Reminder</p>
 				<p class="text-sm leading-7">
 					You are evaluating your SUBJECT TEACHER, please read the directions before you begin the
@@ -20,7 +19,7 @@
 
 	<div class="md:p-[1.25rem]] p-[0.625rem]">
 		<div class="flex items-center gap-[20px] bg-slate-100 p-[10px]">
-			<p class="text-green-700">
+			<p class="">
 				Below are the subjects and faculty members that you need to evaluate. click the evaluate
 				button to start
 			</p>

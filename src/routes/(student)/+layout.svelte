@@ -9,6 +9,6 @@
 	<StudentNav {children} />
 {/if}
 
-{#if !['/student-dashboard', '/student-manage-account'].includes($page.url.pathname)}
+{#if !['/student-dashboard', '/student-manage-account', '/student-dashboard/evaluationform'].includes($page.url.pathname)}
 	{@render children()}
 {/if}

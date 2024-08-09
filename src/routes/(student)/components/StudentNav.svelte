@@ -32,7 +32,7 @@
 			<enhanced:img src={fes_icon} alt="nav_icon" class="z-40 mx-auto h-[40px] w-[40px]"
 			></enhanced:img>
 			<div class="flex flex-col items-center justify-center gap-[10px]">
-				<button class="bg-[#89CFF0] p-[10px] text-white">
+				<button class="bg-primary p-[10px] text-white">
 					<Rocket class="h-[25px] w-[25px]" />
 				</button>
 
@@ -57,7 +57,7 @@
 				transition:fly={{ x: -10, duration: 500 }}
 				class="absolute z-30 ml-[3.3rem] flex h-screen flex-col gap-[10px] bg-white pr-[10px] pt-[70px]"
 			>
-				<button class="bg-[#89CFF0] p-[10px] text-left text-white">
+				<button class="bg-primary p-[10px] text-left text-white">
 					<p class="h-[25px]">Dashboard</p>
 				</button>
 
@@ -92,7 +92,7 @@
 			</button>
 		</nav>
 
-		<div class="bg-[#89CFF0]">
+		<div class="">
 			{@render children()}
 		</div>
 	</div>
@@ -107,7 +107,7 @@
 				<Sheet.Description>Student</Sheet.Description>
 			</Sheet.Header>
 			<div class="grid gap-4 py-4">
-				<button class="flex items-center gap-[5px] bg-[#89CFF0] p-[10px] text-white">
+				<button class="flex items-center gap-[5px] bg-primary p-[10px] text-white">
 					<Rocket class="h-[25px] w-[25px]" />
 					<p class="w-full text-center">Dashboard</p>
 				</button>
