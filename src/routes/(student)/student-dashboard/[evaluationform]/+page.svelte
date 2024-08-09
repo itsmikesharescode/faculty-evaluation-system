@@ -5,7 +5,7 @@
 	import { Label } from '$lib/components/ui/label/index.js';
 	import Button from '$lib/components/ui/button/button.svelte';
 
-	let value = 13;
+	let value = 0;
 	onMount(() => {
 		const timer = setTimeout(() => (value = 66), 500);
 		return () => clearTimeout(timer);
@@ -29,7 +29,7 @@
 				</p>
 			</div>
 
-			<p class="text-center text-xl font-semibold text-primary">FACULTY PERFORMANCE EVALUATION</p>
+			<p class="text-center text-xl font-semibold text-primary">Rating Elements</p>
 
 			<div class="">
 				<p class="font-semibold">Direction:</p>
