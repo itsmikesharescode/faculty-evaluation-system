@@ -8,9 +8,9 @@
 
 <div class="min-h-screen">
 	<div class="bg-slate-100 p-[0.625rem] md:p-[1.25rem]">
-		<div class="flex flex-wrap items-center gap-[20px] bg-[#89CFF0] p-[10px] md:flex-nowrap">
-			<BellRing class="h-full w-[60px] bg-[#89CFF0] p-[10px] text-black" />
-			<div class="text-black">
+		<div class="flex flex-wrap items-center gap-[20px] bg-primary p-[10px] md:flex-nowrap">
+			<BellRing class="h-full w-[60px] p-[10px] text-white " />
+			<div class="text-white">
 				<p class="font-semibold leading-7">Reminder</p>
 				<p class="text-sm leading-7">
 					You are evaluating your SUBJECT TEACHER, please read the directions before you begin the

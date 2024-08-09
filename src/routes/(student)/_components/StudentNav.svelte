@@ -116,7 +116,7 @@
 		<nav
 			class="sticky top-0 z-10 flex items-center justify-between border-b-[1px] p-[10px] backdrop-blur-sm"
 		>
-			<p class="text-sm leading-7"><strong>ProfEval</strong> System</p>
+			<p class="text-xl leading-7 text-primary"><strong>ProfEval</strong> System</p>
 
 			<div class="hidden items-center gap-[5px] md:flex">
 				<p class="text-sm leading-7 text-muted-foreground">Student</p>
