@@ -1,5 +1,17 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+	import { initAdminRoute } from './_states/fromAdminRoute.svelte';
+	import AdminNav from './_components/AdminNav.svelte';
+
 	const { children } = $props();
+
+	initAdminRoute();
 </script>
 
-{@render children()}
+{#if !($page.url.pathname === '/admin-login')}
+	<AdminNav {children} />
+{/if}
+
+{#if !['/admin-dashboard', '/admin-manage-accounts'].includes($page.url.pathname)}
+	{@render children()}
+{/if}

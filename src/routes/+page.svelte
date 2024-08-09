@@ -66,7 +66,7 @@
 
 			<div class="mt-[20px] flex flex-col gap-[10px]">
 				<Button onclick={() => goto('/student-login')}>Student</Button>
-				<Button>Admin</Button>
+				<Button onclick={() => goto('/admin-login')}>Admin</Button>
 			</div>
 		</div>
 	</div>
