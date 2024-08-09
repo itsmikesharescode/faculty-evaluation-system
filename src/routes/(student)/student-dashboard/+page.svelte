@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { BellRing } from 'lucide-svelte';
+	import { BellRing, MoveUpRight } from 'lucide-svelte';
 	import { fromStudentRouteState } from '../_states/fromStudentRoute.svelte';
 
 	const route = fromStudentRouteState();
@@ -30,7 +30,7 @@
 		</div>
 
 		<div
-			class="sticky top-[3rem] hidden border-t-[1px] border-slate-400 bg-slate-100 md:grid md:grid-cols-[5%,25%,25%,25%,20%] lg:grid-cols-[5%,40%,30%,15%,10%]"
+			class="sticky top-[3rem] hidden border-t-[1px] border-slate-400 bg-slate-100 md:grid md:grid-cols-[5%,45%,25%,25%] lg:grid-cols-[5%,50%,30%,15%]"
 		>
 			<span
 				class="flex items-center justify-center border-r-[1px] border-slate-400 p-[10px] text-sm font-semibold"
@@ -39,14 +39,13 @@
 			<span class="border-r-[1px] border-slate-400 p-[10px] text-sm font-semibold">TEACHER</span>
 			<span class="border-r-[1px] border-slate-400 p-[10px] text-sm font-semibold">SUBJECT</span>
 			<span class="border-r-[1px] border-slate-400 p-[10px] text-sm font-semibold">STATUS</span>
-			<span class="p-[10px] text-sm font-semibold">ACTIONS</span>
 		</div>
 
 		<!--Looping table here-->
 		<div class="mt-[2dvh] flex flex-col gap-[10px] md:mt-0 md:gap-0">
 			{#each Array(40) as _, index}
 				<div
-					class="hidden border-t-[1px] border-slate-400 bg-slate-300 md:grid md:grid-cols-[5%,25%,25%,25%,20%] lg:grid-cols-[5%,40%,30%,15%,10%]"
+					class="hidden border-t-[1px] border-slate-400 bg-slate-300 md:grid md:grid-cols-[5%,45%,25%,25%] lg:grid-cols-[5%,50%,30%,15%]"
 				>
 					<span
 						class="flex items-center justify-center border-r-[1px] border-slate-400 p-[10px] text-sm font-semibold"
@@ -63,14 +62,9 @@
 					<span
 						class="flex items-center border-r-[1px] border-slate-400 p-[10px] text-sm font-semibold"
 					>
-						<div class="flex max-w-fit items-center bg-orange-500 p-[10px] text-xs text-white">
-							NOT STARTED
-						</div>
-					</span>
-					<span class="flex items-center p-[10px] text-sm font-semibold">
-						<button class="flex max-w-fit items-center bg-green-500 p-[10px] text-xs text-white">
-							EVALUATE
-						</button>
+						<a href=" " class="flex items-center gap-[5px] bg-primary p-[10px] text-white"
+							>Evaluate Now <MoveUpRight class="h-[15px] w-[15px]" /></a
+						>
 					</span>
 				</div>
 
@@ -79,17 +73,13 @@
 					<div class="relative flex flex-col gap-[20px] bg-slate-300 p-[10px]">
 						<p>#: {index + 1}</p>
 
-						<div
-							class="absolute right-0 top-0 m-[10px] flex max-w-fit items-center bg-orange-500 p-[10px] text-xs text-white"
-						>
-							NOT STARTED
-						</div>
-
 						<p>Teacher: Faculty Text {index + 1}</p>
 						<p>Subject: COMSCI 1110</p>
 
-						<button class="bg-green-500 p-[10px] text-xs font-semibold text-white"
-							>Evaluate Now</button
+						<a
+							href=" "
+							class="flex items-center justify-center gap-[5px] bg-primary p-[10px] text-white"
+							>Evaluate Now <MoveUpRight class="h-[15px] w-[15px]" /></a
 						>
 					</div>
 				</div>
