@@ -10,16 +10,6 @@
 </script>
 
 <div class="min-h-screen border-l-[1px] border-slate-300">
-	<div class="grid gap-[20px] p-[20px] md:grid-cols-2">
-		<div class="h-[30dvh]">
-			<AdminBarChart totalStudents={30} totalProfessors={80} totalEvaluated={25} />
-		</div>
-
-		<div class="h-[30dvh]">
-			<AdminLineChart totalStudents={30} totalProfessors={80} totalEvaluated={25} />
-		</div>
-	</div>
-
 	<div class="mt-[20px] grid gap-[20px] p-[20px] md:grid-cols-3">
 		<AdminCountCard
 			title="Total Student"

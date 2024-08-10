@@ -1,7 +1,7 @@
 <script lang="ts">
 	import fes_icon from '$lib/assets/fes_icon.png?enhanced';
 	import type { Snippet } from 'svelte';
-	import { Rocket, CircleUser, LogOut, Menu, ArrowUpNarrowWide } from 'lucide-svelte';
+	import { Rocket, CircleUser, LogOut, Menu, ArrowUpNarrowWide, FileQuestion } from 'lucide-svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { fly } from 'svelte/transition';
 	import * as Sheet from '$lib/components/ui/sheet/index.js';
@@ -37,7 +37,6 @@
 <div class="relative flex">
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
-
 	<div
 		class="sticky top-0 z-20 hidden h-[70dvh] md:flex"
 		onmouseleave={() => (showSideBar = false)}
@@ -53,6 +52,18 @@
 					p-[10px]"
 				>
 					<Rocket class="h-[25px] w-[25px]" />
+				</button>
+
+				<Separator />
+
+				<button
+					onclick={() => setRouteFunc('/admin-questionnaire')}
+					class="{route.getRoute() === '/admin-questionnaire'
+						? 'bg-primary text-white'
+						: 'text-black'} 
+					p-[10px]"
+				>
+					<FileQuestion class="h-[25px] w-[25px]" />
 				</button>
 
 				<Separator />
@@ -106,6 +117,18 @@
 					p-[10px] text-left"
 				>
 					<p class="h-[25px]">Dashboard</p>
+				</button>
+
+				<Separator />
+
+				<button
+					onclick={() => setRouteFunc('/admin-questionnaire')}
+					class="{route.getRoute() === '/admin-questionnaire'
+						? 'bg-primary text-white'
+						: 'text-black'}
+					p-[10px] text-left"
+				>
+					<p class="h-[25px]">Questionnaire</p>
 				</button>
 
 				<Separator />
@@ -187,6 +210,18 @@
 				>
 					<Rocket class="h-[25px] w-[25px]" />
 					<p class="w-full text-center">Dashboard</p>
+				</button>
+
+				<Separator />
+
+				<button
+					onclick={() => setRouteFunc('/admin-questionnaire')}
+					class="{route.getRoute() === '/admin-questionnaire'
+						? 'bg-primary text-white'
+						: ''} flex items-center gap-[5px] p-[10px]"
+				>
+					<ArrowUpNarrowWide class="h-[25px] w-[25px]" />
+					<p class="w-full text-center">Questionnaire</p>
 				</button>
 
 				<Separator />
