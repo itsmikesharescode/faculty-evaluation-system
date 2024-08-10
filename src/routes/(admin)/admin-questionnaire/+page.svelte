@@ -17,7 +17,7 @@
 			>
 		</div>
 
-		<div class="flex flex-col gap-[10px]">
+		<div class="flex flex-col gap-[20px]">
 			{#each Array(10) as _}
 				<div class="rounded-lg border-black bg-secondary p-[20px] shadow-lg">
 					<div class="">

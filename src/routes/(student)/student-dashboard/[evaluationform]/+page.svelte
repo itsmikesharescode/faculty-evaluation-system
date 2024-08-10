@@ -18,7 +18,7 @@
 
 <div class="min-h-screen p-[10px]">
 	<div class="flex flex-col gap-[10px] bg-white p-[20px]">
-		<div class="sticky top-[6.5dvh] flex items-center justify-center">
+		<div class="sticky top-[3.3rem] flex items-center justify-center">
 			<Progress {value} max={100} class="h-[20px] w-full rounded-none" />
 			<p class="absolute bottom-0 text-xs font-semibold text-black">{value} % Completion</p>
 		</div>

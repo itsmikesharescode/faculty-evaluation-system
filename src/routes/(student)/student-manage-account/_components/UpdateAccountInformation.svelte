@@ -80,29 +80,6 @@
 		<Form.FieldErrors />
 	</Form.Field>
 
-	<Form.Field {form} name="gender">
-		<Form.Control let:attrs>
-			<Form.Label>Gender</Form.Label>
-			<Select.Root
-				selected={selectedGender}
-				onSelectedChange={(v) => {
-					v && ($formData.gender = v.value);
-				}}
-			>
-				<Select.Trigger {...attrs}>
-					<Select.Value placeholder="Select your gender" />
-				</Select.Trigger>
-				<Select.Content>
-					<Select.Item value="Male" label="Male" />
-					<Select.Item value="Female" label="Female" />
-				</Select.Content>
-			</Select.Root>
-			<input hidden bind:value={$formData.gender} name={attrs.name} />
-		</Form.Control>
-
-		<Form.FieldErrors />
-	</Form.Field>
-
 	<Form.Field {form} name="yearLevel">
 		<Form.Control let:attrs>
 			<Form.Label>Year Level</Form.Label>

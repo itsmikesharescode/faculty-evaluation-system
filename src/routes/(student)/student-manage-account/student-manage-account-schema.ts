@@ -8,9 +8,6 @@ export const updateAccInfoSchema = z.object({
 		.max(1, { message: 'Max char is 1.' }),
 	lastName: z.string().min(1, { message: 'Must enter last name.' }),
 	nameSuffix: z.string().optional(),
-	gender: z
-		.string()
-		.refine((v) => ['Male', 'Female'].includes(v), { message: 'Must enter a valid gender.' }),
 	yearLevel: z
 		.string()
 		.refine((v) => ['First Year', 'Second Year', 'Third Year', 'Fourth Year'].includes(v), {

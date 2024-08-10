@@ -2,7 +2,7 @@
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label/index';
 	import Button from '$lib/components/ui/button/button.svelte';
-	import { Paintbrush, Plus, Trash2 } from 'lucide-svelte';
+	import { Paintbrush, Plus, Trash2, CloudUpload } from 'lucide-svelte';
 	import { createEvalSchema, addDynamicFields } from '../admin-questionnaire-schema';
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
@@ -111,7 +111,7 @@
 		<div
 			id={track.id}
 			class=" rounded-lg bg-white px-[10px] py-[20px] shadow-lg"
-			transition:fade
+			in:fade
 			animate:flip={{ duration: 350 }}
 		>
 			<div class="grid w-full items-center gap-1.5">
@@ -148,6 +148,11 @@
 			<Plus class="h-[15px] w-[15px]" />
 			More Question
 		</Button>
+
+		<Button onclick={handleSubmit} class="flex items-center gap-[5px]">
+			<CloudUpload class="h-[15px] w-[15px]" />
+			Upload
+		</Button>
 		{#if tracker.length > 3}
 			<Button
 				onclick={() => {
@@ -159,10 +164,8 @@
 				variant="destructive"
 			>
 				<Paintbrush class="h-[15px] w-[15px]" />
-				Reset Questions
+				Delete {tracker.length - 1} Questions
 			</Button>
 		{/if}
-
-		<Button onclick={handleSubmit}>Save Questionnaire</Button>
 	</div>
 </div>
