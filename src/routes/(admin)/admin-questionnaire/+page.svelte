@@ -26,6 +26,7 @@
 						<p>Number Of Questions: 8</p>
 					</div>
 					<div class="flex items-center justify-end gap-[5px]">
+						<Button>Used</Button>
 						<Button variant="destructive">Delete</Button>
 						<Button>Update</Button>
 						<Button>View</Button>

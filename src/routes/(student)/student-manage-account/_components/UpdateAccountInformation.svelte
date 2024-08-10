@@ -19,15 +19,6 @@
 
 	const { form: formData, enhance } = form;
 
-	const selectedGender = $derived(
-		$formData.gender
-			? {
-					label: $formData.gender,
-					value: $formData.gender
-				}
-			: undefined
-	);
-
 	const yearLevel = $derived(
 		$formData.yearLevel
 			? {
