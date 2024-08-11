@@ -62,21 +62,21 @@
 									<RadioGroup.Item value="outstanding" id={`r1${index + 1}`} />
 									<Label for={`r1${index + 1}`}>
 										Always
-										<strong class="text-muted-foreground">(5 Scores)</strong>
+										<strong class="text-muted-foreground">(5)</strong>
 									</Label>
 								</div>
 								<div class="flex items-center space-x-2">
 									<RadioGroup.Item value="verysatisfactory" id={`r2${index + 1}`} />
 									<Label for={`r2${index + 1}`}>
 										Often
-										<strong class="text-muted-foreground">(4 Scores) </strong>
+										<strong class="text-muted-foreground">(4) </strong>
 									</Label>
 								</div>
 								<div class="flex items-center space-x-2">
 									<RadioGroup.Item value="satisfactory" id={`r3${index + 1}`} />
 									<Label for={`r3${index + 1}`}>
 										Sometimes
-										<strong class="text-muted-foreground">(3 Scores)</strong>
+										<strong class="text-muted-foreground">(3)</strong>
 									</Label>
 								</div>
 
@@ -84,7 +84,7 @@
 									<RadioGroup.Item value="fair" id={`r4${index + 1}`} />
 									<Label for={`r4${index + 1}`}>
 										Rarely
-										<strong class="text-muted-foreground">(2 Scores)</strong>
+										<strong class="text-muted-foreground">(2)</strong>
 									</Label>
 								</div>
 
@@ -92,7 +92,7 @@
 									<RadioGroup.Item value="needsimprovement" id={`r5${index + 1}`} />
 									<Label for={`r5${index + 1}`}>
 										Never
-										<strong class="text-muted-foreground">(1 Score)</strong>
+										<strong class="text-muted-foreground">(1)</strong>
 									</Label>
 								</div>
 								<RadioGroup.Input name="spacing" />

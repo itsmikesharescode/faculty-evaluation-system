@@ -11,12 +11,21 @@
 
 <!--BOUND NAV-->
 <nav class="sticky top-0 z-10 flex w-full items-center justify-between p-[10px] backdrop-blur-sm">
-	<p class="font-semibold">OCC</p>
+	<p class="font-semibold">One Cainta College</p>
 	<div class="flex items-center gap-[10px]">
-		<button>Manual</button>
-		<Button size="sm" class="rounded-none text-sm font-semibold" onclick={() => (loginModal = true)}
-			>Log in</Button
-		>
+		<Button
+			size="sm"
+			class="rounded-none text-sm font-semibold"
+			onclick={() => goto('/student-login')}
+			>Log in
+		</Button>
+
+		<Button
+			size="sm"
+			class="rounded-none text-sm font-semibold"
+			onclick={() => goto('/student-login?k=create-account')}
+			>Register
+		</Button>
 	</div>
 </nav>
 <div class="relative h-screen w-full">
@@ -34,7 +43,12 @@
 			<p class="text-center text-3xl">
 				<strong>ProfEval</strong> System
 			</p>
-			<Button class="rounded-none font-semibold" onclick={() => (loginModal = true)}>
+			<Button
+				class="rounded-none font-semibold"
+				onclick={() => {
+					goto('/student-login');
+				}}
+			>
 				EVALUATE NOW
 			</Button>
 		</div>

@@ -10,6 +10,7 @@
 	import { fromAdminRouteState } from '../../_states/fromAdminRoute.svelte';
 	import { goto } from '$app/navigation';
 	import { array, number } from 'zod';
+	import Textarea from '$lib/components/ui/textarea/textarea.svelte';
 
 	interface FormData {
 		evalTitle: string;
@@ -121,7 +122,7 @@
 	<div class="rounded-lg bg-white px-[10px] py-[20px] shadow-lg">
 		<p class="text-center text-xl font-semibold">Evaluation Form Creation</p>
 		<div class="grid w-full items-center gap-1.5">
-			<Label for="evalTitle">Evaluation Title</Label>
+			<Label for="evalTitle" class="font-semibold">Evaluation Title</Label>
 			<Input
 				type="text"
 				id="evalTitle"
@@ -135,9 +136,12 @@
 	</div>
 
 	{#each headerTitleTracker as headerTitleTrack, index (headerTitleTrack)}
-		<div class="flex flex-col gap-[10px] rounded-lg bg-white p-[1rem] shadow-lg">
+		<div
+			class="flex flex-col gap-[10px] rounded-lg bg-white p-[1rem] shadow-lg"
+			animate:flip={{ duration: 350 }}
+		>
 			<div class="grid w-full items-center gap-1.5">
-				<Label for={headerTitleTrack.id}>Header Title {index + 1}</Label>
+				<Label for={headerTitleTrack.id} class="font-semibold">Header Title {index + 1}</Label>
 				<Input
 					type="text"
 					id={headerTitleTrack.id}
@@ -161,8 +165,7 @@
 					>
 						<div class="grid w-full items-center gap-1.5">
 							<Label for={questionTracker.id}>Question {innerIndex + 1}</Label>
-							<Input
-								type="text"
+							<Textarea
 								id={questionTracker.id}
 								bind:value={formData.questions[questionTracker.id]}
 								placeholder={`Enter your question ${innerIndex + 1}`}
