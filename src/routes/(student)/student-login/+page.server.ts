@@ -27,6 +27,36 @@ export const actions: Actions = {
 		});
 
 		if (error) return fail(401, { form, msg: error.message });
-		else if (user) return { form, msg: 'Welcome back!' };
+		else if (user) return { form, msg: 'Welcome back!', user };
+	},
+
+	studentRegisterEvent: async ({ locals: { supabase }, request }) => {
+		const form = await superValidate(request, zod(studentCreateSchema));
+		console.log(form.data);
+		if (!form.valid) return fail(400, { form });
+
+		const {
+			data: { user },
+			error
+		} = await supabase.auth.signUp({
+			email: form.data.email,
+			password: form.data.password,
+			options: {
+				data: {
+					role: 'student',
+					email: form.data.email,
+					id_number: form.data.idNumber,
+					fullname: `${form.data.lastName}, ${form.data.firstName} ${form.data.middleInitial}.`,
+					suffix: form.data.nameSuffix ? form.data.nameSuffix : null,
+					gender: form.data.gender,
+					year_level: form.data.yearLevel,
+					course: form.data.course,
+					section: form.data.section
+				}
+			}
+		});
+
+		if (error) return fail(401, { form, msg: error.message });
+		else if (user) return { form, msg: 'Account created.', user };
 	}
 };

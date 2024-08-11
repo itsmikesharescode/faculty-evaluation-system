@@ -7,6 +7,9 @@
 	import type { ResultModel } from '$lib/types';
 	import { toast } from 'svelte-sonner';
 	import { Loader } from 'lucide-svelte';
+	import { goto } from '$app/navigation';
+	import { fromUserState } from '../../../_states/fromRootState.svelte';
+	import type { User } from '@supabase/supabase-js';
 
 	interface Props {
 		studentLoginForm: SuperValidated<Infer<StudentLoginSchema>>;
@@ -14,16 +17,20 @@
 
 	const { studentLoginForm }: Props = $props();
 
+	const user = fromUserState();
+
 	const form = superForm(studentLoginForm, {
 		validators: zodClient(studentLoginSchema),
 		id: crypto.randomUUID(),
 		invalidateAll: false,
 		onUpdate({ result }) {
-			const { status, data } = result as ResultModel<{ msg: string }>;
+			const { status, data } = result as ResultModel<{ msg: string; user: User }>;
 
 			switch (status) {
 				case 200:
 					toast.success('Log in', { description: data.msg });
+					user.setUser(data.user);
+					goto('/student-dashboard');
 					break;
 
 				case 401:
