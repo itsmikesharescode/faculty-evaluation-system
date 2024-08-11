@@ -10,12 +10,12 @@
 <div class="">
 	<!--Table Header-->
 	<div
-		class="sticky top-[7rem] grid grid-cols-[70%,20%,10%] border-y-[1px] border-black bg-slate-400 text-sm font-semibold lg:grid-cols-[60%,20%,10%,10%]"
+		class="sticky top-[7rem] grid grid-cols-[70%,20%,10%] border-black bg-secondary text-sm font-semibold lg:grid-cols-[60%,20%,10%,10%]"
 	>
-		<span class="border-l-[1px] border-black p-[0.625rem]">Professor Name</span>
+		<span class=" p-[0.625rem]">Professor Name</span>
 		<span class="hidden p-[0.625rem] text-center lg:block">Section</span>
 		<span class="p-[0.625rem] text-center">Result</span>
-		<span class="border-r-[1px] border-black p-[0.625rem] text-center"></span>
+		<span class="  p-[0.625rem] text-center"></span>
 	</div>
 
 	<!--Table Data-->
