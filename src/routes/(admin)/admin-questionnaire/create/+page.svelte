@@ -9,6 +9,7 @@
 	import * as Breadcrumb from '$lib/components/ui/breadcrumb/index.js';
 	import { fromAdminRouteState } from '../../_states/fromAdminRoute.svelte';
 	import { goto } from '$app/navigation';
+	import { array, number } from 'zod';
 
 	interface FormData {
 		evalTitle: string;
@@ -28,6 +29,44 @@
 
 	const route = fromAdminRouteState();
 	route.setRoute('/admin-questionnaire');
+
+	let headerTitleTracker = $state([
+		{
+			id: crypto.randomUUID(),
+			questions: [
+				{
+					id: crypto.randomUUID()
+				}
+			]
+		}
+	]);
+
+	const incrementQuestion = (titleIndex: number) => {
+		headerTitleTracker[titleIndex].questions.push({ id: crypto.randomUUID() });
+	};
+
+	const removeQuestion = (removeParam: { titleIndex: number; questionId: string }) => {
+		const newQ = headerTitleTracker[removeParam.titleIndex].questions.filter(
+			(item) => item.id !== removeParam.questionId
+		);
+
+		headerTitleTracker = [
+			...headerTitleTracker.slice(0, removeParam.titleIndex),
+			{
+				...headerTitleTracker[removeParam.titleIndex],
+				questions: newQ
+			},
+			...headerTitleTracker.slice(removeParam.titleIndex + 1)
+		];
+	};
+
+	const incrementTitle = () => {
+		headerTitleTracker.push({ id: crypto.randomUUID(), questions: [{ id: crypto.randomUUID() }] });
+	};
+
+	const removeTitle = (titleId: string) => {
+		headerTitleTracker = headerTitleTracker.filter((item) => item.id !== titleId);
+	};
 
 	// Reactive state to track the dynamic fields
 	let tracker = $state<TrackerItem[]>([{ id: crypto.randomUUID() }]);
@@ -60,23 +99,10 @@
 			errors = {};
 		}
 	};
-
-	// Function to add a new question field
-	const addQuestion = () => {
-		tracker = [...tracker, { id: crypto.randomUUID() }];
-		goto(`/admin-questionnaire/create?#${tracker[tracker.length - 1].id}`);
-	};
-
-	// Function to remove the last question field
-	const removeQuestion = (id: string) => {
-		if (tracker.length > 1) {
-			tracker = tracker.filter((item) => item.id !== id);
-		}
-	};
 </script>
 
 <div
-	class="flex min-h-screen flex-col gap-[20px] border-l-[1px] border-slate-300 bg-secondary p-[10px]"
+	class="flex min-h-screen flex-col gap-[10px] border-l-[1px] border-slate-300 bg-secondary p-[10px]"
 >
 	<div class="sticky top-[3rem] bg-secondary py-[20px]">
 		<Breadcrumb.Root>
@@ -107,20 +133,16 @@
 			{/if}
 		</div>
 	</div>
-	{#each tracker as track, index (track)}
-		<div
-			id={track.id}
-			class=" rounded-lg bg-white px-[10px] py-[20px] shadow-lg"
-			in:fade
-			animate:flip={{ duration: 350 }}
-		>
+
+	{#each headerTitleTracker as headerTitleTrack, index (headerTitleTrack)}
+		<div class="flex flex-col gap-[10px] rounded-lg bg-white p-[1rem] shadow-lg">
 			<div class="grid w-full items-center gap-1.5">
-				<Label for={track.id}>Question {index + 1}</Label>
+				<Label for={headerTitleTrack.id}>Header Title {index + 1}</Label>
 				<Input
 					type="text"
-					id={track.id}
-					bind:value={formData.questions[track.id]}
-					placeholder={`Enter your question ${index + 1}`}
+					id={headerTitleTrack.id}
+					bind:value={formData.questions[headerTitleTrack.id]}
+					placeholder={`Enter your header title ${index + 1}`}
 				/>
 				{#if errors[`question${index + 1}` as keyof Errors]}
 					<p class="text-sm text-red-500">
@@ -129,30 +151,89 @@
 				{/if}
 			</div>
 
-			<div class="mt-[20px] flex items-center justify-end gap-[5px]">
-				{#if tracker.length > 1}
-					<button
-						onclick={() => removeQuestion(track.id)}
-						class="flex items-center gap-[5px] bg-red-500 p-[10px] text-sm text-white"
+			<div class="flex flex-col gap-[10px] bg-secondary p-[1rem]">
+				{#each headerTitleTrack.questions as questionTracker, innerIndex (questionTracker)}
+					<div
+						id={questionTracker.id}
+						class=" rounded-lg bg-white px-[10px] py-[20px] shadow-lg"
+						in:fade
+						animate:flip={{ duration: 350 }}
 					>
-						<Trash2 class="h-[15px] w-[15px]" />
-						Remove
-					</button>
-				{/if}
+						<div class="grid w-full items-center gap-1.5">
+							<Label for={questionTracker.id}>Question {innerIndex + 1}</Label>
+							<Input
+								type="text"
+								id={questionTracker.id}
+								bind:value={formData.questions[questionTracker.id]}
+								placeholder={`Enter your question ${innerIndex + 1}`}
+							/>
+							{#if errors[`question${innerIndex + 1}` as keyof Errors]}
+								<p class="text-sm text-red-500">
+									{errors[`question${innerIndex + 1}` as keyof Errors]?._errors[0]}
+								</p>
+							{/if}
+						</div>
+
+						<div class="mt-[20px] flex items-center justify-end gap-[5px]">
+							{#if headerTitleTracker[index].questions.length > 1}
+								<Button
+									variant="destructive"
+									class="flex items-center gap-[5px]"
+									onclick={() =>
+										removeQuestion({ titleIndex: index, questionId: questionTracker.id })}
+								>
+									<Trash2 class="h-[15px] w-[15px]" />
+									Remove Question {innerIndex + 1}
+								</Button>
+							{/if}
+						</div>
+					</div>
+				{/each}
+
+				<div class="flex items-center justify-between gap-[5px] overflow-auto">
+					<div class="flex items-center gap-[5px]">
+						<Button onclick={() => incrementQuestion(index)} class="flex items-center gap-[5px]">
+							<Plus class="h-[15px] w-[15px]" />
+							More Question
+						</Button>
+
+						{#if headerTitleTracker[index].questions.length > 3}
+							<Button
+								onclick={() => {
+									const lastQuestionValue = headerTitleTracker[index].questions[0];
+									headerTitleTracker[index].questions = [];
+									headerTitleTracker[index].questions.push(lastQuestionValue);
+								}}
+								class="flex items-center gap-[5px]"
+								variant="destructive"
+							>
+								<Paintbrush class="h-[15px] w-[15px]" />
+								Delete {headerTitleTracker[index].questions.length - 1} Questions
+							</Button>
+						{/if}
+					</div>
+
+					{#if headerTitleTracker.length > 1}
+						<Button
+							variant="destructive"
+							class="flex items-center gap-[5px]"
+							onclick={() => removeTitle(headerTitleTrack.id)}
+						>
+							<Trash2 class="h-[15px] w-[15px]" />
+							Remove Title {index + 1}
+						</Button>
+					{/if}
+				</div>
 			</div>
 		</div>
 	{/each}
 
-	<div class="sticky bottom-[1rem] flex items-center gap-[5px] overflow-auto">
-		<Button onclick={addQuestion} class="flex items-center gap-[5px]">
+	<div class=" flex items-center gap-[5px] overflow-auto">
+		<Button onclick={incrementTitle} class="flex items-center gap-[5px]">
 			<Plus class="h-[15px] w-[15px]" />
-			More Question
+			More Title
 		</Button>
 
-		<Button onclick={handleSubmit} class="flex items-center gap-[5px]">
-			<CloudUpload class="h-[15px] w-[15px]" />
-			Upload
-		</Button>
 		{#if tracker.length > 3}
 			<Button
 				onclick={() => {
@@ -169,3 +250,8 @@
 		{/if}
 	</div>
 </div>
+
+<!-- <Button onclick={handleSubmit} class="flex items-center gap-[5px]">
+	<CloudUpload class="h-[15px] w-[15px]" />
+	Upload
+</Button> -->
