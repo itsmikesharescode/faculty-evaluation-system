@@ -135,24 +135,24 @@
 	};
 </script>
 
-<div
-	class="flex min-h-screen flex-col gap-[10px] border-l-[1px] border-slate-300 bg-secondary p-[10px]"
->
-	<div class="sticky top-[3rem] bg-secondary py-[20px]">
-		<Breadcrumb.Root>
-			<Breadcrumb.List>
-				<Breadcrumb.Item>
-					<Breadcrumb.Link href="/admin-questionnaire">Questionnaires</Breadcrumb.Link>
-				</Breadcrumb.Item>
-				<Breadcrumb.Separator />
-				<Breadcrumb.Item>
-					<Breadcrumb.Page>Create Evaluation</Breadcrumb.Page>
-				</Breadcrumb.Item>
-			</Breadcrumb.List>
-		</Breadcrumb.Root>
-	</div>
+<div class="sticky top-[3rem] bg-secondary px-[0.625rem] py-[1.25rem]">
+	<Breadcrumb.Root>
+		<Breadcrumb.List>
+			<Breadcrumb.Item>
+				<Breadcrumb.Link href="/admin-questionnaire">Questionnaires</Breadcrumb.Link>
+			</Breadcrumb.Item>
+			<Breadcrumb.Separator />
+			<Breadcrumb.Item>
+				<Breadcrumb.Page>Create Evaluation</Breadcrumb.Page>
+			</Breadcrumb.Item>
+		</Breadcrumb.List>
+	</Breadcrumb.Root>
+</div>
 
-	<div class="rounded-lg bg-green-500 px-[10px] py-[20px] shadow-lg">
+<div
+	class="flex min-h-screen flex-col gap-[0.625rem] border-l-[1px] border-slate-300 bg-secondary p-[0.625rem]"
+>
+	<div class="rounded-lg bg-white px-[0.625rem] py-[1.25rem] shadow-lg">
 		<p class="text-center text-xl font-semibold">Evaluation Form Creation</p>
 		<div class="grid w-full items-center gap-1.5">
 			<Label for="evalTitle" class="font-semibold">Evaluation Title</Label>
@@ -170,7 +170,7 @@
 
 	{#each headerTitleTracker as headerTitleTrack, index (headerTitleTrack)}
 		<div
-			class="flex flex-col gap-[10px] rounded-lg bg-green-500 p-[1rem] shadow-lg"
+			class="flex flex-col gap-[0.625rem] rounded-lg bg-white p-[1rem] shadow-lg"
 			animate:flip={{ duration: 350 }}
 		>
 			<div class="grid w-full items-center gap-1.5">
@@ -188,11 +188,11 @@
 				{/if}
 			</div>
 
-			<div class="flex flex-col gap-[10px] p-[1rem]">
+			<div class="flex flex-col gap-[0.625rem] border-l-[2px] border-primary p-[1rem]">
 				{#each headerTitleTrack.questions as questionTracker, innerIndex (questionTracker)}
 					<div
 						id={questionTracker.id}
-						class="rounded-lg bg-white px-[10px] py-[20px] shadow-lg"
+						class="rounded-lg bg-secondary px-[0.625rem] py-[1.25rem]"
 						in:fade
 						animate:flip={{ duration: 350 }}
 					>
@@ -210,7 +210,7 @@
 							{/if}
 						</div>
 
-						<div class="mt-[20px] flex items-center justify-end gap-[5px]">
+						<div class="mt-[1.25rem] flex items-center justify-end gap-[5px]">
 							{#if headerTitleTracker[index].questions.length > 1}
 								<Button
 									variant="destructive"
