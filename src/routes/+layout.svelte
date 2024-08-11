@@ -3,8 +3,13 @@
 	import '@fontsource/poppins';
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import { fromUserState, initUser } from './_states/fromRootState.svelte';
 
 	const { data, children } = $props();
+
+	initUser();
+	const user = fromUserState();
+	user.setUser(data.user);
 
 	onMount(() => {
 		const { session, supabase } = data;
