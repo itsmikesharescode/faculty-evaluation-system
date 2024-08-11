@@ -58,5 +58,18 @@ export const actions: Actions = {
 
 		if (error) return fail(401, { form, msg: error.message });
 		else if (user) return { form, msg: 'Account created.', user };
+	},
+
+	studentForgotPwdEvent: async ({ locals: { supabase }, request }) => {
+		const form = await superValidate(request, zod(studentForgotPwdSchema));
+		if (!form.valid) return fail(400, { form });
+
+		const { error } = await supabase.auth.resetPasswordForEmail(form.data.email);
+
+		if (error) return fail(401, { form, msg: error.message });
+		return {
+			form,
+			msg: `An email containing a password reset link has been sent to your email ${form.data.email}`
+		};
 	}
 };
