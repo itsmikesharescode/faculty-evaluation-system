@@ -5,6 +5,8 @@
 	import AddProfessor from './_components/AddProfessor.svelte';
 	import RenderProfessor from './_components/RenderProfessors.svelte';
 
+	const { data } = $props();
+
 	const route = fromAdminRouteState();
 	const departmentsRoute = fromDepartmentsRouteState();
 	route.setRoute('/admin-departments');
@@ -28,7 +30,7 @@
 		{/each}
 	</div>
 
-	<AddProfessor />
+	<AddProfessor addProfForm={data.addProfForm} />
 
 	<RenderProfessor />
 </div>
