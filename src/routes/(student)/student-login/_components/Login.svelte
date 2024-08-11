@@ -4,6 +4,9 @@
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { studentLoginSchema, type StudentLoginSchema } from '../student-schema';
 	import { zodClient } from 'sveltekit-superforms/adapters';
+	import type { ResultModel } from '$lib/types';
+	import { toast } from 'svelte-sonner';
+	import { Loader } from 'lucide-svelte';
 
 	interface Props {
 		studentLoginForm: SuperValidated<Infer<StudentLoginSchema>>;
@@ -13,14 +16,28 @@
 
 	const form = superForm(studentLoginForm, {
 		validators: zodClient(studentLoginSchema),
-		id: crypto.randomUUID()
+		id: crypto.randomUUID(),
+		invalidateAll: false,
+		onUpdate({ result }) {
+			const { status, data } = result as ResultModel<{ msg: string }>;
+
+			switch (status) {
+				case 200:
+					toast.success('Log in', { description: data.msg });
+					break;
+
+				case 401:
+					toast.error('Log in', { description: data.msg });
+					break;
+			}
+		}
 	});
 
-	const { form: formData, enhance } = form;
+	const { form: formData, enhance, submitting } = form;
 </script>
 
 <p class="mt-[5dvh] p-[20px] text-center text-xl font-semibold leading-7">Student Log in</p>
-<form method="POST" use:enhance class="flex flex-col gap-[10px]">
+<form method="POST" action="?/studentLoginEvent" use:enhance class="flex flex-col gap-[10px]">
 	<Form.Field {form} name="email">
 		<Form.Control let:attrs>
 			<Form.Label>Student Email</Form.Label>
@@ -44,7 +61,14 @@
 		<Form.FieldErrors />
 	</Form.Field>
 
-	<Form.Button class="w-full">Log in</Form.Button>
+	<Form.Button disabled={$submitting} class="relative w-full">
+		{#if $submitting}
+			<div class="absolute flex h-full w-full items-center justify-center rounded-lg bg-primary">
+				<Loader class="h-[15px] w-[15px] animate-spin" />
+			</div>
+		{/if}
+		Log in
+	</Form.Button>
 
 	<div class=" mt-[20px] flex flex-col gap-[10px]">
 		<a

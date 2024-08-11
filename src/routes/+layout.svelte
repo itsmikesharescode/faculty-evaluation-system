@@ -4,6 +4,7 @@
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { fromUserState, initUser } from './_states/fromRootState.svelte';
+	import { Toaster } from '$lib/components/ui/sonner';
 
 	const { data, children } = $props();
 
@@ -24,6 +25,7 @@
 	});
 </script>
 
+<Toaster />
 {@render children()}
 
 <style>
