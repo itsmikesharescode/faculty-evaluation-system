@@ -88,7 +88,7 @@
 	let formData = $state<FormData>({ evalTitle: '', headerTitles: {}, questions: {} });
 	let errors = $state<Errors>({});
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		// Generate final schema based on the current dynamic fields
 		const finalSchema = createEvalSchema(
 			headerTitleTracker.length,
@@ -114,11 +114,9 @@
 		const validationResult = finalSchema.safeParse(dataToValidate);
 
 		if (!validationResult.success) {
-			console.log(validationResult.error.format());
 			errors = validationResult.error.format() as Errors;
 		} else {
-			console.log('Validation successful:', validationResult.data);
-			// Structure the data in the desired format
+			// Structure the data in the evaluation format
 			const structuredData = headerTitleTracker.map((headerTitle, headerIndex) => ({
 				id: headerTitle.id,
 				headerTitle: formData.headerTitles[headerTitle.id],
@@ -128,8 +126,14 @@
 				}))
 			}));
 
-			console.log('Structured data:', structuredData);
-			// You can now use structuredData for further processing or sending to a server
+			const res = await fetch('?/uploadEvaluationEvent', {
+				method: 'post',
+				headers: { 'content-typed': 'application/json' },
+				body: JSON.stringify({
+					evaluation: structuredData
+				})
+			});
+
 			errors = {};
 		}
 	};

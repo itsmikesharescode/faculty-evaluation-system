@@ -18,5 +18,5 @@ export const formatName = (fullname: string, suffix: string | null) => {
 	const firstName = formatter[1];
 	const middleInitial = formatter[2];
 
-	return `${lastName}, ${firstName} ${middleInitial}. ${suffix ?? ''}`;
+	return `${lastName}, ${firstName} ${middleInitial} ${suffix ?? ''}`;
 };

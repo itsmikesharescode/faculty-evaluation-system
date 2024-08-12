@@ -158,12 +158,9 @@
 	<Sheet.Root bind:open={showMobileMenu}>
 		<Sheet.Content side="left">
 			<Sheet.Header class="mt-[5dvh]">
-				<Sheet.Title
-					>{formatName(
-						user.getUser()?.user_metadata.fullname,
-						user.getUser()?.user_metadata.suffix
-					)}</Sheet.Title
-				>
+				<Sheet.Title>
+					{formatName(user.getUser()?.user_metadata.fullname, user.getUser()?.user_metadata.suffix)}
+				</Sheet.Title>
 				<Sheet.Description>{user.getUser()?.user_metadata.role}</Sheet.Description>
 			</Sheet.Header>
 			<div class="grid gap-4 py-4">
