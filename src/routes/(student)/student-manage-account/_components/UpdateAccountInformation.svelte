@@ -35,10 +35,13 @@
 					toast.error('Manage Account', { description: data.msg });
 					break;
 			}
+		},
+		onUpdated() {
+			bindPrevValues();
 		}
 	});
 
-	const { form: formData, enhance, submitting } = form;
+	const { form: formData, enhance, submitting, reset } = form;
 
 	const yearLevel = $derived(
 		$formData.yearLevel
@@ -48,10 +51,47 @@
 				}
 			: undefined
 	);
+
+	const bindPrevValues = () => {
+		$formData.address = user.getUser()?.user_metadata.address;
+		$formData.contactNumber = user.getUser()?.user_metadata.mobile_number;
+		$formData.firstName = user.getUser()?.user_metadata.fullname.split(',')[1];
+		$formData.middleInitial = user.getUser()?.user_metadata.fullname.split(',')[2];
+		$formData.lastName = user.getUser()?.user_metadata.fullname.split(',')[0];
+		$formData.nameSuffix = user.getUser()?.user_metadata.suffix;
+		$formData.yearLevel = user.getUser()?.user_metadata.year_level;
+		$formData.course = user.getUser()?.user_metadata.course;
+		$formData.section = user.getUser()?.user_metadata.section;
+	};
+
+	$effect(() => {
+		bindPrevValues();
+	});
 </script>
 
 <p class="p-[20px] text-center text-xl font-semibold leading-7">Update Information</p>
 <form method="POST" action="?/updateAccountEvent" use:enhance class="flex flex-col gap-[10px]">
+	<Form.Field {form} name="contactNumber">
+		<Form.Control let:attrs>
+			<Form.Label>Contact Number (optional)</Form.Label>
+			<Input
+				{...attrs}
+				bind:value={$formData.contactNumber}
+				placeholder="Enter your contact number"
+			/>
+		</Form.Control>
+
+		<Form.FieldErrors />
+	</Form.Field>
+
+	<Form.Field {form} name="address">
+		<Form.Control let:attrs>
+			<Form.Label>Address (optional)</Form.Label>
+			<Input {...attrs} bind:value={$formData.address} placeholder="Enter your address" />
+		</Form.Control>
+
+		<Form.FieldErrors />
+	</Form.Field>
 	<Form.Field {form} name="firstName">
 		<Form.Control let:attrs>
 			<Form.Label>First Name</Form.Label>
@@ -130,19 +170,6 @@
 		<Form.Control let:attrs>
 			<Form.Label>Section</Form.Label>
 			<Input {...attrs} bind:value={$formData.section} placeholder="Enter your section" />
-		</Form.Control>
-
-		<Form.FieldErrors />
-	</Form.Field>
-
-	<Form.Field {form} name="contactNumber">
-		<Form.Control let:attrs>
-			<Form.Label>Contact Number (optional)</Form.Label>
-			<Input
-				{...attrs}
-				bind:value={$formData.contactNumber}
-				placeholder="Enter your contact number"
-			/>
 		</Form.Control>
 
 		<Form.FieldErrors />

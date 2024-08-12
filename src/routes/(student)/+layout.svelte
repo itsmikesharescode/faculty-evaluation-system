@@ -3,10 +3,15 @@
 	import { page } from '$app/stores';
 	import { initStudentRoute } from './_states/fromStudentRoute.svelte';
 	import { studentPaths } from '$lib';
+	import { fromSupabaseClient, initSupabase } from '../_states/fromSupabaseClient.svelte';
 
-	const { children } = $props();
+	const { data, children } = $props();
 
 	initStudentRoute();
+	initSupabase();
+
+	const supabase = fromSupabaseClient();
+	supabase.setClient(data.supabase);
 
 	const navBlockedList = ['/student-login', '/student-login/update-password'];
 </script>

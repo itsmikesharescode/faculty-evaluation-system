@@ -46,13 +46,14 @@ export const actions: Actions = {
 					role: 'student',
 					email: form.data.email,
 					id_number: form.data.idNumber,
-					fullname: `${form.data.lastName}, ${form.data.firstName} ${form.data.middleInitial}.`,
+					fullname: `${form.data.lastName},${form.data.firstName},${form.data.middleInitial},`,
 					suffix: form.data.nameSuffix ? form.data.nameSuffix : null,
 					gender: form.data.gender,
 					year_level: form.data.yearLevel,
 					course: form.data.course,
 					section: form.data.section,
-					mobile_number: 'N/A'
+					mobile_number: 'N/A',
+					address: 'N/A'
 				}
 			}
 		});

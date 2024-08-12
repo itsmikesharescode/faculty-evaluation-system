@@ -8,6 +8,8 @@
 	import { fromStudentRouteState } from '../_states/fromStudentRoute.svelte';
 	import { goto } from '$app/navigation';
 	import Logout from './Logout.svelte';
+	import { fromUserState } from '../../_states/fromRootState.svelte';
+	import { formatName } from '$lib';
 
 	interface Props {
 		children: Snippet;
@@ -16,6 +18,7 @@
 	let { children }: Props = $props();
 
 	const route = fromStudentRouteState();
+	const user = fromUserState();
 
 	let showSideBar = $state(false);
 	let showMobileMenu = $state(false);
@@ -133,8 +136,10 @@
 			<p class="text-xl leading-7 text-primary"><strong>ProfEval</strong> System</p>
 
 			<div class="hidden items-center gap-[5px] text-xl md:flex">
-				<p class=" leading-7 text-muted-foreground">Student</p>
-				<p class=" leading-7">Eviota, Mike John B.</p>
+				<p class=" leading-7 text-muted-foreground">{user.getUser()?.user_metadata.role}</p>
+				<p class=" leading-7">
+					{formatName(user.getUser()?.user_metadata.fullname, user.getUser()?.user_metadata.suffix)}
+				</p>
 			</div>
 
 			<button class="md:hidden" onclick={() => (showMobileMenu = true)}>
