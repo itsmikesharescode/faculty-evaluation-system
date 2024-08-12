@@ -25,7 +25,7 @@
 	});
 </script>
 
-<Toaster />
+<Toaster richColors={true} />
 {@render children()}
 
 <style>

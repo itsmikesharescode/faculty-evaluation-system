@@ -9,19 +9,26 @@
 	import { toast } from 'svelte-sonner';
 	import fes_icon from '$lib/assets/fes_icon.png?enhanced';
 	import bg_image from '$lib/assets/bg.webp?enhanced';
+	import type { User } from '@supabase/supabase-js';
+	import { fromUserState } from '../../../_states/fromRootState.svelte';
+	import { goto } from '$app/navigation';
 
 	const { data } = $props();
+
+	const user = fromUserState();
 
 	const form = superForm(data.studentUpdatePwdForm, {
 		validators: zodClient(studentUpdatePwdSchema),
 		id: crypto.randomUUID(),
 		invalidateAll: false,
 		onUpdate({ result }) {
-			const { status, data } = result as ResultModel<{ msg: string }>;
+			const { status, data } = result as ResultModel<{ msg: string; user: User }>;
 
 			switch (status) {
 				case 200:
 					toast.success('Forgot Password', { description: data.msg });
+					user.setUser(data.user);
+					goto('/student-dashboard');
 					break;
 
 				case 401:
@@ -39,12 +46,7 @@
 		class="mx-auto flex w-full max-w-[450px] flex-col justify-center gap-[10px] overflow-auto p-[20px] pb-[50px]"
 	>
 		<p class="mt-[5dvh] p-[20px] text-center text-xl font-semibold leading-7">Update Password</p>
-		<form
-			method="POST"
-			action="?/studentForgotPwdEvent"
-			use:enhance
-			class="flex flex-col gap-[10px]"
-		>
+		<form method="POST" action="?/updatePwdEvent" use:enhance class="flex flex-col gap-[10px]">
 			<Form.Field {form} name="newPwd">
 				<Form.Control let:attrs>
 					<Form.Label>New Password</Form.Label>
@@ -87,7 +89,7 @@
 
 		<p class="text-center text-sm leading-7 text-muted-foreground">
 			Unsaved password changes will be lost if you reload. Please complete the process before
-			reloading.
+			reloading. Tho it is not recommended.
 		</p>
 	</div>
 
