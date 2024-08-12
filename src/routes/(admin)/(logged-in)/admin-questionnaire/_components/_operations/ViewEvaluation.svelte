@@ -4,22 +4,26 @@
 	import { Label } from '$lib/components/ui/label';
 	import * as RadioGroup from '$lib/components/ui/radio-group';
 	import { fromQuestionnaireRouteState } from '../../../_states/fromAdminQuestionnaire.svelte';
+	import { SvelteMap } from 'svelte/reactivity';
 
 	interface Props {
 		viewSignal: boolean;
 	}
 
+	//shadcn radio needs to be replace by native radio cuz its buggy it auto invoke the moment it hydrate
 	let { viewSignal = $bindable() }: Props = $props();
 
 	const questionnaireRoute = fromQuestionnaireRouteState();
 
-	// Reactive state to track selected answers
-	let selectedAnswers: Record<string, string> = {};
+	const userInputs = new SvelteMap();
 
-	// Function to update the selected answer for a question
-	function updateAnswer(questionId: string, value: string) {
-		selectedAnswers = { ...selectedAnswers, [questionId]: value };
-	}
+	const sampleFunc = (e: Event, index: number) => {
+		const target = e.target as HTMLInputElement;
+
+		userInputs.set(`${index + 1}`, Number(target.value));
+
+		console.log(userInputs);
+	};
 </script>
 
 <AlertDialog.Root bind:open={viewSignal}>
@@ -49,29 +53,26 @@
 					<p class="text-center text-xl font-semibold">{evaluationForm.headerTitle}</p>
 					<div class="p-[0.625rem]">
 						{#each evaluationForm.questions as question, innerIndex}
-							<p class="text-sm">{question.question}</p>
+							<p class="text-sm">{innerIndex + 1}.) {question.question}</p>
 
 							<div class="p-[0.625rem]">
-								<RadioGroup.Root
-									value={selectedAnswers[question.id] || ''}
-									on:change={(event) => updateAnswer(question.id, event.detail)}
-								>
+								<RadioGroup.Root onchange={(e) => sampleFunc(e, innerIndex)}>
 									<div class="flex items-center space-x-2">
-										<RadioGroup.Item value="outstanding" id={`r1${question.id}`} />
+										<RadioGroup.Item value="5" id={`r1${question.id}`} />
 										<Label class="text-sm" for={`r1${question.id}`}>
 											Always
 											<strong class="text-muted-foreground">(5)</strong>
 										</Label>
 									</div>
 									<div class="flex items-center space-x-2">
-										<RadioGroup.Item value="verysatisfactory" id={`r2${question.id}`} />
+										<RadioGroup.Item value="4" id={`r2${question.id}`} />
 										<Label class="text-sm" for={`r2${question.id}`}>
 											Often
 											<strong class="text-muted-foreground">(4) </strong>
 										</Label>
 									</div>
 									<div class="flex items-center space-x-2">
-										<RadioGroup.Item value="satisfactory" id={`r3${question.id}`} />
+										<RadioGroup.Item value="3" id={`r3${question.id}`} />
 										<Label class="text-sm" for={`r3${question.id}`}>
 											Sometimes
 											<strong class="text-muted-foreground">(3)</strong>
@@ -79,7 +80,7 @@
 									</div>
 
 									<div class="flex items-center space-x-2">
-										<RadioGroup.Item value="fair" id={`r4${question.id}`} />
+										<RadioGroup.Item value="2" id={`r4${question.id}`} />
 										<Label class="text-sm" for={`r4${question.id}`}>
 											Rarely
 											<strong class="text-muted-foreground">(2)</strong>
@@ -87,13 +88,14 @@
 									</div>
 
 									<div class="flex items-center space-x-2">
-										<RadioGroup.Item value="needsimprovement" id={`r5${question.id}`} />
+										<RadioGroup.Item value="1" id={`r5${question.id}`} />
 										<Label class="text-sm" for={`r5${question.id}`}>
 											Never
 											<strong class="text-muted-foreground">(1)</strong>
 										</Label>
 									</div>
 									<RadioGroup.Input name={`question-${question.id}`} />
+									<!--Must remember can hit your foot-->
 								</RadioGroup.Root>
 							</div>
 						{/each}

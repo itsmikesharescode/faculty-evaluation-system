@@ -60,3 +60,10 @@ export type EvaluationType = {
 		}[];
 	}[];
 };
+
+export type ProfessorType = {
+	id: number;
+	created_at: string;
+	fullname: string;
+	sections: string[];
+};
