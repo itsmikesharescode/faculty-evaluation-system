@@ -50,6 +50,7 @@ export type EvaluationType = {
 	created_at: string;
 	admin_id: string;
 	evaluation_title: string;
+	is_used: boolean;
 	evaluation_data: {
 		id: string;
 		headerTitle: string;

@@ -4,15 +4,21 @@
 
 	import AdminNav from './_components/AdminNav.svelte';
 	import { initDepartmentsRoute } from './_states/fromAdminDepartments.svelte';
-	import { initQuestionnaireRoute } from './_states/fromAdminQuestionnaire.svelte';
+	import {
+		fromQuestionnaireRouteState,
+		initQuestionnaireRoute
+	} from './_states/fromAdminQuestionnaire.svelte';
 	import { initAdminRoute } from './_states/fromAdminRoute.svelte';
 
 	const { data, children } = $props();
 
 	initSupabase();
+	initAdminRoute();
 	initDepartmentsRoute();
 	initQuestionnaireRoute();
-	initAdminRoute();
+
+	const questionnaireRoute = fromQuestionnaireRouteState();
+	questionnaireRoute.setEvaluation(data.questions.data);
 
 	const supabase = fromSupabaseClient();
 	supabase.setClient(data.supabase);

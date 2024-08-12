@@ -1,8 +1,12 @@
 <script lang="ts">
 	import Button from '$lib/components/ui/button/button.svelte';
-	import { MoveUpRight } from 'lucide-svelte';
+	import { Loader, MoveUpRight } from 'lucide-svelte';
 	import { fromQuestionnaireRouteState } from '../_states/fromAdminQuestionnaire.svelte';
 	import { fromAdminRouteState } from '../_states/fromAdminRoute.svelte';
+	import { enhance } from '$app/forms';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import type { EvaluationType, ResultModel } from '$lib/types';
+	import UseEvaluation from './_components/_operations/UseEvaluation.svelte';
 
 	const route = fromAdminRouteState();
 	const questionnaireRoute = fromQuestionnaireRouteState();
@@ -34,7 +38,7 @@
 							</p>
 						</div>
 						<div class="flex items-center justify-end gap-[5px]">
-							<Button>Use</Button>
+							<UseEvaluation {evaluationForms} />
 							<Button variant="destructive">Delete</Button>
 							<Button>View</Button>
 						</div>
