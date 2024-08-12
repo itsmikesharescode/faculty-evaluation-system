@@ -2,13 +2,19 @@
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label/index';
 	import Button from '$lib/components/ui/button/button.svelte';
-	import { Paintbrush, Plus, Trash2, CloudUpload } from 'lucide-svelte';
+	import { Paintbrush, Plus, Trash2, CloudUpload, Loader } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
 	import * as Breadcrumb from '$lib/components/ui/breadcrumb/index.js';
-	import { fromAdminRouteState } from '../../_states/fromAdminRoute.svelte';
+
 	import { z } from 'zod';
 	import Textarea from '$lib/components/ui/textarea/textarea.svelte';
+	import { toast } from 'svelte-sonner';
+
+	import type { EvaluationType } from '$lib/types';
+	import { goto } from '$app/navigation';
+	import { fromQuestionnaireRouteState } from '../../_states/fromAdminQuestionnaire.svelte';
+	import { fromAdminRouteState } from '../../_states/fromAdminRoute.svelte';
 
 	// Adjust the schema creation function's return type
 	const createEvalSchema = (
@@ -55,6 +61,8 @@
 	}
 
 	const route = fromAdminRouteState();
+	const questionnaireRoute = fromQuestionnaireRouteState();
+
 	route.setRoute('/admin-questionnaire');
 
 	let headerTitleTracker = $state<TrackerItem[]>([
@@ -87,6 +95,7 @@
 
 	let formData = $state<FormData>({ evalTitle: '', headerTitles: {}, questions: {} });
 	let errors = $state<Errors>({});
+	let submitLoader = $state(false);
 
 	const handleSubmit = async () => {
 		// Generate final schema based on the current dynamic fields
@@ -126,13 +135,27 @@
 				}))
 			}));
 
-			const res = await fetch('?/uploadEvaluationEvent', {
+			submitLoader = true;
+
+			const res = await fetch('?/create', {
 				method: 'post',
 				headers: { 'content-typed': 'application/json' },
 				body: JSON.stringify({
+					evaluationTitle: dataToValidate.evalTitle,
 					evaluation: structuredData
 				})
 			});
+
+			const { msg, data } = (await res.json()) as { msg: string; data: EvaluationType[] };
+			if (res.status === 200) {
+				toast.success('Create Evaluation', { description: msg });
+				submitLoader = false;
+				questionnaireRoute.setEvaluation(data);
+				goto('/admin-questionnaire');
+			} else if (res.status === 401) {
+				toast.error('Create Evaluation', { description: msg });
+				submitLoader = false;
+			}
 
 			errors = {};
 		}
@@ -175,6 +198,7 @@
 	{#each headerTitleTracker as headerTitleTrack, index (headerTitleTrack)}
 		<div
 			class="flex flex-col gap-[0.625rem] rounded-lg bg-white p-[1rem] shadow-lg"
+			in:fade
 			animate:flip={{ duration: 350 }}
 		>
 			<div class="grid w-full items-center gap-1.5">
@@ -232,7 +256,11 @@
 
 				<div class="flex items-center justify-between gap-[5px] overflow-auto">
 					<div class="flex items-center gap-[5px]">
-						<Button onclick={() => incrementQuestion(index)} class="flex items-center gap-[5px]">
+						<Button
+							disabled={submitLoader}
+							onclick={() => incrementQuestion(index)}
+							class="flex items-center gap-[5px]"
+						>
 							<Plus class="h-[15px] w-[15px]" />
 							More Question
 						</Button>
@@ -255,6 +283,7 @@
 
 					{#if headerTitleTracker.length > 1}
 						<Button
+							disabled={submitLoader}
 							variant="destructive"
 							onclick={() => removeTitle(headerTitleTrack.id)}
 							class="flex items-center gap-[5px]"
@@ -269,14 +298,23 @@
 	{/each}
 
 	<div class="flex items-center justify-between gap-[5px]">
-		<Button onclick={incrementTitle} class="flex items-center gap-[5px]">
+		<Button disabled={submitLoader} onclick={incrementTitle} class="flex items-center gap-[5px]">
 			<Plus class="h-[15px] w-[15px]" />
 			More Header Titles
 		</Button>
 
-		<Button onclick={handleSubmit} class="flex items-center gap-[5px]">
+		<Button
+			disabled={submitLoader}
+			onclick={handleSubmit}
+			class="relative flex items-center gap-[5px]"
+		>
+			{#if submitLoader}
+				<div class="absolute flex h-full w-full items-center justify-center rounded-lg bg-primary">
+					<Loader class="h-[15px] w-[15px] animate-spin" />
+				</div>
+			{/if}
+			Upload
 			<CloudUpload class="h-[15px] w-[15px]" />
-			Upload Form
 		</Button>
 	</div>
 </div>

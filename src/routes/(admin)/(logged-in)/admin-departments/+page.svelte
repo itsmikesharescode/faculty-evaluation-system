@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { departments, fromDepartmentsRouteState } from '../_states/fromAdminDepartments.svelte';
-	import { fromAdminRouteState } from '../_states/fromAdminRoute.svelte';
 	import { MoveUpRight } from 'lucide-svelte';
 	import AddProfessor from './_components/AddProfessor.svelte';
 	import RenderProfessor from './_components/RenderProfessors.svelte';
+	import { departments, fromDepartmentsRouteState } from '../_states/fromAdminDepartments.svelte';
+	import { fromAdminRouteState } from '../_states/fromAdminRoute.svelte';
 
 	const { data } = $props();
 

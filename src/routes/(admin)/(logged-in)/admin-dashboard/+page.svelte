@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { fromAdminRouteState } from '../_states/fromAdminRoute.svelte';
-	import AdminBarChart from './_components/AdminBarChart.svelte';
 	import AdminCountCard from './_components/AdminCountCard.svelte';
-	import AdminLineChart from './_components/AdminLineChart.svelte';
 
 	const route = fromAdminRouteState();
 

@@ -42,3 +42,20 @@ export type SupabaseJwt = {
 	nbf?: string;
 	user_metadata: UserMetadata;
 };
+
+// db types
+
+export type EvaluationType = {
+	id: number;
+	created_at: string;
+	admin_id: string;
+	evaluation_title: string;
+	evaluation_data: {
+		id: string;
+		headerTitle: string;
+		questions: {
+			id: string;
+			question: string;
+		}[];
+	}[];
+};

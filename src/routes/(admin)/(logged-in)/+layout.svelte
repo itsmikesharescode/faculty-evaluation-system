@@ -1,13 +1,18 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { initAdminRoute } from './_states/fromAdminRoute.svelte';
+	import { fromSupabaseClient, initSupabase } from '../../_states/fromSupabaseClient.svelte';
+
 	import AdminNav from './_components/AdminNav.svelte';
-	import { fromSupabaseClient, initSupabase } from '../_states/fromSupabaseClient.svelte';
+	import { initDepartmentsRoute } from './_states/fromAdminDepartments.svelte';
+	import { initQuestionnaireRoute } from './_states/fromAdminQuestionnaire.svelte';
+	import { initAdminRoute } from './_states/fromAdminRoute.svelte';
 
 	const { data, children } = $props();
 
-	initAdminRoute();
 	initSupabase();
+	initDepartmentsRoute();
+	initQuestionnaireRoute();
+	initAdminRoute();
 
 	const supabase = fromSupabaseClient();
 	supabase.setClient(data.supabase);

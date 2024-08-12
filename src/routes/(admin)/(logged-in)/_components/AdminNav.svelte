@@ -9,8 +9,8 @@
 	import { goto } from '$app/navigation';
 	import Logout from './Logout.svelte';
 	import { fromAdminRouteState } from '../_states/fromAdminRoute.svelte';
-	import { fromUserState } from '../../_states/fromRootState.svelte';
 	import { formatName } from '$lib';
+	import { fromUserState } from '../../../_states/fromRootState.svelte';
 
 	interface Props {
 		children: Snippet;
