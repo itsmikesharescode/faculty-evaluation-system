@@ -55,5 +55,25 @@ export const actions: Actions = {
 
 		if (error) return fail(401, { form, msg: error.message });
 		else if (user) return { form, msg: 'Password updated successfully.', user };
+	},
+
+	updateEmailEvent: async ({ locals: { supabase }, request }) => {
+		const form = await superValidate(request, zod(updateEmailSchema));
+		if (!form.valid) return fail(400, { form });
+
+		const {
+			data: { user },
+			error
+		} = await supabase.auth.updateUser({
+			email: form.data.newEmail
+		});
+
+		if (error) return fail(401, { form, msg: error.message });
+		else if (user)
+			return {
+				form,
+				msg: `We have sent an confirmation link to your new email ${form.data.newEmail}`,
+				user
+			};
 	}
 };

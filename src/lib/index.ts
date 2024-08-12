@@ -9,5 +9,6 @@ export const adminPaths = [
 export const studentPaths = [
 	'/student-dashboard',
 	'/student-manage-account',
+	'/student-manage-account/update-email-api',
 	'/student-dashboard/evaluationform'
 ];
