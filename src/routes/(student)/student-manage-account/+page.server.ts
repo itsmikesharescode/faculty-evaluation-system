@@ -39,5 +39,21 @@ export const actions: Actions = {
 
 		if (error) return fail(401, { form, msg: error.message });
 		else if (user) return { form, msg: 'Update successfully.', user };
+	},
+
+	updatePasswordEvent: async ({ locals: { supabase }, request }) => {
+		const form = await superValidate(request, zod(updatePwdSchema));
+
+		if (!form.valid) return fail(400, { form });
+
+		const {
+			data: { user },
+			error
+		} = await supabase.auth.updateUser({
+			password: form.data.newPwd
+		});
+
+		if (error) return fail(401, { form, msg: error.message });
+		else if (user) return { form, msg: 'Password updated successfully.', user };
 	}
 };
