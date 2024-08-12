@@ -183,7 +183,8 @@
 			<div class="hidden items-center gap-[5px] text-xl md:flex">
 				<p class=" leading-7 text-muted-foreground">{user.getUser()?.user_metadata.role}</p>
 				<p class=" leading-7">
-					{formatName(user.getUser()?.user_metadata.fullname, user.getUser()?.user_metadata.suffix)}
+					Projectxxx
+					<!-- {formatName(user.getUser()?.user_metadata.fullname, user.getUser()?.user_metadata.suffix)} -->
 				</p>
 			</div>
 

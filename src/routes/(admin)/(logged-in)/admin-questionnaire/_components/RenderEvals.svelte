@@ -9,6 +9,7 @@
 	const questionnaireRoute = fromQuestionnaireRouteState();
 
 	let deleteSignal = $state(false);
+	let useSignal = $state(false);
 </script>
 
 <div class="flex flex-col gap-[20px]">
@@ -17,6 +18,14 @@
 			<div
 				class="relative flex items-center rounded-lg border-black bg-secondary p-[20px] shadow-lg"
 			>
+				{#if evaluationForms.is_used}
+					<div
+						class="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center rounded-lg bg-[#00000050]"
+					>
+						<p class="rounded-sm bg-black p-[0.625rem] text-primary">Currently Using</p>
+					</div>
+				{/if}
+
 				<div class="">
 					<div class="flex flex-wrap gap-[0.3rem]">
 						<p class="text-muted-foreground">Evaluation Title:</p>
@@ -44,7 +53,15 @@
 									>Actions</DropdownMenu.Label
 								>
 								<DropdownMenu.Separator />
-								<DropdownMenu.Item class="flex items-center justify-center">Use</DropdownMenu.Item>
+								<DropdownMenu.Item
+									class="flex items-center justify-center"
+									onclick={() => {
+										questionnaireRoute.setActive(evaluationForms);
+										useSignal = true;
+									}}
+								>
+									Use
+								</DropdownMenu.Item>
 								<DropdownMenu.Item class="flex items-center justify-center">View</DropdownMenu.Item>
 								<DropdownMenu.Item class="flex items-center justify-center"
 									>Delete</DropdownMenu.Item
@@ -63,4 +80,5 @@
 </div>
 
 <!--Delete Modal-->
+<UseEvaluation bind:useSignal />
 <DeleteEvaluation bind:deleteSignal />
