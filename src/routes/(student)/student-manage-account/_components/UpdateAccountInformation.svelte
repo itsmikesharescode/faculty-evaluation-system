@@ -5,6 +5,11 @@
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { updateAccInfoSchema, type UpdateAccInfoSchema } from '../student-manage-account-schema';
+	import type { ResultModel } from '$lib/types';
+	import { toast } from 'svelte-sonner';
+	import type { User } from '@supabase/supabase-js';
+	import { fromUserState } from '../../../_states/fromRootState.svelte';
+	import { Loader } from 'lucide-svelte';
 
 	interface Props {
 		updateAccInfoForm: SuperValidated<Infer<UpdateAccInfoSchema>>;
@@ -12,12 +17,28 @@
 
 	const { updateAccInfoForm }: Props = $props();
 
+	const user = fromUserState();
+
 	const form = superForm(updateAccInfoForm, {
 		validators: zodClient(updateAccInfoSchema),
-		id: crypto.randomUUID()
+		id: crypto.randomUUID(),
+		invalidateAll: false,
+		onUpdate({ result }) {
+			const { status, data } = result as ResultModel<{ msg: string; user: User }>;
+
+			switch (status) {
+				case 200:
+					toast.success('Manage Account', { description: data.msg });
+					user.setUser(data.user);
+					break;
+				case 401:
+					toast.error('Manage Account', { description: data.msg });
+					break;
+			}
+		}
 	});
 
-	const { form: formData, enhance } = form;
+	const { form: formData, enhance, submitting } = form;
 
 	const yearLevel = $derived(
 		$formData.yearLevel
@@ -30,7 +51,7 @@
 </script>
 
 <p class="p-[20px] text-center text-xl font-semibold leading-7">Update Information</p>
-<form method="POST" use:enhance class="flex flex-col gap-[10px]">
+<form method="POST" action="?/updateAccountEvent" use:enhance class="flex flex-col gap-[10px]">
 	<Form.Field {form} name="firstName">
 		<Form.Control let:attrs>
 			<Form.Label>First Name</Form.Label>
@@ -127,5 +148,12 @@
 		<Form.FieldErrors />
 	</Form.Field>
 
-	<Form.Button class="mx-auto w-full sm:w-[300px]">Update Information</Form.Button>
+	<Form.Button disabled={$submitting} class="relative mx-auto w-full sm:w-[300px]">
+		{#if $submitting}
+			<div class="absolute flex h-full w-full items-center justify-center rounded-lg bg-primary">
+				<Loader class="h-[15px] w-[15px] animate-spin" />
+			</div>
+		{/if}
+		Update Information
+	</Form.Button>
 </form>

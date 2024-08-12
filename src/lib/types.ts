@@ -16,6 +16,7 @@ export type UserMetaData = {
 	fullname: string;
 	id_number: string;
 	year_level: string;
+	mobile_number: string;
 };
 
 //supabase workaround

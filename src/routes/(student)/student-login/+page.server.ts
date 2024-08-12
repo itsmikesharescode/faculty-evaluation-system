@@ -51,7 +51,8 @@ export const actions: Actions = {
 					gender: form.data.gender,
 					year_level: form.data.yearLevel,
 					course: form.data.course,
-					section: form.data.section
+					section: form.data.section,
+					mobile_number: 'N/A'
 				}
 			}
 		});
