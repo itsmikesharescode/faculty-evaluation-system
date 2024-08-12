@@ -46,3 +46,20 @@ export const studentForgotPwdSchema = z.object({
 export type StudentLoginSchema = typeof studentLoginSchema;
 export type StudentCreateSchema = typeof studentCreateSchema;
 export type StudentForgotPwdSchema = typeof studentForgotPwdSchema;
+
+export const studentUpdatePwdSchema = z
+	.object({
+		newPwd: z.string().min(8, { message: 'Must choose a strong password.' }),
+		confirmNewPwd: z.string()
+	})
+	.superRefine(({ newPwd, confirmNewPwd }, ctx) => {
+		if (newPwd !== confirmNewPwd) {
+			ctx.addIssue({
+				code: 'custom',
+				message: 'Passwords must match.',
+				path: ['confirmNewPwd']
+			});
+		}
+	});
+
+export type StudentUpdatePwdSchema = typeof studentUpdatePwdSchema;
