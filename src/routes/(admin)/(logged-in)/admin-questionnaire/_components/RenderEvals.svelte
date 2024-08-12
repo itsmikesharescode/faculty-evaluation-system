@@ -5,11 +5,13 @@
 	import DeleteEvaluation from './_operations/DeleteEvaluation.svelte';
 	import { EllipsisVertical } from 'lucide-svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import ViewEvaluation from './_operations/ViewEvaluation.svelte';
 
 	const questionnaireRoute = fromQuestionnaireRouteState();
 
-	let deleteSignal = $state(false);
 	let useSignal = $state(false);
+	let viewSignal = $state(false);
+	let deleteSignal = $state(false);
 </script>
 
 <div class="flex flex-col gap-[20px]">
@@ -62,7 +64,15 @@
 								>
 									Use
 								</DropdownMenu.Item>
-								<DropdownMenu.Item class="flex items-center justify-center">View</DropdownMenu.Item>
+								<DropdownMenu.Item
+									class="flex items-center justify-center"
+									onclick={() => {
+										questionnaireRoute.setActive(evaluationForms);
+										viewSignal = true;
+									}}
+								>
+									View
+								</DropdownMenu.Item>
 								<DropdownMenu.Item
 									class="flex items-center justify-center"
 									onclick={() => {
@@ -87,4 +97,5 @@
 
 <!--Delete Modal-->
 <UseEvaluation bind:useSignal />
+<ViewEvaluation bind:viewSignal />
 <DeleteEvaluation bind:deleteSignal />

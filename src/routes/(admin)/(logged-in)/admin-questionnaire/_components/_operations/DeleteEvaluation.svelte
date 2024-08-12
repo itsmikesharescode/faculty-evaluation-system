@@ -46,12 +46,20 @@
 		<AlertDialog.Header>
 			<AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
 			<AlertDialog.Description>
-				This action cannot be undone. This will permanently delete your account and remove your data
-				from our servers.
+				This action cannot be undone. This will permanently delete the evaluation data from the
+				database.
 			</AlertDialog.Description>
 		</AlertDialog.Header>
 		<AlertDialog.Footer>
-			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+			<Button
+				variant="secondary"
+				onclick={() => {
+					questionnaireRoute.setActive(null);
+					deleteSignal = false;
+				}}
+			>
+				Cancel
+			</Button>
 			<form method="post" action="?/deleteEvalEvent" use:enhance={deleteEvalEvent}>
 				<input name="evalId" type="hidden" value={questionnaireRoute.getActive()?.id} />
 				<Button disabled={deleteLoader} type="submit" class="relative">
