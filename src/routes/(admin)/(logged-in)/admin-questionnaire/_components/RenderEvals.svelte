@@ -63,9 +63,15 @@
 									Use
 								</DropdownMenu.Item>
 								<DropdownMenu.Item class="flex items-center justify-center">View</DropdownMenu.Item>
-								<DropdownMenu.Item class="flex items-center justify-center"
-									>Delete</DropdownMenu.Item
+								<DropdownMenu.Item
+									class="flex items-center justify-center"
+									onclick={() => {
+										questionnaireRoute.setActive(evaluationForms);
+										deleteSignal = true;
+									}}
 								>
+									Delete
+								</DropdownMenu.Item>
 							</DropdownMenu.Group>
 						</DropdownMenu.Content>
 					</DropdownMenu.Root>
