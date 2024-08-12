@@ -18,7 +18,7 @@ export const actions: Actions = {
 
 		if (!form.valid) return fail(400, { form });
 
-		const { data, error } = (await supabase.rpc('addProfSchema', {
+		const { data, error } = (await supabase.rpc('add_professor', {
 			fullname_client: form.data.profName,
 			sections_client: form.data.sections
 		})) as PostgrestSingleResponse<ProfessorType[]>;

@@ -6,8 +6,11 @@
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { addProfSchema, type AddProfSchema } from '../admin-departments-schema';
-	import { X } from 'lucide-svelte';
+	import { Loader, X } from 'lucide-svelte';
 	import Textarea from '$lib/components/ui/textarea/textarea.svelte';
+	import { fromDepartmentsRouteState } from '../../_states/fromAdminDepartments.svelte';
+	import type { ProfessorType, ResultModel } from '$lib/types';
+	import { toast } from 'svelte-sonner';
 
 	interface Props {
 		addProfForm: SuperValidated<Infer<AddProfSchema>>;
@@ -15,14 +18,30 @@
 
 	const { addProfForm }: Props = $props();
 
+	const departmentRoute = fromDepartmentsRouteState();
+
 	let open = $state(false);
 
 	const form = superForm(addProfForm, {
 		validators: zodClient(addProfSchema),
-		id: crypto.randomUUID()
+		id: crypto.randomUUID(),
+		onUpdate({ result }) {
+			const { status, data } = result as ResultModel<{ msg: string; data: ProfessorType[] }>;
+
+			switch (status) {
+				case 200:
+					toast.success('Create Professor', { description: data.msg });
+					departmentRoute.setProfs(data.data);
+					open = false;
+					break;
+				case 401:
+					toast.error('Create Professor', { description: data.msg });
+					break;
+			}
+		}
 	});
 
-	const { form: formData, enhance } = form;
+	const { form: formData, enhance, submitting } = form;
 </script>
 
 <Button onclick={() => (open = true)} class="max-w-fit">Add Professor</Button>
@@ -43,7 +62,7 @@
 			</AlertDialog.Description>
 		</AlertDialog.Header>
 
-		<form method="POST" use:enhance class="flex flex-col gap-[10px]">
+		<form method="POST" action="?/addProfEvent" use:enhance class="flex flex-col gap-[10px]">
 			<Form.Field {form} name="profName">
 				<Form.Control let:attrs>
 					<Form.Label>Professor Name</Form.Label>
@@ -76,7 +95,16 @@
 			</p>
 
 			<div class="flex justify-end">
-				<Form.Button class="">Create</Form.Button>
+				<Form.Button disabled={$submitting} class="relative ">
+					{#if $submitting}
+						<div
+							class="absolute flex h-full w-full items-center justify-center rounded-lg bg-primary"
+						>
+							<Loader class="h-[15px] w-[15px] animate-spin" />
+						</div>
+					{/if}
+					Continue
+				</Form.Button>
 			</div>
 		</form>
 	</AlertDialog.Content>

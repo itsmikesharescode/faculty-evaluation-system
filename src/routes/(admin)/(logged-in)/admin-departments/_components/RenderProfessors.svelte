@@ -3,8 +3,11 @@
 	import { EllipsisVertical } from 'lucide-svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import DeleteProfessor from './_render_professor_component/_operations/DeleteProfessor.svelte';
+	import { fromDepartmentsRouteState } from '../../_states/fromAdminDepartments.svelte';
 
 	let deleteSignal = $state(false);
+
+	const departmentRoute = fromDepartmentsRouteState();
 </script>
 
 <div class="">
