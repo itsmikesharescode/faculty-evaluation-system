@@ -65,5 +65,10 @@ export type ProfessorType = {
 	id: number;
 	created_at: string;
 	fullname: string;
-	sections: string[];
+	sections: string;
 };
+
+export interface AdminLayoutQueryType {
+	professors: ProfessorType[] | null;
+	evaluation_forms: EvaluationType[] | null;
+}

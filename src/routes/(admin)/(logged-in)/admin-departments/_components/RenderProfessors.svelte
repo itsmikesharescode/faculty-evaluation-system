@@ -22,12 +22,14 @@
 	</div>
 
 	<!--Table Data-->
-	{#each Array(30) as _, index}
+	{#each departmentRoute.getProfs() ?? [] as professor, index}
 		<div
 			class="grid grid-cols-[70%,20%,10%] border-b-[1px] border-black text-sm lg:grid-cols-[60%,20%,10%,10%]"
 		>
-			<span class="flex items-center p-[0.625rem]">Lesley Marksman</span>
-			<span class="hidden items-center justify-center p-[0.625rem] lg:flex"><Section /></span>
+			<span class="flex items-center p-[0.625rem]">{professor.fullname}</span>
+			<span class="hidden items-center justify-center p-[0.625rem] lg:flex"
+				><Section {professor} /></span
+			>
 			<span class="flex items-center justify-center p-[0.625rem] text-center">70%</span>
 			<span class="flex items-center justify-end p-[0.625rem]">
 				<DropdownMenu.Root>
