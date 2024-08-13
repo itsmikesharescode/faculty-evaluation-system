@@ -6,19 +6,6 @@ export type ResultModel<T> = {
 	data: T;
 };
 
-export type UserMetaData = {
-	role: string;
-	email: string;
-	course: string;
-	gender: string;
-	suffix: string;
-	section: string;
-	fullname: string;
-	id_number: string;
-	year_level: string;
-	mobile_number: string;
-};
-
 //supabase workaround
 export type SupabaseJwt = {
 	aal: string;
@@ -45,6 +32,19 @@ export type SupabaseJwt = {
 
 // db types
 
+export type UserMetaData = {
+	role: string;
+	email: string;
+	course: string;
+	gender: string;
+	suffix: string;
+	section: string;
+	fullname: string;
+	id_number: string;
+	year_level: string;
+	mobile_number: string;
+};
+
 export type EvaluationType = {
 	id: number;
 	created_at: string;
@@ -67,9 +67,17 @@ export type ProfessorType = {
 	department: string;
 	fullname: string;
 	sections: string;
+	ratings: number;
+};
+
+export type StudentType = {
+	student_id: string;
+	created_at: string;
+	user_meta_data: UserMetaData;
 };
 
 export interface AdminLayoutQueryType {
 	professors: ProfessorType[] | null;
 	evaluation_forms: EvaluationType[] | null;
+	students: StudentType[] | null;
 }

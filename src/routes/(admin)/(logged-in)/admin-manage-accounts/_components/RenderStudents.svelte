@@ -1,6 +1,20 @@
 <script lang="ts">
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { EllipsisVertical } from 'lucide-svelte';
+	import { fromManageAccountRouteState } from '../../_states/fromAdminManageAccounts.svelte';
+	import type { Infer, SuperValidated } from 'sveltekit-superforms';
+	import type { UpdateStudentSchema } from '../admin-manage-accounts-schema';
+	import UpdateStudent from './_operations/UpdateStudent.svelte';
+
+	interface Props {
+		updateStudentForm: SuperValidated<Infer<UpdateStudentSchema>>;
+	}
+
+	const { updateStudentForm }: Props = $props();
+
+	const manageAccountRoute = fromManageAccountRouteState();
+
+	let updateSignal = $state(false);
 </script>
 
 <div class="flex flex-col">
@@ -15,16 +29,23 @@
 		<span class="bg-secondary p-[0.625rem] text-sm"></span>
 	</div>
 
-	{#each Array(100) as _}
+	{#each manageAccountRoute.getStudents() ?? [] as student}
 		<div
 			class="grid grid-cols-[50%,40%,10%] border-b-[1px] sm:grid-cols-[40%,20%,20%,10%,10%] md:grid-cols-[40%,20%,10%,10%,15%,5%]"
 		>
-			<span class="flex items-center p-[0.625rem] text-sm">Eviota, Mike John B</span>
-			<span class="hidden items-center p-[0.625rem] text-sm md:flex">12345678910</span>
-			<span class=" hidden items-center p-[0.625rem] text-sm sm:flex">Third</span>
-			<span class="hidden items-center justify-center p-[0.625rem] text-sm sm:flex">1234567KK1</span
+			<span class="flex items-center p-[0.625rem] text-sm">{student.user_meta_data.fullname}</span>
+			<span class="hidden items-center p-[0.625rem] text-sm md:flex"
+				>{student.user_meta_data.id_number}</span
 			>
-			<span class="flex items-center justify-center p-[0.625rem] text-sm">BSIS</span>
+			<span class=" hidden items-center p-[0.625rem] text-sm sm:flex"
+				>{student.user_meta_data.year_level}</span
+			>
+			<span class="hidden items-center justify-center p-[0.625rem] text-sm sm:flex"
+				>{student.user_meta_data.section}</span
+			>
+			<span class="flex items-center justify-center p-[0.625rem] text-sm"
+				>{student.user_meta_data.course}</span
+			>
 			<span class="flex items-center p-[0.625rem] text-sm">
 				<DropdownMenu.Root>
 					<DropdownMenu.Trigger>
@@ -37,7 +58,15 @@
 							>
 							<DropdownMenu.Separator />
 							<DropdownMenu.Item class="flex items-center justify-center">Delete</DropdownMenu.Item>
-							<DropdownMenu.Item class="flex items-center justify-center">Update</DropdownMenu.Item>
+							<DropdownMenu.Item
+								class="flex items-center justify-center"
+								onclick={() => {
+									manageAccountRoute.setActive(student);
+									updateSignal = true;
+								}}
+							>
+								Update
+							</DropdownMenu.Item>
 							<DropdownMenu.Item class="flex items-center justify-center md:hidden"
 								>View Details</DropdownMenu.Item
 							>
@@ -48,3 +77,5 @@
 		</div>
 	{/each}
 </div>
+
+<UpdateStudent {updateStudentForm} bind:updateSignal />

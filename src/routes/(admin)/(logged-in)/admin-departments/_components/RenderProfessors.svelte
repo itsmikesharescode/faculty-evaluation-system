@@ -40,7 +40,9 @@
 			<span class="hidden items-center justify-center p-[0.625rem] lg:flex"
 				><Section {professor} /></span
 			>
-			<span class="flex items-center justify-center p-[0.625rem] text-center">70%</span>
+			<span class="flex items-center justify-center p-[0.625rem] text-center"
+				>{professor.ratings ?? 0}%</span
+			>
 			<span class="flex items-center justify-end p-[0.625rem]">
 				<DropdownMenu.Root>
 					<DropdownMenu.Trigger>

@@ -1,7 +1,7 @@
 import type { EvaluationType } from '$lib/types';
 import { getContext, setContext } from 'svelte';
 
-class QuestionnairState {
+class QuestionnairRoute {
 	private evaluation = $state<EvaluationType[] | null>(null);
 	private activeEvaluation = $state<EvaluationType | null>(null);
 
@@ -25,7 +25,7 @@ class QuestionnairState {
 const QS_KEY = Symbol('questionnaireRouteKey');
 
 export const initQuestionnaireRoute = () => {
-	return setContext(QS_KEY, new QuestionnairState());
+	return setContext(QS_KEY, new QuestionnairRoute());
 };
 
 export const fromQuestionnaireRouteState = () => {

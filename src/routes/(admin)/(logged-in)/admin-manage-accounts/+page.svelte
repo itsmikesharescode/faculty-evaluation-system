@@ -14,5 +14,5 @@
 		<CreateStudentAccount createStudentForm={data.createStudentForm} />
 	</div>
 
-	<RenderStudents />
+	<RenderStudents updateStudentForm={data.updateStudentForm} />
 </div>

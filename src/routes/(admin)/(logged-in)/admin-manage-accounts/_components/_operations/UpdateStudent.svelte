@@ -7,23 +7,25 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { Loader, X } from 'lucide-svelte';
 	import * as Select from '$lib/components/ui/select/index.js';
-	import { createStudentSchema, type CreateStudentSchema } from '../admin-manage-accounts-schema';
 	import type { ResultModel, StudentType } from '$lib/types';
 	import { toast } from 'svelte-sonner';
-	import { fromManageAccountRouteState } from '../../_states/fromAdminManageAccounts.svelte';
+	import { fromManageAccountRouteState } from '../../../_states/fromAdminManageAccounts.svelte';
+	import {
+		updateStudentSchema,
+		type UpdateStudentSchema
+	} from '../../admin-manage-accounts-schema';
 
 	interface Props {
-		createStudentForm: SuperValidated<Infer<CreateStudentSchema>>;
+		updateStudentForm: SuperValidated<Infer<UpdateStudentSchema>>;
+		updateSignal: boolean;
 	}
 
-	const { createStudentForm }: Props = $props();
+	let { updateStudentForm, updateSignal = $bindable() }: Props = $props();
 
 	const manageAccountRoute = fromManageAccountRouteState();
 
-	let open = $state(false);
-
-	const form = superForm(createStudentForm, {
-		validators: zodClient(createStudentSchema),
+	const form = superForm(updateStudentForm, {
+		validators: zodClient(updateStudentSchema),
 		id: crypto.randomUUID(),
 		invalidateAll: false,
 		onUpdate({ result }) {
@@ -32,7 +34,8 @@
 				case 200:
 					toast.success('Create Account', { description: data.msg });
 					manageAccountRoute.setStudents(data.data);
-					open = false;
+					manageAccountRoute.setActive(null);
+					updateSignal = false;
 					break;
 				case 401:
 					toast.error('Create Account', { description: data.msg });
@@ -60,23 +63,44 @@
 				}
 			: undefined
 	);
+
+	const loadPrevData = () => {
+		$formData.idNumber = manageAccountRoute.getActive()?.user_meta_data.id_number ?? '';
+		$formData.email = manageAccountRoute.getActive()?.user_meta_data.email ?? '';
+		$formData.firstName =
+			manageAccountRoute.getActive()?.user_meta_data.fullname.split(',')[1] ?? '';
+		$formData.middleInitial =
+			manageAccountRoute.getActive()?.user_meta_data.fullname.split(',')[2] ?? '';
+		$formData.lastName =
+			manageAccountRoute.getActive()?.user_meta_data.fullname.split(',')[0] ?? '';
+		$formData.nameSuffix = manageAccountRoute.getActive()?.user_meta_data.suffix ?? '';
+		$formData.gender = manageAccountRoute.getActive()?.user_meta_data.gender ?? '';
+		$formData.yearLevel = manageAccountRoute.getActive()?.user_meta_data.year_level ?? '';
+		$formData.course = manageAccountRoute.getActive()?.user_meta_data.course ?? '';
+		$formData.section = manageAccountRoute.getActive()?.user_meta_data.section ?? '';
+	};
+
+	$effect(() => {
+		loadPrevData();
+	});
 </script>
 
-<Button onclick={() => (open = true)} class="max-w-fit">Create Student Account</Button>
-
-<AlertDialog.Root bind:open>
+<AlertDialog.Root bind:open={updateSignal}>
 	<AlertDialog.Content class="flex max-h-screen max-w-[800px] flex-col p-0">
 		<button
-			onclick={() => (open = false)}
+			onclick={() => {
+				manageAccountRoute.setActive(null);
+				updateSignal = false;
+			}}
 			class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
 		>
 			<X class="h-4 w-4" />
 			<span class="sr-only">Close</span>
 		</button>
 		<AlertDialog.Header class="p-[1.5rem]">
-			<AlertDialog.Title>Create Student Account</AlertDialog.Title>
+			<AlertDialog.Title>Update Student Account</AlertDialog.Title>
 			<AlertDialog.Description>
-				Answer the following field to create student account.
+				Answer the following field to update student account.
 			</AlertDialog.Description>
 		</AlertDialog.Header>
 
@@ -262,6 +286,13 @@
 					</Form.Field>
 				</div>
 			</div>
+			<Form.Field {form} name="student_id">
+				<Form.Control let:attrs>
+					<Input {...attrs} value={manageAccountRoute.getActive()?.student_id} class="hidden" />
+				</Form.Control>
+
+				<Form.FieldErrors />
+			</Form.Field>
 			<div class=" flex justify-end">
 				<Form.Button class="relative">
 					{#if $submitting}
@@ -271,7 +302,7 @@
 							<Loader class="h-[15px] w-[15px] animate-spin" />
 						</div>
 					{/if}
-					Create Account
+					Update Account
 				</Form.Button>
 			</div>
 		</form>

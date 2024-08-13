@@ -8,6 +8,10 @@
 		initDepartmentsRoute
 	} from './_states/fromAdminDepartments.svelte';
 	import {
+		fromManageAccountRouteState,
+		initManageAccountRoute
+	} from './_states/fromAdminManageAccounts.svelte';
+	import {
 		fromQuestionnaireRouteState,
 		initQuestionnaireRoute
 	} from './_states/fromAdminQuestionnaire.svelte';
@@ -19,11 +23,15 @@
 	initAdminRoute();
 	initDepartmentsRoute();
 	initQuestionnaireRoute();
+	initManageAccountRoute();
 
 	const questionnaireRoute = fromQuestionnaireRouteState();
 	const departmentRoute = fromDepartmentsRouteState();
+	const manageAccountRoute = fromManageAccountRouteState();
+
 	questionnaireRoute.setEvaluation(data.adminLayoutQ.data?.evaluation_forms ?? null);
 	departmentRoute.setProfs(data.adminLayoutQ.data?.professors ?? null);
+	manageAccountRoute.setStudents(data.adminLayoutQ.data?.students ?? null);
 
 	const supabase = fromSupabaseClient();
 	supabase.setClient(data.supabase);
