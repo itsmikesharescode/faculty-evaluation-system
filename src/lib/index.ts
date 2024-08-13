@@ -9,7 +9,7 @@ export const adminPaths = [
 export const studentPaths = [
 	'/student-dashboard',
 	'/student-manage-account',
-	'/student-dashboard/evaluationform'
+	'/student-dashboard/evaluation'
 ];
 
 export const formatName = (fullname: string, suffix: string | null) => {

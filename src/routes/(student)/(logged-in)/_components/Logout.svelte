@@ -1,10 +1,10 @@
 <script lang="ts">
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
 	import { LogOut } from 'lucide-svelte';
-	import { fromSupabaseClient } from '../../_states/fromSupabaseClient.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { toast } from 'svelte-sonner';
 	import { goto } from '$app/navigation';
+	import { fromSupabaseClient } from '../../../_states/fromSupabaseClient.svelte';
 
 	interface Props {
 		showLogout: boolean;

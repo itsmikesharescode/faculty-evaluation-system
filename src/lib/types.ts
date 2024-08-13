@@ -81,3 +81,8 @@ export interface AdminLayoutQueryType {
 	evaluation_forms: EvaluationType[] | null;
 	students: StudentType[] | null;
 }
+
+export interface StudentLayoutQueryType {
+	evaluation_forms: EvaluationType[] | null;
+	professors: ProfessorType[] | null;
+}

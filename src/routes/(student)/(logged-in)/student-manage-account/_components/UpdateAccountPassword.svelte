@@ -8,7 +8,7 @@
 	import type { ResultModel } from '$lib/types';
 	import type { User } from '@supabase/supabase-js';
 	import { toast } from 'svelte-sonner';
-	import { fromUserState } from '../../../_states/fromRootState.svelte';
+	import { fromUserState } from '../../../../_states/fromRootState.svelte';
 	import { Loader } from 'lucide-svelte';
 
 	interface Props {
