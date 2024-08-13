@@ -1,6 +1,5 @@
 <script lang="ts">
-	import * as RadioGroup from '$lib/components/ui/radio-group/index.js';
-	import { Label } from '$lib/components/ui/label/index.js';
+	import { fromDashboardRouteState } from '../../../_states/fromDashboardRoute.svelte';
 
 	interface Props {
 		index: number;
@@ -8,6 +7,33 @@
 	}
 
 	const { index, questionObj }: Props = $props();
+
+	const dashboardRoute = fromDashboardRouteState();
+
+	const ratings = [
+		{
+			title: 'Always',
+			value: 5
+		},
+		{
+			title: 'Often',
+			value: 4
+		},
+		{
+			title: 'Sometimes',
+			value: 3
+		},
+		{
+			title: 'Rarely',
+			value: 2
+		},
+		{
+			title: 'Never',
+			value: 1
+		}
+	];
+
+	let active = $state('');
 </script>
 
 <div class="">
@@ -16,50 +42,23 @@
 	</p>
 </div>
 
-<div class="p-[0.625rem]">
-	<RadioGroup.Root
-		onchange={(e) => {
-			const target = e.target as HTMLInputElement;
-			console.log(target.value, index);
-		}}
-	>
-		<div class="flex items-center space-x-2">
-			<RadioGroup.Item value="5" id={`r1${questionObj.id}`} />
-			<Label for={`r1${questionObj.id}`}>
-				Always
-				<strong class="text-muted-foreground">(5)</strong>
-			</Label>
-		</div>
-		<div class="flex items-center space-x-2">
-			<RadioGroup.Item value="4" id={`r2${questionObj.id}`} />
-			<Label for={`r2${questionObj.id}`}>
-				Often
-				<strong class="text-muted-foreground">(4) </strong>
-			</Label>
-		</div>
-		<div class="flex items-center space-x-2">
-			<RadioGroup.Item value="3" id={`r3${questionObj.id}`} />
-			<Label for={`r3${questionObj.id}`}>
-				Sometimes
-				<strong class="text-muted-foreground">(3)</strong>
-			</Label>
-		</div>
-
-		<div class="flex items-center space-x-2">
-			<RadioGroup.Item value="2" id={`r4${questionObj.id}`} />
-			<Label for={`r4${questionObj.id}`}>
-				Rarely
-				<strong class="text-muted-foreground">(2)</strong>
-			</Label>
-		</div>
-
-		<div class="flex items-center space-x-2">
-			<RadioGroup.Item value="1" id={`r5${questionObj.id}`} />
-			<Label for={`r5${questionObj.id}`}>
-				Never
-				<strong class="text-muted-foreground">(1)</strong>
-			</Label>
-		</div>
-		<RadioGroup.Input name={questionObj.id} />
-	</RadioGroup.Root>
+<div class="flex flex-col gap-[0.625rem] p-[0.625rem]">
+	{#each ratings as rating}
+		<button
+			onclick={() => {
+				dashboardRoute.setAnswer({
+					id: questionObj.id,
+					value: rating.value
+				});
+				active = rating.title;
+			}}
+			class="flex max-w-fit items-center gap-[0.625rem]"
+		>
+			<div
+				class="{active === rating.title ? 'border-[2px] bg-primary' : ''}
+			h-[20px] w-[20px] rounded-full border-[1px] border-primary"
+			></div>
+			<p>{rating.title} <strong class="text-sm text-muted-foreground">({rating.value})</strong></p>
+		</button>
+	{/each}
 </div>

@@ -30,6 +30,24 @@ class DashboardRoute {
 	getActiveProf() {
 		return this.activeProf;
 	}
+
+	private studentAnswer = $state<{ id: string; value: number }[]>([]);
+
+	setAnswer(param: { id: string; value: number }) {
+		const checkId = this.studentAnswer.map((item) => item.id);
+		if (checkId.includes(param.id)) {
+			const index = checkId.indexOf(param.id);
+			this.studentAnswer[index] = param;
+		} else this.studentAnswer.push(param);
+	}
+
+	getAnswers() {
+		return this.studentAnswer;
+	}
+
+	resetAnswer() {
+		this.studentAnswer = [];
+	}
 }
 
 const DASHBOARD_ROUTE_KEY = Symbol('dashboardRouteKey');

@@ -16,13 +16,23 @@
 
 	let clientCheck = $state(true);
 
-	let value = $state(0);
+	const percentage = $derived.by(() => {
+		let totalQuestions = [];
+		const totalAnswer = dashboardRoute.getAnswers().length;
+
+		dashboardRoute.getEvals()?.forEach((item) => {
+			item.evaluation_data.forEach((innerItem) => {
+				innerItem.questions.forEach((sinnerItem) => {
+					totalQuestions.push(sinnerItem);
+				});
+			});
+		});
+
+		return (totalAnswer / (totalQuestions.length ?? 1)) * 100;
+	});
 	onMount(() => {
 		if (!dashboardRoute.getActiveProf()) return goto('/student-dashboard');
 		clientCheck = false;
-
-		const timer = setTimeout(() => (value = 66), 500);
-		return () => clearTimeout(timer);
 	});
 </script>
 
@@ -38,10 +48,7 @@
 		<Breadcrumb.Root>
 			<Breadcrumb.List>
 				<Breadcrumb.Item>
-					<Breadcrumb.Link
-						onclick={() => dashboardRoute.setActiveProf(null)}
-						href="/student-dashboard">Dashboard</Breadcrumb.Link
-					>
+					<Breadcrumb.Link href="/student-dashboard">Dashboard</Breadcrumb.Link>
 				</Breadcrumb.Item>
 				<Breadcrumb.Separator />
 				<Breadcrumb.Item>
@@ -52,8 +59,10 @@
 
 		<div class="flex flex-col gap-[10px] bg-white p-[20px]">
 			<div class="sticky top-[3.3rem] flex items-center justify-center">
-				<Progress {value} max={100} class="h-[20px] w-full rounded-none" />
-				<p class="absolute bottom-0 text-xs font-semibold text-black">{value} % Completion</p>
+				<Progress value={percentage ?? 0} max={100} class="h-[20px] w-full rounded-none" />
+				<p class="absolute bottom-0 text-xs font-semibold text-black">
+					{percentage.toFixed(0)} % Completion
+				</p>
 			</div>
 
 			<div class="flex flex-col gap-[10px]">
@@ -90,7 +99,7 @@
 					</div>
 				{/each}
 
-				<div class="">
+				<div class="flex justify-end">
 					<Button>Submit</Button>
 				</div>
 			</div>

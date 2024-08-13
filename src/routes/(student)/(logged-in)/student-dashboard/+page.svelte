@@ -10,6 +10,8 @@
 	const dashboardRoute = fromDashboardRouteState();
 
 	route.setRoute('/student-dashboard');
+	dashboardRoute.resetAnswer();
+	dashboardRoute.setActiveProf(null);
 
 	const handleEvaluate = (p: ProfessorType) => {
 		dashboardRoute.setActiveProf(p);
@@ -54,7 +56,7 @@
 				<div
 					class="hidden border-b-[1px] md:grid md:grid-cols-[50%,25%,25%] lg:grid-cols-[55%,30%,15%]"
 				>
-					<span class="flex items-center p-[10px] text-sm">{professor.fullname} {index + 1}</span>
+					<span class="flex items-center p-[10px] text-sm">{professor.fullname}</span>
 					<span class="flex items-center p-[10px] text-sm">{professor.department}</span>
 					<span class="flex items-center p-[10px] text-sm">
 						<Button
