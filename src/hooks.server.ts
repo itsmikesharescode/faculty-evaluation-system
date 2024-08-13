@@ -113,6 +113,12 @@ const authGuard: Handle = async ({ event, resolve }) => {
 		if (role !== 'student') redirect(303, '/admin-dashboard?msg=admin-cant-view-this-route');
 	} else if (!user && studentPaths.includes(path)) redirect(303, '/');
 
+	if (user && ['/student-login', '/admin-login'].includes(path)) {
+		const { role } = user.user_metadata;
+		if (role === 'student') redirect(303, '/student-dashboard');
+		else if (role === 'admin') redirect(303, '/admin-dashboard');
+	}
+
 	return resolve(event);
 };
 
