@@ -32,13 +32,13 @@
 			const { status, data } = result as ResultModel<{ msg: string; data: StudentType[] }>;
 			switch (status) {
 				case 200:
-					toast.success('Create Account', { description: data.msg });
+					toast.success('Update Account', { description: data.msg });
 					manageAccountRoute.setStudents(data.data);
 					manageAccountRoute.setActive(null);
 					updateSignal = false;
 					break;
 				case 401:
-					toast.error('Create Account', { description: data.msg });
+					toast.error('Update Account', { description: data.msg });
 					break;
 			}
 		}
@@ -106,7 +106,7 @@
 
 		<form
 			method="POST"
-			action="?/createStudentAccEvent"
+			action="?/updateAccountEvent"
 			use:enhance
 			class="flex flex-col gap-[10px] overflow-auto px-[1.5rem] pb-[1.5rem]"
 		>
@@ -294,7 +294,7 @@
 				<Form.FieldErrors />
 			</Form.Field>
 			<div class=" flex justify-end">
-				<Form.Button class="relative">
+				<Form.Button disabled={$submitting} class="relative">
 					{#if $submitting}
 						<div
 							class="absolute flex h-full w-full items-center justify-center rounded-lg bg-primary"

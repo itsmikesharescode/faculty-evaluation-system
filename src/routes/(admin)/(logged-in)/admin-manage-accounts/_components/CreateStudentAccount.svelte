@@ -263,7 +263,7 @@
 				</div>
 			</div>
 			<div class=" flex justify-end">
-				<Form.Button class="relative">
+				<Form.Button disabled={$submitting} class="relative">
 					{#if $submitting}
 						<div
 							class="absolute flex h-full w-full items-center justify-center rounded-lg bg-primary"
