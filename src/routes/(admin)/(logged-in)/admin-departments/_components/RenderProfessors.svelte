@@ -32,7 +32,7 @@
 	</div>
 
 	<!--Table Data-->
-	{#each departmentRoute.getProfs() ?? [] as professor, index}
+	{#each departmentRoute.getFilteredProf() ?? [] as professor, index}
 		<div
 			class="grid grid-cols-[70%,20%,10%] border-b-[1px] border-black text-sm lg:grid-cols-[60%,20%,10%,10%]"
 		>

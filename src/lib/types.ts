@@ -64,6 +64,7 @@ export type EvaluationType = {
 export type ProfessorType = {
 	id: number;
 	created_at: string;
+	department: string;
 	fullname: string;
 	sections: string;
 };

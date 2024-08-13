@@ -12,8 +12,9 @@
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger
 		class="flex w-full cursor-pointer items-center justify-center rounded-lg  p-[5px] text-sm hover:bg-secondary"
-		>View Sections</DropdownMenu.Trigger
 	>
+		View Sections
+	</DropdownMenu.Trigger>
 	<DropdownMenu.Content class="w-[300px]">
 		<DropdownMenu.Group class="flex flex-col p-[10px]">
 			<p class="p-[10px] text-center text-sm">

@@ -32,6 +32,12 @@ class DepartmentsRoute {
 	getActive() {
 		return this.activeProf;
 	}
+
+	getFilteredProf() {
+		const filteredProfs = this.professors?.filter((item) => item.department === this.activeRoute);
+
+		return filteredProfs ? filteredProfs : null;
+	}
 }
 
 const DEPARTMENT_KEY = Symbol('departmentRouteKey');
