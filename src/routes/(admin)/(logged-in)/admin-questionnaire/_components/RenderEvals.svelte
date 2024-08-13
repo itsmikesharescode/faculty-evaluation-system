@@ -24,7 +24,7 @@
 					<div
 						class="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center rounded-lg bg-[#00000050]"
 					>
-						<p class="rounded-sm bg-black p-[0.625rem] text-primary">Currently Using</p>
+						<p class="rounded-sm p-[0.625rem] text-white">Currently Using</p>
 					</div>
 				{/if}
 
