@@ -79,5 +79,21 @@ export const actions: Actions = {
 		if (studentsError) return fail(401, { form, msg: studentsError.message });
 
 		return { form, msg: 'User account updated.', data };
+	},
+
+	deleteAccountEvent: async ({ locals: { supabaseAdmin }, request }) => {
+		const studentId = (await request.formData()).get('studentId') as string;
+
+		const { error } = await supabaseAdmin.auth.admin.deleteUser(studentId);
+
+		if (error) return fail(401, { msg: error.message });
+
+		const { data, error: studentsError } = (await supabaseAdmin
+			.from('student_list_tb')
+			.select('*')) as PostgrestSingleResponse<StudentType[]>;
+
+		if (studentsError) return fail(401, { msg: studentsError.message });
+
+		return { msg: 'Account Deleted', data };
 	}
 };

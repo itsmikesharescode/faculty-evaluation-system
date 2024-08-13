@@ -5,6 +5,7 @@
 	import type { Infer, SuperValidated } from 'sveltekit-superforms';
 	import type { UpdateStudentSchema } from '../admin-manage-accounts-schema';
 	import UpdateStudent from './_operations/UpdateStudent.svelte';
+	import DeleteStudent from './_operations/DeleteStudent.svelte';
 
 	interface Props {
 		updateStudentForm: SuperValidated<Infer<UpdateStudentSchema>>;
@@ -15,6 +16,7 @@
 	const manageAccountRoute = fromManageAccountRouteState();
 
 	let updateSignal = $state(false);
+	let deleteSignal = $state(false);
 </script>
 
 <div class="flex flex-col">
@@ -29,53 +31,69 @@
 		<span class="bg-secondary p-[0.625rem] text-sm"></span>
 	</div>
 
-	{#each manageAccountRoute.getStudents() ?? [] as student}
-		<div
-			class="grid grid-cols-[50%,40%,10%] border-b-[1px] sm:grid-cols-[40%,20%,20%,10%,10%] md:grid-cols-[40%,20%,10%,10%,15%,5%]"
-		>
-			<span class="flex items-center p-[0.625rem] text-sm">{student.user_meta_data.fullname}</span>
-			<span class="hidden items-center p-[0.625rem] text-sm md:flex"
-				>{student.user_meta_data.id_number}</span
+	{#if manageAccountRoute.getStudents()?.length}
+		{#each manageAccountRoute.getStudents() ?? [] as student}
+			<div
+				class="grid grid-cols-[50%,40%,10%] border-b-[1px] sm:grid-cols-[40%,20%,20%,10%,10%] md:grid-cols-[40%,20%,10%,10%,15%,5%]"
 			>
-			<span class=" hidden items-center p-[0.625rem] text-sm sm:flex"
-				>{student.user_meta_data.year_level}</span
-			>
-			<span class="hidden items-center justify-center p-[0.625rem] text-sm sm:flex"
-				>{student.user_meta_data.section}</span
-			>
-			<span class="flex items-center justify-center p-[0.625rem] text-sm"
-				>{student.user_meta_data.course}</span
-			>
-			<span class="flex items-center p-[0.625rem] text-sm">
-				<DropdownMenu.Root>
-					<DropdownMenu.Trigger>
-						<EllipsisVertical />
-					</DropdownMenu.Trigger>
-					<DropdownMenu.Content>
-						<DropdownMenu.Group>
-							<DropdownMenu.Label class="flex items-center justify-center"
-								>Action</DropdownMenu.Label
-							>
-							<DropdownMenu.Separator />
-							<DropdownMenu.Item class="flex items-center justify-center">Delete</DropdownMenu.Item>
-							<DropdownMenu.Item
-								class="flex items-center justify-center"
-								onclick={() => {
-									manageAccountRoute.setActive(student);
-									updateSignal = true;
-								}}
-							>
-								Update
-							</DropdownMenu.Item>
-							<DropdownMenu.Item class="flex items-center justify-center md:hidden"
-								>View Details</DropdownMenu.Item
-							>
-						</DropdownMenu.Group>
-					</DropdownMenu.Content>
-				</DropdownMenu.Root>
-			</span>
+				<span class="flex items-center p-[0.625rem] text-sm">{student.user_meta_data.fullname}</span
+				>
+				<span class="hidden items-center p-[0.625rem] text-sm md:flex"
+					>{student.user_meta_data.id_number}</span
+				>
+				<span class=" hidden items-center p-[0.625rem] text-sm sm:flex"
+					>{student.user_meta_data.year_level}</span
+				>
+				<span class="hidden items-center justify-center p-[0.625rem] text-sm sm:flex"
+					>{student.user_meta_data.section}</span
+				>
+				<span class="flex items-center justify-center p-[0.625rem] text-sm"
+					>{student.user_meta_data.course}</span
+				>
+				<span class="flex items-center p-[0.625rem] text-sm">
+					<DropdownMenu.Root>
+						<DropdownMenu.Trigger>
+							<EllipsisVertical />
+						</DropdownMenu.Trigger>
+						<DropdownMenu.Content>
+							<DropdownMenu.Group>
+								<DropdownMenu.Label class="flex items-center justify-center"
+									>Action</DropdownMenu.Label
+								>
+								<DropdownMenu.Separator />
+								<DropdownMenu.Item
+									class="flex items-center justify-center"
+									onclick={() => {
+										manageAccountRoute.setActive(student);
+										deleteSignal = true;
+									}}>Delete</DropdownMenu.Item
+								>
+								<DropdownMenu.Item
+									class="flex items-center justify-center"
+									onclick={() => {
+										manageAccountRoute.setActive(student);
+										updateSignal = true;
+									}}
+								>
+									Update
+								</DropdownMenu.Item>
+								<DropdownMenu.Item class="flex items-center justify-center md:hidden"
+									>View Details</DropdownMenu.Item
+								>
+							</DropdownMenu.Group>
+						</DropdownMenu.Content>
+					</DropdownMenu.Root>
+				</span>
+			</div>
+		{/each}
+	{:else}
+		<div class="flex min-h-[20dvh] items-center justify-center">
+			<p class="text-center text-sm text-muted-foreground">
+				There is no student accounts at the moment.
+			</p>
 		</div>
-	{/each}
+	{/if}
 </div>
 
 <UpdateStudent {updateStudentForm} bind:updateSignal />
+<DeleteStudent bind:deleteSignal />
