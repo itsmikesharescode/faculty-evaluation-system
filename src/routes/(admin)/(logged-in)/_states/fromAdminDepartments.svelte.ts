@@ -4,9 +4,18 @@ import { getContext, setContext } from 'svelte';
 export const departments = ['BSIS', 'BSE', 'BTVTED', 'OMT', 'DICT'];
 
 class DepartmentsRoute {
+	private activeRoute = $state(departments[0]);
+
+	setRoute(param: string) {
+		this.activeRoute = param;
+	}
+
+	getRoute() {
+		return this.activeRoute;
+	}
+
 	private professors = $state<ProfessorType[] | null>(null);
 	private activeProf = $state<ProfessorType | null>(null);
-	private activeRoute = $state(departments[0]);
 
 	setProfs(param: ProfessorType[] | null) {
 		this.professors = param;
@@ -22,14 +31,6 @@ class DepartmentsRoute {
 
 	getActive() {
 		return this.activeProf;
-	}
-
-	setRoute(param: string) {
-		this.activeRoute = param;
-	}
-
-	getRoute() {
-		return this.activeRoute;
 	}
 }
 

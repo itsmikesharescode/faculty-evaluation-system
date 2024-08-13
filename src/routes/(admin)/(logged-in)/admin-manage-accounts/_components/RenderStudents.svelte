@@ -15,7 +15,7 @@
 		<span class="bg-secondary p-[0.625rem] text-sm"></span>
 	</div>
 
-	{#each Array(60) as _}
+	{#each Array(100) as _}
 		<div
 			class="grid grid-cols-[50%,40%,10%] border-b-[1px] sm:grid-cols-[40%,20%,20%,10%,10%] md:grid-cols-[40%,20%,10%,10%,15%,5%]"
 		>

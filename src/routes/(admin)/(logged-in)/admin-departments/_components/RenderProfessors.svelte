@@ -2,10 +2,20 @@
 	import Section from './_render_professor_component/Section.svelte';
 	import { EllipsisVertical } from 'lucide-svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import DeleteProfessor from './_render_professor_component/_operations/DeleteProfessor.svelte';
 	import { fromDepartmentsRouteState } from '../../_states/fromAdminDepartments.svelte';
+	import DeleteProf from './_operations/DeleteProf.svelte';
+	import UpdateProf from './_operations/UpdateProf.svelte';
+	import type { Infer, SuperValidated } from 'sveltekit-superforms';
+	import type { UpdateProfSchema } from '../admin-departments-schema';
+
+	interface Props {
+		updateProfForm: SuperValidated<Infer<UpdateProfSchema>>;
+	}
+
+	const { updateProfForm }: Props = $props();
 
 	let deleteSignal = $state(false);
+	let updateSignal = $state(false);
 
 	const departmentRoute = fromDepartmentsRouteState();
 </script>
@@ -45,13 +55,24 @@
 							<DropdownMenu.Item
 								class="flex items-center justify-center"
 								onclick={() => {
+									departmentRoute.setActive(professor);
 									deleteSignal = true;
-								}}>Delete</DropdownMenu.Item
+								}}
 							>
-							<DropdownMenu.Item class="flex items-center justify-center">Update</DropdownMenu.Item>
+								Delete
+							</DropdownMenu.Item>
+							<DropdownMenu.Item
+								class="flex items-center justify-center"
+								onclick={() => {
+									departmentRoute.setActive(professor);
+									updateSignal = true;
+								}}
+							>
+								Update
+							</DropdownMenu.Item>
 
 							<div class="lg:hidden">
-								<Section />
+								<Section {professor} />
 							</div>
 						</DropdownMenu.Group>
 					</DropdownMenu.Content>
@@ -62,4 +83,5 @@
 </div>
 
 <!--Operations-->
-<DeleteProfessor bind:deleteSignal />
+<DeleteProf bind:deleteSignal />
+<UpdateProf {updateProfForm} bind:updateSignal />

@@ -32,5 +32,5 @@
 
 	<AddProfessor addProfForm={data.addProfForm} />
 
-	<RenderProfessor />
+	<RenderProfessor updateProfForm={data.updateProfForm} />
 </div>

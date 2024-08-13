@@ -1,29 +1,31 @@
 <script lang="ts">
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
-	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { addProfSchema, type AddProfSchema } from '../admin-departments-schema';
 	import { Loader, X } from 'lucide-svelte';
 	import Textarea from '$lib/components/ui/textarea/textarea.svelte';
-	import { fromDepartmentsRouteState } from '../../_states/fromAdminDepartments.svelte';
 	import type { ProfessorType, ResultModel } from '$lib/types';
 	import { toast } from 'svelte-sonner';
+	import {
+		departments,
+		fromDepartmentsRouteState
+	} from '../../../_states/fromAdminDepartments.svelte';
+	import { updateProfSchema, type UpdateProfSchema } from '../../admin-departments-schema';
+	import * as Select from '$lib/components/ui/select';
 
 	interface Props {
-		addProfForm: SuperValidated<Infer<AddProfSchema>>;
+		updateProfForm: SuperValidated<Infer<UpdateProfSchema>>;
+		updateSignal: boolean;
 	}
 
-	const { addProfForm }: Props = $props();
+	let { updateProfForm, updateSignal = $bindable() }: Props = $props();
 
 	const departmentRoute = fromDepartmentsRouteState();
 
-	let open = $state(false);
-
-	const form = superForm(addProfForm, {
-		validators: zodClient(addProfSchema),
+	const form = superForm(updateProfForm, {
+		validators: zodClient(updateProfSchema),
 		id: crypto.randomUUID(),
 		onUpdate({ result }) {
 			const { status, data } = result as ResultModel<{ msg: string; data: ProfessorType[] }>;
@@ -32,7 +34,8 @@
 				case 200:
 					toast.success('Create Professor', { description: data.msg });
 					departmentRoute.setProfs(data.data);
-					open = false;
+					departmentRoute.setActive(null);
+					updateSignal = false;
 					break;
 				case 401:
 					toast.error('Create Professor', { description: data.msg });
@@ -42,31 +45,53 @@
 	});
 
 	const { form: formData, enhance, submitting } = form;
+
+	const selectedDepartment = $derived(
+		$formData.department ? { label: $formData.department, value: $formData.department } : undefined
+	);
 </script>
 
-<Button onclick={() => (open = true)} class="max-w-fit">Add Professor</Button>
-
-<AlertDialog.Root bind:open>
+<AlertDialog.Root bind:open={updateSignal}>
 	<AlertDialog.Content>
 		<button
-			onclick={() => (open = false)}
+			onclick={() => {
+				departmentRoute.setActive(null);
+				updateSignal = false;
+			}}
 			class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
 		>
 			<X class="h-4 w-4" />
 			<span class="sr-only">Close</span>
 		</button>
 		<AlertDialog.Header>
-			<AlertDialog.Title>Add Professor</AlertDialog.Title>
+			<AlertDialog.Title>Update Professor</AlertDialog.Title>
 			<AlertDialog.Description>
-				Answer the following fields to add professor.
+				Answer the following fields to update professor.
 			</AlertDialog.Description>
 		</AlertDialog.Header>
 
-		<form method="POST" action="?/addProfEvent" use:enhance class="flex flex-col gap-[10px]">
+		<form method="POST" action="?/updateProfEvent" use:enhance class="flex flex-col gap-[10px]">
 			<Form.Field {form} name="department">
 				<Form.Control let:attrs>
-					<Input {...attrs} value={departmentRoute.getRoute()} class="hidden" />
+					<Form.Label>Department</Form.Label>
+					<Select.Root
+						selected={selectedDepartment}
+						onSelectedChange={(v) => {
+							v && ($formData.department = v.value);
+						}}
+					>
+						<Select.Trigger {...attrs}>
+							<Select.Value placeholder="Select Department" />
+						</Select.Trigger>
+						<Select.Content>
+							{#each departments as department}
+								<Select.Item value={department} label={department} />
+							{/each}
+						</Select.Content>
+					</Select.Root>
+					<input hidden bind:value={$formData.department} name={attrs.name} />
 				</Form.Control>
+				<Form.FieldErrors />
 			</Form.Field>
 
 			<Form.Field {form} name="profName">
@@ -108,7 +133,7 @@
 							<Loader class="h-[15px] w-[15px] animate-spin" />
 						</div>
 					{/if}
-					Add
+					Update
 				</Form.Button>
 			</div>
 		</form>
