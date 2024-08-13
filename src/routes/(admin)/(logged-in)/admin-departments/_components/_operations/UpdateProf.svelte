@@ -49,6 +49,16 @@
 	const selectedDepartment = $derived(
 		$formData.department ? { label: $formData.department, value: $formData.department } : undefined
 	);
+
+	const loadPrevData = () => {
+		$formData.department = departmentRoute.getActive()?.department ?? '';
+		$formData.profName = departmentRoute.getActive()?.fullname ?? '';
+		$formData.sections = departmentRoute.getActive()?.sections ?? '';
+	};
+
+	$effect(() => {
+		loadPrevData();
+	});
 </script>
 
 <AlertDialog.Root bind:open={updateSignal}>
