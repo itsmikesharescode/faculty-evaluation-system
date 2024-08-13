@@ -21,6 +21,7 @@ export const addProfSchema = z.object({
 });
 
 export const updateProfSchema = z.object({
+	profId: z.number(),
 	department: z
 		.string()
 		.refine((v) => departments.includes(v), { message: 'Must enter a valid department' }),

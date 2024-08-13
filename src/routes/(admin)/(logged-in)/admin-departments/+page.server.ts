@@ -34,7 +34,15 @@ export const actions: Actions = {
 
 		if (!form.valid) return fail(400, { form });
 
-		console.log(form.data);
+		const { data, error } = (await supabase.rpc('update_professor', {
+			department_client: form.data.department,
+			fullname_client: form.data.profName,
+			sections_client: form.data.sections,
+			prof_id_client: form.data.profId
+		})) as PostgrestSingleResponse<ProfessorType[]>;
+
+		if (error) return fail(401, { form, msg: error.message });
+		return { form, msg: 'Successfully updated.', data };
 	},
 
 	deleteProfEvent: async ({ locals: { supabase }, request }) => {

@@ -81,6 +81,14 @@
 		</AlertDialog.Header>
 
 		<form method="POST" action="?/updateProfEvent" use:enhance class="flex flex-col gap-[10px]">
+			<Form.Field {form} name="profId">
+				<Form.Control let:attrs>
+					<Input type="number" {...attrs} value={departmentRoute.getActive()?.id} class="hidden" />
+				</Form.Control>
+
+				<Form.FieldErrors />
+			</Form.Field>
+
 			<Form.Field {form} name="department">
 				<Form.Control let:attrs>
 					<Form.Label>Department</Form.Label>
