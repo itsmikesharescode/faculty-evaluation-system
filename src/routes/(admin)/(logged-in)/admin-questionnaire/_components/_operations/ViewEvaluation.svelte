@@ -5,6 +5,7 @@
 	import * as RadioGroup from '$lib/components/ui/radio-group';
 	import { fromQuestionnaireRouteState } from '../../../_states/fromAdminQuestionnaire.svelte';
 	import { SvelteMap } from 'svelte/reactivity';
+	import AdminCustomRadio from '../AdminCustomRadio.svelte';
 
 	interface Props {
 		viewSignal: boolean;
@@ -33,60 +34,23 @@
 				<strong class="text-muted-foreground">You are viewing</strong>
 				{questionnaireRoute.getActive()?.evaluation_title}
 			</AlertDialog.Title>
-			<AlertDialog.Description>Viewing evaluation form</AlertDialog.Description>
+			<AlertDialog.Description>
+				Thoroughly reviewing an evaluation form can help identify and rectify potential errors
+				before proceeding to production.
+			</AlertDialog.Description>
 		</AlertDialog.Header>
 
 		<div class="overflow-auto">
 			{#each questionnaireRoute.getActive()?.evaluation_data ?? [] as evaluationForm, index}
 				<div>
-					<p class="text-center text-xl font-semibold">{evaluationForm.headerTitle}</p>
+					<div class="">
+						<p class="text-xl font-semibold text-primary">{evaluationForm.headerTitle}</p>
+						<div class="h-[0.25rem] w-[1.875rem] bg-yellow-500"></div>
+					</div>
+
 					<div class="p-[0.625rem]">
-						{#each evaluationForm.questions as question, innerIndex}
-							<p class="text-sm">{innerIndex + 1}.) {question.question}</p>
-
-							<div class="p-[0.625rem]">
-								<RadioGroup.Root>
-									<div class="flex items-center space-x-2">
-										<RadioGroup.Item disabled value="5" id={`r1${question.id}`} />
-										<Label class="text-sm" for={`r1${question.id}`}>
-											Always
-											<strong class="text-muted-foreground">(5)</strong>
-										</Label>
-									</div>
-									<div class="flex items-center space-x-2">
-										<RadioGroup.Item disabled value="4" id={`r2${question.id}`} />
-										<Label class="text-sm" for={`r2${question.id}`}>
-											Often
-											<strong class="text-muted-foreground">(4) </strong>
-										</Label>
-									</div>
-									<div class="flex items-center space-x-2">
-										<RadioGroup.Item disabled value="3" id={`r3${question.id}`} />
-										<Label class="text-sm" for={`r3${question.id}`}>
-											Sometimes
-											<strong class="text-muted-foreground">(3)</strong>
-										</Label>
-									</div>
-
-									<div class="flex items-center space-x-2">
-										<RadioGroup.Item disabled value="2" id={`r4${question.id}`} />
-										<Label class="text-sm" for={`r4${question.id}`}>
-											Rarely
-											<strong class="text-muted-foreground">(2)</strong>
-										</Label>
-									</div>
-
-									<div class="flex items-center space-x-2">
-										<RadioGroup.Item disabled value="1" id={`r5${question.id}`} />
-										<Label class="text-sm" for={`r5${question.id}`}>
-											Never
-											<strong class="text-muted-foreground">(1)</strong>
-										</Label>
-									</div>
-									<RadioGroup.Input name={`question-${question.id}`} />
-									<!--Must remember can hit your foot-->
-								</RadioGroup.Root>
-							</div>
+						{#each evaluationForm.questions as questionObj, innerIndex}
+							<AdminCustomRadio {questionObj} index={innerIndex} />
 						{/each}
 					</div>
 				</div>
