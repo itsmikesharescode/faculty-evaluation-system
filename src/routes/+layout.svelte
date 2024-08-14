@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	import { fromUserState, initUser } from './_states/fromRootState.svelte';
 	import { Toaster } from '$lib/components/ui/sonner';
+	import Footer from '$lib/components/general/Footer.svelte';
 
 	const { data, children } = $props();
 
@@ -27,6 +28,8 @@
 
 <Toaster richColors={true} />
 {@render children()}
+
+<Footer />
 
 <style>
 	:global(html) {
