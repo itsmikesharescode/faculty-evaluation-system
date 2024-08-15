@@ -34,6 +34,10 @@
 		if (!dashboardRoute.getActiveProf()) return goto('/student-dashboard');
 		clientCheck = false;
 	});
+
+	const handleSubmit = async () => {
+		//to calculate the percentage (sum of score / sum of highest score ) * 100
+	};
 </script>
 
 {#if clientCheck}
