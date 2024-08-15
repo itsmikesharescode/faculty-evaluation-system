@@ -100,7 +100,7 @@
 				{/each}
 
 				<div class="flex justify-end">
-					<Button>Submit</Button>
+					<Button onclick={() => console.log(dashboardRoute.getAnswers())}>Submit</Button>
 				</div>
 			</div>
 		</div>

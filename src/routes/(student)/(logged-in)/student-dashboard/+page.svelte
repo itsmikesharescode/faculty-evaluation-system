@@ -34,12 +34,11 @@
 		</div>
 	</div>
 
+	<!--To be evaluated-->
 	<div class="p-[0.625rem]">
-		<div class="flex items-center gap-[20px] p-[10px]">
-			<p class="">
-				Below are the subjects and faculty members that you need to evaluate. click the evaluate
-				button to start
-			</p>
+		<div class="flex flex-col p-[10px]">
+			<p class="text-xl font-semibold">Evaluation List</p>
+			<p class="text-muted-foreground">Below are the list of faculty that needs your evaluation.</p>
 		</div>
 
 		<div
@@ -47,7 +46,7 @@
 		>
 			<span class=" p-[10px] text-sm font-semibold">Teacher</span>
 			<span class=" p-[10px] text-sm font-semibold">Department</span>
-			<span class=" p-[10px] text-sm font-semibold">Status</span>
+			<span class=" p-[10px] text-sm font-semibold">Action</span>
 		</div>
 
 		<!--Looping table here-->
@@ -72,11 +71,11 @@
 
 				<!--Render for mobile view-->
 				<div class="md:hidden">
-					<div class="relative flex flex-col gap-[20px] bg-slate-300 p-[10px]">
-						<p>#: {index + 1}</p>
-
-						<p>Teacher: Faculty Text {index + 1}</p>
-						<p>Subject: COMSCI 1110</p>
+					<div class="relative flex flex-col rounded-lg bg-slate-100 p-[1.25rem]">
+						<div class="leading-7">
+							<p>Teacher: Faculty Text {index + 1}</p>
+							<p>Subject: COMSCI 1110</p>
+						</div>
 
 						<Button
 							size="sm"
@@ -86,6 +85,46 @@
 							Evaluate Now
 							<ListChecks class="h-[15px] w-[15px]" />
 						</Button>
+					</div>
+				</div>
+			{/each}
+		</div>
+	</div>
+
+	<!--To be evaluated-->
+	<div class="p-[0.625rem]">
+		<div class="flex flex-col p-[10px]">
+			<p class="text-xl font-semibold">Evaluation History</p>
+			<p class="text-muted-foreground">Below are the record of evaluation.</p>
+		</div>
+
+		<div
+			class="sticky top-[3rem] hidden bg-secondary md:grid md:grid-cols-[50%,25%,25%] lg:grid-cols-[55%,30%,15%]"
+		>
+			<span class=" p-[10px] text-sm font-semibold">Teacher</span>
+			<span class=" p-[10px] text-sm font-semibold">Department</span>
+			<span class=" p-[10px] text-sm font-semibold">Result</span>
+		</div>
+
+		<!--Looping table here-->
+		<div class="mt-[2dvh] flex flex-col gap-[10px] md:mt-0 md:gap-0">
+			{#each dashboardRoute.getProfs() ?? [] as professor, index}
+				<div
+					class="hidden border-b-[1px] md:grid md:grid-cols-[50%,25%,25%] lg:grid-cols-[55%,30%,15%]"
+				>
+					<span class="flex items-center p-[10px] text-sm">{professor.fullname}</span>
+					<span class="flex items-center p-[10px] text-sm">{professor.department}</span>
+					<span class="flex items-center p-[10px] text-sm"> Satisfied </span>
+				</div>
+
+				<!--Render for mobile view-->
+				<div class="md:hidden">
+					<div class="relative flex flex-col rounded-lg bg-slate-100 p-[1.25rem]">
+						<div class="leading-7">
+							<p>Teacher: Faculty Text {index + 1}</p>
+							<p>Subject: COMSCI 1110</p>
+							<p>Result: Satisfied</p>
+						</div>
 					</div>
 				</div>
 			{/each}
