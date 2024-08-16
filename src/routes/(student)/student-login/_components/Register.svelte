@@ -5,6 +5,12 @@
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { studentCreateSchema, type StudentCreateSchema } from '../student-schema';
 	import { zodClient } from 'sveltekit-superforms/adapters';
+	import type { ResultModel } from '$lib/types';
+	import { toast } from 'svelte-sonner';
+	import { goto } from '$app/navigation';
+	import { fromUserState } from '../../../_states/fromRootState.svelte';
+	import type { User } from '@supabase/supabase-js';
+	import { Loader } from 'lucide-svelte';
 
 	interface Props {
 		studentCreateForm: SuperValidated<Infer<StudentCreateSchema>>;
@@ -12,12 +18,30 @@
 
 	const { studentCreateForm }: Props = $props();
 
+	const user = fromUserState();
+
 	const form = superForm(studentCreateForm, {
 		validators: zodClient(studentCreateSchema),
-		id: crypto.randomUUID()
+		id: crypto.randomUUID(),
+		invalidateAll: false,
+		onUpdate({ result }) {
+			const { status, data } = result as ResultModel<{ msg: string; user: User }>;
+
+			switch (status) {
+				case 200:
+					toast.success('Register', { description: data.msg });
+					user.setUser(data.user);
+					goto('/student-dashboard');
+					break;
+
+				case 401:
+					toast.error('Register', { description: data.msg });
+					break;
+			}
+		}
 	});
 
-	const { form: formData, enhance } = form;
+	const { form: formData, enhance, submitting } = form;
 
 	const selectedGender = $derived(
 		$formData.gender
@@ -39,11 +63,20 @@
 </script>
 
 <p class="p-[20px] text-center text-xl font-semibold leading-7">Student Registration</p>
-<form method="POST" use:enhance class="flex flex-col gap-[10px]">
+<form method="POST" action="?/studentRegisterEvent" use:enhance class="flex flex-col gap-[10px]">
 	<Form.Field {form} name="idNumber">
 		<Form.Control let:attrs>
 			<Form.Label>ID Number</Form.Label>
 			<Input {...attrs} bind:value={$formData.idNumber} placeholder="Enter your id number" />
+		</Form.Control>
+
+		<Form.FieldErrors />
+	</Form.Field>
+
+	<Form.Field {form} name="email">
+		<Form.Control let:attrs>
+			<Form.Label>Email</Form.Label>
+			<Input {...attrs} bind:value={$formData.email} placeholder="Enter your email" />
 		</Form.Control>
 
 		<Form.FieldErrors />
@@ -183,7 +216,14 @@
 		<Form.FieldErrors />
 	</Form.Field>
 
-	<Form.Button class="w-full">Register</Form.Button>
+	<Form.Button disabled={$submitting} class="relative w-full">
+		{#if $submitting}
+			<div class="absolute flex h-full w-full items-center justify-center rounded-lg bg-primary">
+				<Loader class="h-[15px] w-[15px] animate-spin" />
+			</div>
+		{/if}
+		Register
+	</Form.Button>
 
 	<div class=" mt-[20px] flex flex-col gap-[10px]">
 		<a href="/student-login" class="mx-auto max-w-fit text-sm transition-all hover:underline"
