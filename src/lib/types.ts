@@ -1,4 +1,5 @@
 import type { UserMetadata } from '@supabase/supabase-js';
+import type { SurveyCreationSchema } from '../routes/(admin)/(logged-in)/admin-questionnaire/create/create-questions-schema';
 
 export type ResultModel<T> = {
 	status: number;
@@ -49,16 +50,8 @@ export type EvaluationType = {
 	id: number;
 	created_at: string;
 	admin_id: string;
-	evaluation_title: string;
 	is_used: boolean;
-	evaluation_data: {
-		id: string;
-		headerTitle: string;
-		questions: {
-			id: string;
-			question: string;
-		}[];
-	}[];
+	evaluation_data: SurveyCreationSchema;
 };
 
 export type ProfessorType = {
