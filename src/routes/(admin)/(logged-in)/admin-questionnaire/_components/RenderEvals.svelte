@@ -16,7 +16,7 @@
 
 <div class="flex flex-col gap-[20px]">
 	{#if questionnaireRoute.getEvaluation()?.length}
-		{#each questionnaireRoute.getEvaluation() ?? [] as evaluationForms}
+		{#each questionnaireRoute.getEvaluation() ?? [] as evaluationForms, i}
 			<div
 				class="relative flex items-center rounded-lg border-black bg-secondary p-[20px] shadow-lg"
 			>
@@ -31,13 +31,13 @@
 				<div class="">
 					<div class="flex flex-wrap gap-[0.3rem]">
 						<p class="text-muted-foreground">Evaluation Title:</p>
-						<p>{evaluationForms.evaluation_title}</p>
+						<p>{evaluationForms.evaluation_data.evalTitle}</p>
 					</div>
 
 					<div class="flex flex-wrap gap-[0.3rem]">
 						<p class="text-muted-foreground">Total Questions:</p>
 						<p>
-							{evaluationForms.evaluation_data
+							{evaluationForms.evaluation_data.headers
 								.map((item) => item.questions.length)
 								.reduce((cv, ac) => cv + ac)}
 						</p>

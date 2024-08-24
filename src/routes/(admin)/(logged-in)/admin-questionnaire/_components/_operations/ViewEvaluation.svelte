@@ -32,7 +32,7 @@
 		<AlertDialog.Header>
 			<AlertDialog.Title>
 				<strong class="text-muted-foreground">You are viewing</strong>
-				{questionnaireRoute.getActive()?.evaluation_title}
+				{questionnaireRoute.getActive()?.evaluation_data.evalTitle}
 			</AlertDialog.Title>
 			<AlertDialog.Description>
 				Thoroughly reviewing an evaluation form can help identify and rectify potential errors
@@ -41,7 +41,7 @@
 		</AlertDialog.Header>
 
 		<div class="overflow-auto">
-			{#each questionnaireRoute.getActive()?.evaluation_data ?? [] as evaluationForm, index}
+			{#each questionnaireRoute.getActive()?.evaluation_data.headers ?? [] as evaluationForm, index}
 				<div>
 					<div class="">
 						<p class="text-xl font-semibold text-primary">{evaluationForm.headerTitle}</p>

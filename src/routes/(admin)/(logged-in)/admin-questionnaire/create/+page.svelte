@@ -2,163 +2,94 @@
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label/index';
 	import Button from '$lib/components/ui/button/button.svelte';
-	import { Paintbrush, Plus, Trash2, CloudUpload, Loader } from 'lucide-svelte';
+	import { Paintbrush, Plus, Trash2, CloudUpload, Loader, X } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
 	import * as Breadcrumb from '$lib/components/ui/breadcrumb/index.js';
 
-	import { z } from 'zod';
+	import { z, type ZodIssue } from 'zod';
 	import Textarea from '$lib/components/ui/textarea/textarea.svelte';
 	import { toast } from 'svelte-sonner';
 
-	import type { EvaluationType } from '$lib/types';
-	import { goto } from '$app/navigation';
 	import { fromQuestionnaireRouteState } from '../../_states/fromAdminQuestionnaire.svelte';
 	import { fromAdminRouteState } from '../../_states/fromAdminRoute.svelte';
-
-	// Adjust the schema creation function's return type
-	const createEvalSchema = (
-		headerTitleCount: number,
-		questionCounts: number[]
-	): z.ZodObject<{ [key: string]: z.ZodString }> => {
-		let schema = z.object({
-			evalTitle: z.string().min(1, 'Evaluation title is required')
-		}) as z.ZodObject<{ [key: string]: z.ZodString }>;
-
-		for (let i = 0; i < headerTitleCount; i++) {
-			schema = schema.extend({
-				[`headerTitle${i + 1}`]: z.string().min(1, { message: `Must enter header title ${i + 1}` })
-			});
-
-			for (let j = 0; j < questionCounts[i]; j++) {
-				schema = schema.extend({
-					[`question${i + 1}_${j + 1}`]: z
-						.string()
-						.min(1, { message: `Must enter question ${j + 1}` })
-				});
-			}
-		}
-
-		return schema;
-	};
-
-	interface FormData {
-		evalTitle: string;
-		headerTitles: Record<string, string>;
-		questions: Record<string, string>;
-	}
-
-	type ErrorField = { _errors: string[] };
-
-	interface Errors {
-		[key: string]: ErrorField | undefined;
-		evalTitle?: ErrorField;
-	}
-
-	interface TrackerItem {
-		id: string;
-		questions: { id: string }[];
-	}
+	import { surveyCreationSchema, type SurveyCreationSchema } from './create-questions-schema';
+	import { goto } from '$app/navigation';
 
 	const route = fromAdminRouteState();
 	const questionnaireRoute = fromQuestionnaireRouteState();
 
 	route.setRoute('/admin-questionnaire');
 
-	let headerTitleTracker = $state<TrackerItem[]>([
-		{
-			id: crypto.randomUUID(),
-			questions: [{ id: crypto.randomUUID() }]
-		}
-	]);
+	const questionContainer = $state<SurveyCreationSchema>({
+		evalTitle: '',
+		headers: [
+			{
+				id: crypto.randomUUID(),
+				headerTitle: '',
+				questions: [
+					{
+						id: crypto.randomUUID(),
+						question: ''
+					}
+				]
+			}
+		]
+	});
 
-	const incrementQuestion = (titleIndex: number) => {
-		headerTitleTracker[titleIndex].questions.push({ id: crypto.randomUUID() });
+	let errors = $state<ZodIssue[]>();
+
+	const evalErrMsg = (): string | undefined => {
+		return errors?.find((item) => item.path[0] === 'evalTitle')?.message;
 	};
 
-	const removeQuestion = (removeParam: { titleIndex: number; questionId: string }) => {
-		headerTitleTracker[removeParam.titleIndex].questions = headerTitleTracker[
-			removeParam.titleIndex
-		].questions.filter((item) => item.id !== removeParam.questionId);
+	const headerErrMsg = (i: number): string | undefined => {
+		return errors?.find(
+			(item) => item.path[0] === 'headers' && item.path[1] === i && item.path[2] === 'headerTitle'
+		)?.message;
 	};
 
-	const incrementTitle = () => {
-		headerTitleTracker.push({
-			id: crypto.randomUUID(),
-			questions: [{ id: crypto.randomUUID() }]
-		});
+	const questionErrMsg = (i: number, ii: number): string | undefined => {
+		return errors?.find(
+			(item) =>
+				item.path[0] === 'headers' &&
+				item.path[1] === i &&
+				item.path[2] === 'questions' &&
+				item.path[3] === ii &&
+				item.path[4] === 'question'
+		)?.message;
 	};
 
-	const removeTitle = (titleId: string) => {
-		headerTitleTracker = headerTitleTracker.filter((item) => item.id !== titleId);
-	};
-
-	let formData = $state<FormData>({ evalTitle: '', headerTitles: {}, questions: {} });
-	let errors = $state<Errors>({});
 	let submitLoader = $state(false);
 
 	const handleSubmit = async () => {
-		// Generate final schema based on the current dynamic fields
-		const finalSchema = createEvalSchema(
-			headerTitleTracker.length,
-			headerTitleTracker.map((ht) => ht.questions.length)
-		);
+		const res = surveyCreationSchema.safeParse(questionContainer);
 
-		// Gather form data for validation
-		const dataToValidate = {
-			evalTitle: formData.evalTitle,
-			...headerTitleTracker.reduce<Record<string, string>>((acc, headerTitle, headerIndex) => {
-				acc[`headerTitle${headerIndex + 1}`] = formData.headerTitles[headerTitle.id] || '';
-
-				headerTitle.questions.forEach((question, questionIndex) => {
-					acc[`question${headerIndex + 1}_${questionIndex + 1}`] =
-						formData.questions[question.id] || '';
-				});
-
-				return acc;
-			}, {})
-		};
-
-		// Validate the form data against the schema
-		const validationResult = finalSchema.safeParse(dataToValidate);
-
-		if (!validationResult.success) {
-			errors = validationResult.error.format() as Errors;
-		} else {
-			// Structure the data in the evaluation format
-			const structuredData = headerTitleTracker.map((headerTitle, headerIndex) => ({
-				id: headerTitle.id,
-				headerTitle: formData.headerTitles[headerTitle.id],
-				questions: headerTitle.questions.map((question, questionIndex) => ({
-					id: question.id,
-					question: formData.questions[question.id]
-				}))
-			}));
+		if (res.success) {
+			errors = undefined;
 
 			submitLoader = true;
-
-			const res = await fetch('?/create', {
-				method: 'post',
-				headers: { 'content-typed': 'application/json' },
-				body: JSON.stringify({
-					evaluationTitle: dataToValidate.evalTitle,
-					evaluation: structuredData
-				})
+			const res = await fetch('/admin-questionnaire/create', {
+				method: 'POST',
+				headers: { 'Content-type': 'application/json' },
+				body: JSON.stringify(questionContainer)
 			});
 
-			const { msg, data } = (await res.json()) as { msg: string; data: EvaluationType[] };
+			const { msg, data } = await res.json();
+
 			if (res.status === 200) {
-				toast.success('Create Evaluation', { description: msg });
-				submitLoader = false;
+				toast.success('Evaluation Creation', { description: msg });
 				questionnaireRoute.setEvaluation(data);
 				goto('/admin-questionnaire');
 			} else if (res.status === 401) {
-				toast.error('Create Evaluation', { description: msg });
+				toast.error('Evaluation Creation', { description: msg });
 				submitLoader = false;
 			}
 
-			errors = {};
+			return;
 		}
+
+		errors = res.error.issues;
 	};
 </script>
 
@@ -177,7 +108,7 @@
 </div>
 
 <div
-	class="flex min-h-screen flex-col gap-[0.625rem] border-l-[1px] border-slate-300 bg-secondary p-[0.625rem]"
+	class="flex min-h-screen flex-col gap-[1.25rem] border-l-[1px] border-slate-300 bg-secondary p-[0.625rem]"
 >
 	<div class="rounded-lg bg-white px-[0.625rem] py-[1.25rem] shadow-lg">
 		<p class="text-center text-xl font-semibold">Evaluation Form Creation</p>
@@ -186,121 +117,115 @@
 			<Input
 				type="text"
 				id="evalTitle"
-				bind:value={formData.evalTitle}
+				bind:value={questionContainer.evalTitle}
 				placeholder="Enter the evaluation title"
 			/>
-			{#if errors.evalTitle}
-				<p class="text-sm text-red-500">{errors.evalTitle._errors[0]}</p>
-			{/if}
+			<p class="text-sm text-red-500">{evalErrMsg()}</p>
 		</div>
 	</div>
 
-	{#each headerTitleTracker as headerTitleTrack, index (headerTitleTrack)}
+	{#each questionContainer.headers as header, i (header)}
 		<div
-			class="flex flex-col gap-[0.625rem] rounded-lg bg-white p-[1rem] shadow-lg"
+			class="relative flex flex-col gap-[0.625rem] rounded-lg bg-white p-[1rem] shadow-lg"
 			in:fade
 			animate:flip={{ duration: 350 }}
 		>
+			{#if questionContainer.headers.length > 1}
+				<button
+					class="absolute -top-2 right-4 rounded-sm bg-destructive p-[5px] text-white opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+					onclick={() => {
+						if (questionContainer.headers.length > 1) {
+							const filteredHeaders = questionContainer.headers.filter((h) => h.id !== header.id);
+							questionContainer.headers = filteredHeaders;
+						}
+					}}
+				>
+					<X class="h-[15px] w-[15px]" />
+				</button>
+			{/if}
+
 			<div class="grid w-full items-center gap-1.5">
-				<Label for={headerTitleTrack.id} class="font-semibold">Header Title {index + 1}</Label>
+				<Label for={header.id} class="font-semibold">Header Title {i + 1}</Label>
 				<Input
 					type="text"
-					id={headerTitleTrack.id}
-					bind:value={formData.headerTitles[headerTitleTrack.id]}
-					placeholder={`Enter your header title ${index + 1}`}
+					id={header.id}
+					bind:value={header.headerTitle}
+					placeholder={`Enter your header title ${i + 1}`}
 				/>
-				{#if errors[`headerTitle${index + 1}` as keyof Errors]}
-					<p class="text-sm text-red-500">
-						{errors[`headerTitle${index + 1}` as keyof Errors]?._errors[0]}
-					</p>
-				{/if}
+				<p class="text-sm text-red-500">{headerErrMsg(i)}</p>
 			</div>
 
 			<div class="flex flex-col gap-[0.625rem] border-l-[2px] border-primary p-[1rem]">
-				{#each headerTitleTrack.questions as questionTracker, innerIndex (questionTracker)}
+				{#each header.questions as question, ii (question)}
 					<div
-						id={questionTracker.id}
-						class="rounded-lg bg-secondary px-[0.625rem] py-[1.25rem]"
+						id={question.id}
+						class="relative rounded-lg bg-secondary px-[0.625rem] py-[1.25rem]"
 						in:fade
 						animate:flip={{ duration: 350 }}
 					>
-						<div class="grid w-full items-center gap-1.5">
-							<Label for={questionTracker.id}>Question {innerIndex + 1}</Label>
-							<Textarea
-								id={questionTracker.id}
-								bind:value={formData.questions[questionTracker.id]}
-								placeholder={`Enter your question ${innerIndex + 1}`}
-							/>
-							{#if errors[`question${index + 1}_${innerIndex + 1}` as keyof Errors]}
-								<p class="text-sm text-red-500">
-									{errors[`question${index + 1}_${innerIndex + 1}` as keyof Errors]?._errors[0]}
-								</p>
-							{/if}
-						</div>
+						{#if questionContainer.headers[i].questions.length > 1}
+							<button
+								class="absolute -top-2 right-4 rounded-sm bg-destructive p-[5px] text-white opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+								onclick={() => {
+									if (questionContainer.headers[i].questions.length > 1) {
+										const filteredQuestion = questionContainer.headers[i].questions.filter(
+											(q) => q.id !== question.id
+										);
 
-						<div class="mt-[1.25rem] flex items-center justify-end gap-[5px]">
-							{#if headerTitleTracker[index].questions.length > 1}
-								<Button
-									variant="destructive"
-									class="flex items-center gap-[5px]"
-									onclick={() =>
-										removeQuestion({ titleIndex: index, questionId: questionTracker.id })}
-								>
-									<Trash2 class="h-[15px] w-[15px]" />
-									Remove Question {innerIndex + 1}
-								</Button>
-							{/if}
+										questionContainer.headers[i].questions = filteredQuestion;
+									}
+								}}
+							>
+								<X class="h-[15px] w-[15px]" />
+							</button>
+						{/if}
+
+						<div class="grid w-full items-center gap-1.5">
+							<Label for={question.id}>Question {ii + 1}</Label>
+							<Textarea
+								id={question.id}
+								bind:value={question.question}
+								placeholder={`Enter your question ${ii + 1}`}
+							/>
+							<p class="text-sm text-red-500">{questionErrMsg(i, ii)}</p>
 						</div>
 					</div>
 				{/each}
 
-				<div class="flex items-center justify-between gap-[5px] overflow-auto">
-					<div class="flex items-center gap-[5px]">
-						<Button
-							disabled={submitLoader}
-							onclick={() => incrementQuestion(index)}
-							class="flex items-center gap-[5px]"
-						>
-							<Plus class="h-[15px] w-[15px]" />
-							More Question
-						</Button>
-
-						{#if headerTitleTracker[index].questions.length > 3}
-							<Button
-								onclick={() => {
-									const lastQuestionValue = headerTitleTracker[index].questions[0];
-									headerTitleTracker[index].questions = [];
-									headerTitleTracker[index].questions.push(lastQuestionValue);
-								}}
-								class="flex items-center gap-[5px]"
-								variant="destructive"
-							>
-								<Paintbrush class="h-[15px] w-[15px]" />
-								Reset
-							</Button>
-						{/if}
-					</div>
-
-					{#if headerTitleTracker.length > 1}
-						<Button
-							disabled={submitLoader}
-							variant="destructive"
-							onclick={() => removeTitle(headerTitleTrack.id)}
-							class="flex items-center gap-[5px]"
-						>
-							<Trash2 class="h-[15px] w-[15px]" />
-							Remove Title {index + 1}
-						</Button>
-					{/if}
+				<div class="flex items-center gap-[5px]">
+					<Button
+						class="flex items-center gap-[5px]"
+						onclick={() => {
+							questionContainer.headers[i].questions.push({
+								id: crypto.randomUUID(),
+								question: ''
+							});
+						}}
+					>
+						<Plus class="h-[15px] w-[15px]" />
+					</Button>
 				</div>
 			</div>
 		</div>
 	{/each}
 
 	<div class="flex items-center justify-between gap-[5px]">
-		<Button disabled={submitLoader} onclick={incrementTitle} class="flex items-center gap-[5px]">
+		<Button
+			onclick={() => {
+				questionContainer.headers.push({
+					id: crypto.randomUUID(),
+					headerTitle: '',
+					questions: [
+						{
+							id: crypto.randomUUID(),
+							question: ''
+						}
+					]
+				});
+			}}
+			class="flex items-center gap-[5px]"
+		>
 			<Plus class="h-[15px] w-[15px]" />
-			More Header Titles
 		</Button>
 
 		<Button
