@@ -21,7 +21,7 @@
 		const totalAnswer = dashboardRoute.getAnswers().length;
 
 		dashboardRoute.getEvals()?.forEach((item) => {
-			item.evaluation_data.forEach((innerItem) => {
+			item.evaluation_data.headers.forEach((innerItem) => {
 				innerItem.questions.forEach((sinnerItem) => {
 					totalQuestions.push(sinnerItem);
 				});
@@ -78,7 +78,7 @@
 
 				{#each dashboardRoute.getEvals() ?? [] as evaluationForm}
 					<p class="text-center text-xl font-semibold text-primary">
-						{evaluationForm.evaluation_title}
+						{evaluationForm.evaluation_data.evalTitle}
 					</p>
 
 					<div class="">
@@ -92,7 +92,7 @@
 
 					<!--Dynamic Questionares from database uploaded by admins-->
 					<div class="flex flex-col gap-[20px] border-t-[1px] border-slate-300 py-[10px]">
-						{#each evaluationForm.evaluation_data as evaluation, index}
+						{#each evaluationForm.evaluation_data.headers as evaluation, index}
 							<p class="font-semibold text-primary">{evaluation.headerTitle}</p>
 							<div class="flex flex-col gap-[10px]">
 								{#each evaluation.questions as questionObj, innerIndex}
