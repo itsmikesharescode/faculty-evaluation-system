@@ -45,9 +45,9 @@
 		<AlertDialog.Header>
 			<AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
 			<AlertDialog.Description>
-				This action cannot be undone. This will permanently delete {student.user_meta_data.fullname
-					.split(',')
-					.join(' ')} account and remove your data from our database.
+				This action cannot be undone. This will permanently delete
+				<strong>{student.user_meta_data.fullname.split(',').join(' ')}</strong>
+				account and remove your data from our database.
 			</AlertDialog.Description>
 		</AlertDialog.Header>
 		<AlertDialog.Footer>

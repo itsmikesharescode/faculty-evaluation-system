@@ -9,6 +9,7 @@
 	} from '../admin-manage-accounts-schema';
 	import type { Infer, SuperValidated } from 'sveltekit-superforms';
 	import UpdateStudent from './_operations/UpdateStudent.svelte';
+	import DeleteStudent from './_operations/DeleteStudent.svelte';
 
 	interface Props {
 		student: StudentType;
@@ -49,3 +50,5 @@
 	updateStudPwdForm={props.updateStudPwdForm}
 	updateStudInfoForm={props.updateStudInfoForm}
 />
+
+<DeleteStudent bind:deleteSignal student={props.student} />
