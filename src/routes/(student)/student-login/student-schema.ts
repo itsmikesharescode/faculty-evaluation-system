@@ -1,7 +1,7 @@
 import { courseNames, yearLevels } from '$lib';
 import { z } from 'zod';
 
-const sectionRegex = /^[0-9]{2}[A-Z]+-[0-9][A-Z]+$/;
+const sectionRegex = /-/;
 
 export const studentLoginSchema = z.object({
 	email: z.string().email({ message: 'Must enter a valid email.' }),

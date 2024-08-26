@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { departments } from '../_states/fromAdminDepartments.svelte';
 
-const sectionRegex = /^[0-9]{2}[A-Z]+-[0-9][A-Z]+$/;
+const sectionRegex = /-/;
 
 export const addProfSchema = z.object({
 	department: z.string(),

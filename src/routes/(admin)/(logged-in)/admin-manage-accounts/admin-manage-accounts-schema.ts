@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const sectionRegex = /^[0-9]{2}[A-Z]+-[0-9][A-Z]+$/;
+const sectionRegex = /-/;
 
 export const createStudentSchema = z
 	.object({

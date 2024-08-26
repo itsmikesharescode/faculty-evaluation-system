@@ -32,7 +32,7 @@ export const actions: Actions = {
 				suffix: form.data.nameSuffix ? form.data.nameSuffix : null,
 				year_level: form.data.yearLevel,
 				course: form.data.course,
-				section: form.data.section,
+				section: form.data.sections,
 				mobile_number: form.data.contactNumber,
 				address: form.data.address
 			}

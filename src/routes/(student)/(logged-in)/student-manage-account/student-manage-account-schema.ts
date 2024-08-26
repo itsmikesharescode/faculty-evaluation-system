@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+const sectionRegex = /-/;
+
 export const updateAccInfoSchema = z.object({
 	firstName: z.string().min(1, { message: 'Must enter first name.' }),
 	middleInitial: z
@@ -14,7 +16,23 @@ export const updateAccInfoSchema = z.object({
 			message: 'Must enter a valid year level'
 		}),
 	course: z.string().min(1, { message: 'Must enter course.' }),
-	section: z.string().min(1, { message: 'Must enter your section.' }),
+	sections: z.string().refine(
+		(value) => {
+			// Split the sections by comma
+			const sectionsArray = value.split(',');
+
+			// Ensure multiple sections are provided if there is more than one section
+			if (sectionsArray.length < 1) {
+				return false; // Return false if there's only one section (no commas)
+			}
+
+			// Check each section against the regex
+			return sectionsArray.every((section) => sectionRegex.test(section.trim()));
+		},
+		{
+			message: 'Invalid section format.'
+		}
+	),
 	contactNumber: z
 		.string()
 		.optional()
