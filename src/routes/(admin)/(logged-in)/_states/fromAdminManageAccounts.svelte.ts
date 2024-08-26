@@ -3,7 +3,6 @@ import { getContext, setContext } from 'svelte';
 
 class ManageAccountRoute {
 	private students = $state<StudentType[] | null>(null);
-	private active = $state<StudentType | null>(null);
 
 	setStudents(param: StudentType[] | null) {
 		this.students = param;
@@ -11,14 +10,6 @@ class ManageAccountRoute {
 
 	getStudents() {
 		return this.students;
-	}
-
-	setActive(param: StudentType | null) {
-		this.active = param;
-	}
-
-	getActive() {
-		return this.active;
 	}
 }
 

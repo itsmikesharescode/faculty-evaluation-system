@@ -1,4 +1,7 @@
+import { courseNames, yearLevels } from '$lib';
 import { z } from 'zod';
+
+const sectionRegex = /-/;
 
 export const studentLoginSchema = z.object({
 	email: z.string().email({ message: 'Must enter a valid email.' }),
@@ -19,13 +22,29 @@ export const studentCreateSchema = z
 		gender: z
 			.string()
 			.refine((v) => ['Male', 'Female'].includes(v), { message: 'Must enter a valid gender.' }),
-		yearLevel: z
+		yearLevel: z.string().refine((v) => yearLevels.includes(v), {
+			message: 'Must enter a valid year level'
+		}),
+		course: z
 			.string()
-			.refine((v) => ['First Year', 'Second Year', 'Third Year', 'Fourth Year'].includes(v), {
-				message: 'Must enter a valid year level'
-			}),
-		course: z.string().min(1, { message: 'Must enter course.' }),
-		section: z.string().min(1, { message: 'Must enter your section.' }),
+			.refine((v) => courseNames.includes(v), { message: 'Must choose your course.' }),
+		sections: z.string().refine(
+			(value) => {
+				// Split the sections by comma
+				const sectionsArray = value.split(',');
+
+				// Ensure multiple sections are provided if there is more than one section
+				if (sectionsArray.length < 1) {
+					return false; // Return false if there's only one section (no commas)
+				}
+
+				// Check each section against the regex
+				return sectionsArray.every((section) => sectionRegex.test(section.trim()));
+			},
+			{
+				message: 'Invalid section format.'
+			}
+		),
 		password: z.string().min(8, { message: 'Must choose a strong password.' }),
 		confirmPassword: z.string()
 	})

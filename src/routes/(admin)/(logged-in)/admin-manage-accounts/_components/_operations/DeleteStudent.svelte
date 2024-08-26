@@ -9,10 +9,11 @@
 	import type { ResultModel, StudentType } from '$lib/types';
 
 	interface Props {
+		student: StudentType;
 		deleteSignal: boolean;
 	}
 
-	let { deleteSignal = $bindable() }: Props = $props();
+	let { student, deleteSignal = $bindable() }: Props = $props();
 
 	const manageAccountRoute = fromManageAccountRouteState();
 
@@ -25,7 +26,6 @@
 			switch (status) {
 				case 200:
 					toast.success('Delete Account', { description: data.msg });
-					manageAccountRoute.setActive(null);
 					manageAccountRoute.setStudents(data.data);
 					deleteSignal = false;
 					deleteLoader = false;
@@ -45,15 +45,15 @@
 		<AlertDialog.Header>
 			<AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
 			<AlertDialog.Description>
-				This action cannot be undone. This will permanently delete {manageAccountRoute.getActive()
-					?.user_meta_data.fullname} account and remove your data from our database.
+				This action cannot be undone. This will permanently delete
+				<strong>{student.user_meta_data.fullname.split(',').join(' ')}</strong>
+				account and remove your data from our database.
 			</AlertDialog.Description>
 		</AlertDialog.Header>
 		<AlertDialog.Footer>
 			<Button
 				variant="secondary"
 				onclick={() => {
-					manageAccountRoute.setActive(null);
 					deleteSignal = false;
 				}}
 			>
@@ -61,7 +61,7 @@
 			</Button>
 
 			<form method="post" action="?/deleteAccountEvent" use:enhance={deleteAccountEvent}>
-				<input name="studentId" hidden value={manageAccountRoute.getActive()?.student_id} />
+				<input name="studentId" hidden value={student.student_id} />
 				<Button disabled={deleteLoader} type="submit" class="relative w-full sm:max-w-fit">
 					{#if deleteLoader}
 						<div

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import '@fontsource/poppins';
-	import { invalidate } from '$app/navigation';
+	import { invalidate, onNavigate } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { fromUserState, initUser } from './_states/fromRootState.svelte';
 	import { Toaster } from '$lib/components/ui/sonner';
@@ -23,6 +23,19 @@
 		});
 
 		return () => subs.subscription.unsubscribe();
+	});
+
+	onNavigate((navigation) => {
+		//@ts-ignore
+		if (!document.startViewTransition) return;
+
+		return new Promise((resolve) => {
+			//@ts-ignore
+			document.startViewTransition(async () => {
+				resolve();
+				await navigation.complete;
+			});
+		});
 	});
 </script>
 
