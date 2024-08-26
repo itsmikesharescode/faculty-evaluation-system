@@ -24,8 +24,9 @@
 	<Table.Caption>A list of student accounts</Table.Caption>
 	<Table.Header>
 		<Table.Row>
-			<Table.Head class="w-[100px]"></Table.Head>
+			<Table.Head class="w-fit"></Table.Head>
 			<Table.Head class="truncate">Student Name</Table.Head>
+			<Table.Head class="truncate">Student Email</Table.Head>
 			<Table.Head class="truncate">ID Number</Table.Head>
 			<Table.Head class="truncate">Year Level</Table.Head>
 			<Table.Head class="truncate">Section</Table.Head>
@@ -44,6 +45,7 @@
 					/>
 				</Table.Cell>
 				<Table.Cell class="font-medium">{student.user_meta_data.fullname}</Table.Cell>
+				<Table.Cell class="font-medium">{student.user_meta_data.email}</Table.Cell>
 				<Table.Cell class="truncate">{student.user_meta_data.id_number}</Table.Cell>
 				<Table.Cell class="truncate">{student.user_meta_data.year_level}</Table.Cell>
 				<Table.Cell class="truncate">{student.user_meta_data.section}</Table.Cell>

@@ -12,7 +12,8 @@
 	} from '../../../admin-manage-accounts-schema';
 	import { toast } from 'svelte-sonner';
 	import { courseNames } from '$lib';
-	import { Loader } from 'lucide-svelte';
+	import { CircleHelp, Loader } from 'lucide-svelte';
+	import * as Popover from '$lib/components/ui/popover';
 
 	interface Props {
 		student: StudentType;
@@ -66,7 +67,7 @@
 		$formData.gender = props.student.user_meta_data.gender;
 		$formData.yearLevel = props.student.user_meta_data.year_level;
 		$formData.course = props.student.user_meta_data.course;
-		$formData.section = props.student.user_meta_data.section;
+		$formData.sections = props.student.user_meta_data.section;
 	};
 
 	$effect(() => {
@@ -217,10 +218,33 @@
 				<Form.FieldErrors />
 			</Form.Field>
 
-			<Form.Field {form} name="section">
+			<Form.Field {form} name="sections">
 				<Form.Control let:attrs>
 					<Form.Label>Section</Form.Label>
-					<Input {...attrs} bind:value={$formData.section} placeholder="Enter student section" />
+					<div class="relative flex items-center">
+						<Input
+							{...attrs}
+							bind:value={$formData.sections}
+							placeholder="Enter student section"
+							class="pr-[2rem]"
+						/>
+						<Popover.Root>
+							<Popover.Trigger class="absolute right-0 mr-[5px]">
+								<CircleHelp />
+							</Popover.Trigger>
+							<Popover.Content>
+								<p class="text-sm leading-7">
+									Please use formats like <strong>24BSIS-1M, 24BSIS-2M, 23BSIS-2P1E</strong>.
+								</p>
+
+								<p class="text-sm leading-7">Example:</p>
+								<p class="text-sm leading-7">Single section: <strong>24BSIS-1M</strong></p>
+								<p class="text-sm leading-7">
+									Multiple section: <strong>24BSIS-1M, 24BSIS-2M, 23BSIS-2P1E</strong>.
+								</p>
+							</Popover.Content>
+						</Popover.Root>
+					</div>
 				</Form.Control>
 
 				<Form.FieldErrors />

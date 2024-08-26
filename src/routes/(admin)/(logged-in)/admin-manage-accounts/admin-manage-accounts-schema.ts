@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+const sectionRegex = /^[0-9]{2}[A-Z]+-[0-9][A-Z]+$/;
+
 export const createStudentSchema = z
 	.object({
 		email: z.string().email({ message: 'Must enter student valid email.' }),
@@ -20,7 +22,23 @@ export const createStudentSchema = z
 				message: 'Must enter student valid year level'
 			}),
 		course: z.string().min(1, { message: 'Must enter student course.' }),
-		section: z.string().min(1, { message: 'Must enter student your section.' }),
+		sections: z.string().refine(
+			(value) => {
+				// Split the sections by comma
+				const sectionsArray = value.split(',');
+
+				// Ensure multiple sections are provided if there is more than one section
+				if (sectionsArray.length < 1) {
+					return false; // Return false if there's only one section (no commas)
+				}
+
+				// Check each section against the regex
+				return sectionsArray.every((section) => sectionRegex.test(section.trim()));
+			},
+			{
+				message: 'Invalid section format.'
+			}
+		),
 		password: z.string().min(8, { message: 'Must choose a strong password.' }),
 		confirmPassword: z.string()
 	})
@@ -58,7 +76,23 @@ export const updateStudInfoSchema = z.object({
 			message: 'Must enter student valid year level'
 		}),
 	course: z.string().min(1, { message: 'Must enter student course.' }),
-	section: z.string().min(1, { message: 'Must enter student your section.' })
+	sections: z.string().refine(
+		(value) => {
+			// Split the sections by comma
+			const sectionsArray = value.split(',');
+
+			// Ensure multiple sections are provided if there is more than one section
+			if (sectionsArray.length < 1) {
+				return false; // Return false if there's only one section (no commas)
+			}
+
+			// Check each section against the regex
+			return sectionsArray.every((section) => sectionRegex.test(section.trim()));
+		},
+		{
+			message: 'Invalid section format.'
+		}
+	)
 });
 
 export const updateStudPwdSchema = z

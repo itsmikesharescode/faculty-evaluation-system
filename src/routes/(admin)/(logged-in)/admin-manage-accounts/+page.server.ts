@@ -38,7 +38,7 @@ export const actions: Actions = {
 				gender: form.data.gender,
 				year_level: form.data.yearLevel,
 				course: form.data.course,
-				section: form.data.section,
+				section: form.data.sections,
 				mobile_number: 'N/A',
 				address: 'N/A'
 			}
@@ -68,7 +68,7 @@ export const actions: Actions = {
 				gender: form.data.gender,
 				year_level: form.data.yearLevel,
 				course: form.data.course,
-				section: form.data.section
+				section: form.data.sections
 			}
 		});
 

@@ -5,13 +5,14 @@
 	import { Input } from '$lib/components/ui/input';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { Loader, X } from 'lucide-svelte';
+	import { CircleHelp, Loader, X } from 'lucide-svelte';
 	import * as Select from '$lib/components/ui/select/index.js';
 	import { createStudentSchema, type CreateStudentSchema } from '../admin-manage-accounts-schema';
 	import type { ResultModel, StudentType } from '$lib/types';
 	import { toast } from 'svelte-sonner';
 	import { fromManageAccountRouteState } from '../../_states/fromAdminManageAccounts.svelte';
 	import { courseNames } from '$lib';
+	import * as Popover from '$lib/components/ui/popover';
 
 	interface Props {
 		createStudentForm: SuperValidated<Infer<CreateStudentSchema>>;
@@ -62,7 +63,10 @@
 <AlertDialog.Root bind:open>
 	<AlertDialog.Content class="flex max-h-screen max-w-[800px] flex-col p-0">
 		<button
-			onclick={() => (open = false)}
+			onclick={() => {
+				open = false;
+				form.reset();
+			}}
 			class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
 		>
 			<X class="h-4 w-4" />
@@ -230,14 +234,33 @@
 						<Form.FieldErrors />
 					</Form.Field>
 
-					<Form.Field {form} name="section">
+					<Form.Field {form} name="sections">
 						<Form.Control let:attrs>
 							<Form.Label>Section</Form.Label>
-							<Input
-								{...attrs}
-								bind:value={$formData.section}
-								placeholder="Enter student section"
-							/>
+							<div class="relative flex items-center">
+								<Input
+									{...attrs}
+									bind:value={$formData.sections}
+									placeholder="Enter student section"
+									class="pr-[2rem]"
+								/>
+								<Popover.Root>
+									<Popover.Trigger class="absolute right-0 mr-[5px]">
+										<CircleHelp />
+									</Popover.Trigger>
+									<Popover.Content>
+										<p class="text-sm leading-7">
+											Please use formats like <strong>24BSIS-1M, 24BSIS-2M, 23BSIS-2P1E</strong>.
+										</p>
+
+										<p class="text-sm leading-7">Example:</p>
+										<p class="text-sm leading-7">Single section: <strong>24BSIS-1M</strong></p>
+										<p class="text-sm leading-7">
+											Multiple section: <strong>24BSIS-1M, 24BSIS-2M, 23BSIS-2P1E</strong>.
+										</p>
+									</Popover.Content>
+								</Popover.Root>
+							</div>
 						</Form.Control>
 
 						<Form.FieldErrors />

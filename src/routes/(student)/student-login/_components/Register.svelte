@@ -10,8 +10,9 @@
 	import { goto } from '$app/navigation';
 	import { fromUserState } from '../../../_states/fromRootState.svelte';
 	import type { User } from '@supabase/supabase-js';
-	import { Loader } from 'lucide-svelte';
+	import { CircleHelp, Loader } from 'lucide-svelte';
 	import { courseNames, yearLevels } from '$lib';
+	import * as Popover from '$lib/components/ui/popover';
 
 	interface Props {
 		studentCreateForm: SuperValidated<Infer<StudentCreateSchema>>;
@@ -188,10 +189,33 @@
 		<Form.FieldErrors />
 	</Form.Field>
 
-	<Form.Field {form} name="section">
+	<Form.Field {form} name="sections">
 		<Form.Control let:attrs>
 			<Form.Label>Section</Form.Label>
-			<Input {...attrs} bind:value={$formData.section} placeholder="Enter your section" />
+			<div class="relative flex items-center">
+				<Input
+					{...attrs}
+					bind:value={$formData.sections}
+					placeholder="Enter your section"
+					class="pr-[2rem]"
+				/>
+				<Popover.Root>
+					<Popover.Trigger class="absolute right-0 mr-[5px]">
+						<CircleHelp />
+					</Popover.Trigger>
+					<Popover.Content>
+						<p class="text-sm leading-7">
+							Please use formats like <strong>24BSIS-1M, 24BSIS-2M, 23BSIS-2P1E</strong>.
+						</p>
+
+						<p class="text-sm leading-7">Example:</p>
+						<p class="text-sm leading-7">Single section: <strong>24BSIS-1M</strong></p>
+						<p class="text-sm leading-7">
+							Multiple section: <strong>24BSIS-1M, 24BSIS-2M, 23BSIS-2P1E</strong>.
+						</p>
+					</Popover.Content>
+				</Popover.Root>
+			</div>
 		</Form.Control>
 
 		<Form.FieldErrors />
