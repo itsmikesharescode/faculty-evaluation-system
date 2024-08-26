@@ -96,7 +96,7 @@
 			</Form.Field>
 			<p class="text-sm leading-7 text-muted-foreground">
 				Adding section that is > 1 must follow this format section1,sectio2, etc example
-				<strong>1234567KK1, 1234567KK2, ... </strong>
+				<strong>24BSIS-1M, 24BSIS-2M, 23BSIS-2P1E.</strong>
 			</p>
 
 			<div class="flex justify-end">

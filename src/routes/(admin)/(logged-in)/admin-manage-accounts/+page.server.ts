@@ -1,7 +1,12 @@
 import { superValidate } from 'sveltekit-superforms';
 import type { Actions, PageServerLoad } from './$types';
 import { zod } from 'sveltekit-superforms/adapters';
-import { createStudentSchema, updateStudentSchema } from './admin-manage-accounts-schema';
+import {
+	createStudentSchema,
+	updateStudEmailSchema,
+	updateStudInfoSchema,
+	updateStudPwdSchema
+} from './admin-manage-accounts-schema';
 import { fail } from '@sveltejs/kit';
 import type { PostgrestSingleResponse } from '@supabase/supabase-js';
 import type { StudentType } from '$lib/types';
@@ -9,7 +14,9 @@ import type { StudentType } from '$lib/types';
 export const load: PageServerLoad = async () => {
 	return {
 		createStudentForm: await superValidate(zod(createStudentSchema)),
-		updateStudentForm: await superValidate(zod(updateStudentSchema))
+		updateStudEmailForm: await superValidate(zod(updateStudEmailSchema)),
+		updateStudPwdForm: await superValidate(zod(updateStudPwdSchema)),
+		updateStudInfoForm: await superValidate(zod(updateStudInfoSchema))
 	};
 };
 
@@ -48,7 +55,7 @@ export const actions: Actions = {
 		return { form, msg: 'Account Created', data };
 	},
 
-	updateAccountEvent: async ({ locals: { supabaseAdmin }, request }) => {
+	/* updateAccountEvent: async ({ locals: { supabaseAdmin }, request }) => {
 		const form = await superValidate(request, zod(updateStudentSchema));
 
 		if (!form.valid) return fail(400, { form });
@@ -79,7 +86,7 @@ export const actions: Actions = {
 		if (studentsError) return fail(401, { form, msg: studentsError.message });
 
 		return { form, msg: 'User account updated.', data };
-	},
+	}, */
 
 	deleteAccountEvent: async ({ locals: { supabaseAdmin }, request }) => {
 		const studentId = (await request.formData()).get('studentId') as string;
