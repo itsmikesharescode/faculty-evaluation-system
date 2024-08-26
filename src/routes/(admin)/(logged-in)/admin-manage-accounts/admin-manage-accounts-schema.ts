@@ -36,7 +36,6 @@ export const createStudentSchema = z
 
 export const updateStudEmailSchema = z.object({
 	studentId: z.string(),
-	idNumber: z.string().min(5, { message: 'Must enter student valid id number.' }),
 	email: z.string().email({ message: 'Must enter a valid email.' })
 });
 

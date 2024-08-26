@@ -45,7 +45,7 @@
 		<div class="overflow-auto">
 			<div class="">
 				<UpdateStudEmail
-					{updateSignal}
+					bind:updateSignal
 					student={props.student}
 					updateStudEmailForm={props.updateStudEmailForm}
 				/>
@@ -61,7 +61,7 @@
 
 			<div class="">
 				<UpdateStudInfo
-					{updateSignal}
+					bind:updateSignal
 					student={props.student}
 					updateStudInfoForm={props.updateStudInfoForm}
 				/>
