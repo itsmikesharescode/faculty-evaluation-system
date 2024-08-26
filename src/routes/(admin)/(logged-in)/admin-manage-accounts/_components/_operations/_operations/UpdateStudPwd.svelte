@@ -18,7 +18,7 @@
 		updateStudPwdForm: SuperValidated<Infer<UpdateStudPwdSchema>>;
 	}
 
-	let { ...props }: Props = $props();
+	let { updateSignal = $bindable(), ...props }: Props = $props();
 
 	const manageAccountRoute = fromManageAccountRouteState();
 
@@ -32,6 +32,7 @@
 				case 200:
 					toast.success('Update Account', { description: data.msg });
 					manageAccountRoute.setStudents(data.data);
+					updateSignal = false;
 					break;
 				case 401:
 					toast.error('Update Account', { description: data.msg });
@@ -45,7 +46,7 @@
 
 <form
 	method="POST"
-	action="?/updateAccountEvent"
+	action="?/updateStudPwdEvent"
 	use:enhance
 	class="flex flex-col gap-[10px] overflow-auto px-[1.5rem] pb-[1.5rem]"
 >

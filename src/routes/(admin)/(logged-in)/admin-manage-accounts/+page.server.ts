@@ -103,29 +103,15 @@ export const actions: Actions = {
 
 		if (studentsError) return fail(401, { form, msg: studentsError.message });
 
-		return { form, msg: 'User account updated.', data };
+		return { form, msg: 'User email updated.', data };
 	},
 
-	/* updateAccountEvent: async ({ locals: { supabaseAdmin }, request }) => {
-		const form = await superValidate(request, zod(updateStudentSchema));
+	updateStudPwdEvent: async ({ locals: { supabaseAdmin }, request }) => {
+		const form = await superValidate(request, zod(updateStudPwdSchema));
 
 		if (!form.valid) return fail(400, { form });
-
-		const { error } = await supabaseAdmin.auth.admin.updateUserById(form.data.student_id, {
-			email: form.data.email,
-			password: form.data.password,
-			user_metadata: {
-				email: form.data.email,
-				id_number: form.data.idNumber,
-				fullname: `${form.data.lastName},${form.data.firstName},${form.data.middleInitial},`,
-				suffix: form.data.nameSuffix ? form.data.nameSuffix : null,
-				gender: form.data.gender,
-				year_level: form.data.yearLevel,
-				course: form.data.course,
-				section: form.data.section,
-				mobile_number: 'N/A',
-				address: 'N/A'
-			}
+		const { error } = await supabaseAdmin.auth.admin.updateUserById(form.data.studentId, {
+			password: form.data.newPwd
 		});
 
 		if (error) return fail(401, { form, msg: error.message });
@@ -136,8 +122,8 @@ export const actions: Actions = {
 
 		if (studentsError) return fail(401, { form, msg: studentsError.message });
 
-		return { form, msg: 'User account updated.', data };
-	}, */
+		return { form, msg: 'User password updated.', data };
+	},
 
 	deleteAccountEvent: async ({ locals: { supabaseAdmin }, request }) => {
 		const studentId = (await request.formData()).get('studentId') as string;

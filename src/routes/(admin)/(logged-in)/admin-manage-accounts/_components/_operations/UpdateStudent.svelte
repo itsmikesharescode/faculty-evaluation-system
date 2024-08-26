@@ -53,7 +53,7 @@
 
 			<div class="">
 				<UpdateStudPwd
-					{updateSignal}
+					bind:updateSignal
 					student={props.student}
 					updateStudPwdForm={props.updateStudPwdForm}
 				/>
