@@ -11,6 +11,7 @@
 	import type { ResultModel, StudentType } from '$lib/types';
 	import { toast } from 'svelte-sonner';
 	import { fromManageAccountRouteState } from '../../_states/fromAdminManageAccounts.svelte';
+	import { courseNames } from '$lib';
 
 	interface Props {
 		createStudentForm: SuperValidated<Infer<CreateStudentSchema>>;
@@ -44,21 +45,15 @@
 	const { form: formData, enhance, submitting } = form;
 
 	const selectedGender = $derived(
-		$formData.gender
-			? {
-					label: $formData.gender,
-					value: $formData.gender
-				}
-			: undefined
+		$formData.gender ? { label: $formData.gender, value: $formData.gender } : undefined
 	);
 
 	const yearLevel = $derived(
-		$formData.yearLevel
-			? {
-					label: $formData.yearLevel,
-					value: $formData.yearLevel
-				}
-			: undefined
+		$formData.yearLevel ? { label: $formData.yearLevel, value: $formData.yearLevel } : undefined
+	);
+
+	const courseName = $derived(
+		$formData.course ? { label: $formData.course, value: $formData.course } : undefined
 	);
 </script>
 
@@ -214,7 +209,22 @@
 					<Form.Field {form} name="course">
 						<Form.Control let:attrs>
 							<Form.Label>Course</Form.Label>
-							<Input {...attrs} bind:value={$formData.course} placeholder="Enter student course" />
+							<Select.Root
+								selected={courseName}
+								onSelectedChange={(v) => {
+									v && ($formData.course = v.value);
+								}}
+							>
+								<Select.Trigger {...attrs}>
+									<Select.Value placeholder="Select your course" />
+								</Select.Trigger>
+								<Select.Content>
+									{#each courseNames as course}
+										<Select.Item value={course} label={course} />
+									{/each}
+								</Select.Content>
+							</Select.Root>
+							<input hidden bind:value={$formData.course} name={attrs.name} />
 						</Form.Control>
 
 						<Form.FieldErrors />
