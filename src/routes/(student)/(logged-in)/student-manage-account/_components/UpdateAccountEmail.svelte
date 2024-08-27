@@ -5,7 +5,7 @@
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { updateEmailSchema, type UpdateEmailSchema } from '../student-manage-account-schema';
-	import type { ResultModel } from '$lib/types';
+	import type { ResultModel, StudentType } from '$lib/types';
 	import type { User } from '@supabase/supabase-js';
 	import { toast } from 'svelte-sonner';
 	import { fromUserState } from '../../../../_states/fromRootState.svelte';
@@ -47,7 +47,11 @@
 	<Form.Field {form} name="newEmail">
 		<Form.Control let:attrs>
 			<Form.Label>New Email</Form.Label>
-			<Input {...attrs} bind:value={$formData.newEmail} placeholder="Enter your new email" />
+			<Input
+				{...attrs}
+				bind:value={$formData.newEmail}
+				placeholder={user.getUser()?.user_metadata.email}
+			/>
 		</Form.Control>
 
 		<Form.FieldErrors />
