@@ -36,9 +36,6 @@
 					toast.error('Manage Account', { description: data.msg });
 					break;
 			}
-		},
-		onUpdated({ form }) {
-			if (form.valid) bindPrevValues();
 		}
 	});
 
@@ -47,22 +44,6 @@
 	const yearLevel = $derived(
 		$formData.yearLevel ? { label: $formData.yearLevel, value: $formData.yearLevel } : undefined
 	);
-
-	const bindPrevValues = () => {
-		$formData.address = user.getUser()?.user_metadata.address;
-		$formData.contactNumber = user.getUser()?.user_metadata.mobile_number;
-		$formData.firstName = user.getUser()?.user_metadata.fullname.split(',')[1];
-		$formData.middleInitial = user.getUser()?.user_metadata.fullname.split(',')[2];
-		$formData.lastName = user.getUser()?.user_metadata.fullname.split(',')[0];
-		$formData.nameSuffix = user.getUser()?.user_metadata.suffix;
-		$formData.yearLevel = user.getUser()?.user_metadata.year_level;
-		$formData.course = user.getUser()?.user_metadata.course;
-		$formData.sections = user.getUser()?.user_metadata.section;
-	};
-
-	$effect(() => {
-		bindPrevValues();
-	});
 </script>
 
 <p class="p-[20px] text-center text-xl font-semibold leading-7">Update Information</p>
@@ -73,7 +54,7 @@
 			<Input
 				{...attrs}
 				bind:value={$formData.contactNumber}
-				placeholder="Enter your contact number"
+				placeholder={user.getUser()?.user_metadata.mobile_number ?? 'Enter your contact number'}
 			/>
 		</Form.Control>
 
@@ -83,7 +64,11 @@
 	<Form.Field {form} name="address">
 		<Form.Control let:attrs>
 			<Form.Label>Address (optional)</Form.Label>
-			<Input {...attrs} bind:value={$formData.address} placeholder="Enter your address" />
+			<Input
+				{...attrs}
+				bind:value={$formData.address}
+				placeholder={user.getUser()?.user_metadata.address ?? 'Enter your address'}
+			/>
 		</Form.Control>
 
 		<Form.FieldErrors />
@@ -91,7 +76,11 @@
 	<Form.Field {form} name="firstName">
 		<Form.Control let:attrs>
 			<Form.Label>First Name</Form.Label>
-			<Input {...attrs} bind:value={$formData.firstName} placeholder="Enter your first name" />
+			<Input
+				{...attrs}
+				bind:value={$formData.firstName}
+				placeholder={user.getUser()?.user_metadata.fullname.split(',')[1]}
+			/>
 		</Form.Control>
 
 		<Form.FieldErrors />
@@ -103,7 +92,7 @@
 			<Input
 				{...attrs}
 				bind:value={$formData.middleInitial}
-				placeholder="Enter your middle initial"
+				placeholder={user.getUser()?.user_metadata.fullname.split(',')[2]}
 			/>
 		</Form.Control>
 
@@ -113,7 +102,11 @@
 	<Form.Field {form} name="lastName">
 		<Form.Control let:attrs>
 			<Form.Label>Last Name</Form.Label>
-			<Input {...attrs} bind:value={$formData.lastName} placeholder="Enter your last name" />
+			<Input
+				{...attrs}
+				bind:value={$formData.lastName}
+				placeholder={user.getUser()?.user_metadata.fullname.split(',')[0]}
+			/>
 		</Form.Control>
 
 		<Form.FieldErrors />
@@ -122,7 +115,11 @@
 	<Form.Field {form} name="nameSuffix">
 		<Form.Control let:attrs>
 			<Form.Label>Name Suffix (optional)</Form.Label>
-			<Input {...attrs} bind:value={$formData.nameSuffix} placeholder="Enter your name suffix" />
+			<Input
+				{...attrs}
+				bind:value={$formData.nameSuffix}
+				placeholder={user.getUser()?.user_metadata.suffix ?? 'Enter your suffix'}
+			/>
 		</Form.Control>
 
 		<Form.FieldErrors />
@@ -138,7 +135,7 @@
 				}}
 			>
 				<Select.Trigger {...attrs}>
-					<Select.Value placeholder="Select your year level" />
+					<Select.Value placeholder={user.getUser()?.user_metadata.year_level} />
 				</Select.Trigger>
 				<Select.Content>
 					<Select.Item value="First Year" label="First Year" />
@@ -156,7 +153,11 @@
 	<Form.Field {form} name="course">
 		<Form.Control let:attrs>
 			<Form.Label>Course</Form.Label>
-			<Input {...attrs} bind:value={$formData.course} placeholder="Enter your course" />
+			<Input
+				{...attrs}
+				bind:value={$formData.course}
+				placeholder={user.getUser()?.user_metadata.course}
+			/>
 		</Form.Control>
 
 		<Form.FieldErrors />
@@ -169,7 +170,7 @@
 				<Input
 					{...attrs}
 					bind:value={$formData.sections}
-					placeholder="Enter your section"
+					placeholder={user.getUser()?.user_metadata.section}
 					class="pr-[2rem]"
 				/>
 				<Popover.Root>
