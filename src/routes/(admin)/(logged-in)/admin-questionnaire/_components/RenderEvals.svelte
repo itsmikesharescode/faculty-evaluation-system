@@ -21,10 +21,8 @@
 				class="relative flex items-center rounded-lg border-black bg-secondary p-[20px] shadow-lg"
 			>
 				{#if evaluationForms.is_used}
-					<div
-						class="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center rounded-lg bg-[#00000050]"
-					>
-						<p class="rounded-sm p-[0.625rem] text-white">Currently Using</p>
+					<div class="absolute right-0 top-0 m-[1rem] mr-[2rem]">
+						<p class="rounded-sm bg-black px-[0.625rem] text-white">Active</p>
 					</div>
 				{/if}
 
