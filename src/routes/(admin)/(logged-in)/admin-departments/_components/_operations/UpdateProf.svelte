@@ -4,9 +4,9 @@
 	import { Input } from '$lib/components/ui/input';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { Loader, X } from 'lucide-svelte';
+	import { CircleHelp, Loader, X } from 'lucide-svelte';
 	import Textarea from '$lib/components/ui/textarea/textarea.svelte';
-	import type { ProfessorType, ResultModel } from '$lib/types';
+	import type { Departments, ProfessorType, ResultModel } from '$lib/types';
 	import { toast } from 'svelte-sonner';
 	import {
 		departments,
@@ -14,27 +14,33 @@
 	} from '../../../_states/fromAdminDepartments.svelte';
 	import { updateProfSchema, type UpdateProfSchema } from '../../admin-departments-schema';
 	import * as Select from '$lib/components/ui/select';
+	import * as Popover from '$lib/components/ui/popover';
+	import Button from '$lib/components/ui/button/button.svelte';
 
 	interface Props {
+		professor: ProfessorType;
 		updateProfForm: SuperValidated<Infer<UpdateProfSchema>>;
 		updateSignal: boolean;
 	}
 
-	let { updateProfForm, updateSignal = $bindable() }: Props = $props();
+	let { updateSignal = $bindable(), ...props }: Props = $props();
 
 	const departmentRoute = fromDepartmentsRouteState();
 
-	const form = superForm(updateProfForm, {
+	const form = superForm(props.updateProfForm, {
 		validators: zodClient(updateProfSchema),
 		id: crypto.randomUUID(),
+		invalidateAll: false,
 		onUpdate({ result }) {
-			const { status, data } = result as ResultModel<{ msg: string; data: ProfessorType[] }>;
+			const { status, data } = result as ResultModel<{
+				msg: string;
+				data: Departments;
+			}>;
 
 			switch (status) {
 				case 200:
 					toast.success('Create Professor', { description: data.msg });
 					departmentRoute.setProfs(data.data);
-					departmentRoute.setActive(null);
 					updateSignal = false;
 					break;
 				case 401:
@@ -49,24 +55,14 @@
 	const selectedDepartment = $derived(
 		$formData.department ? { label: $formData.department, value: $formData.department } : undefined
 	);
-
-	const loadPrevData = () => {
-		$formData.department = departmentRoute.getActive()?.department ?? '';
-		$formData.profName = departmentRoute.getActive()?.fullname ?? '';
-		$formData.sections = departmentRoute.getActive()?.sections ?? '';
-	};
-
-	$effect(() => {
-		loadPrevData();
-	});
 </script>
 
 <AlertDialog.Root bind:open={updateSignal}>
 	<AlertDialog.Content>
 		<button
 			onclick={() => {
-				departmentRoute.setActive(null);
 				updateSignal = false;
+				form.reset();
 			}}
 			class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
 		>
@@ -81,12 +77,10 @@
 		</AlertDialog.Header>
 
 		<form method="POST" action="?/updateProfEvent" use:enhance class="flex flex-col gap-[10px]">
-			<Form.Field {form} name="profId">
+			<Form.Field {form} name="profId" class="hidden">
 				<Form.Control let:attrs>
-					<Input type="number" {...attrs} value={departmentRoute.getActive()?.id} class="hidden" />
+					<Input type="number" {...attrs} value={props.professor.id} />
 				</Form.Control>
-
-				<Form.FieldErrors />
 			</Form.Field>
 
 			<Form.Field {form} name="department">
@@ -99,7 +93,7 @@
 						}}
 					>
 						<Select.Trigger {...attrs}>
-							<Select.Value placeholder="Select Department" />
+							<Select.Value placeholder={props.professor.department} />
 						</Select.Trigger>
 						<Select.Content>
 							{#each departments as department}
@@ -118,7 +112,7 @@
 					<Input
 						{...attrs}
 						bind:value={$formData.profName}
-						placeholder="Enter the professor name"
+						placeholder={props.professor.fullname}
 					/>
 				</Form.Control>
 
@@ -131,16 +125,31 @@
 					<Textarea
 						{...attrs}
 						bind:value={$formData.sections}
-						placeholder="Enter the professor sections"
+						placeholder={props.professor.sections}
 					/>
 				</Form.Control>
 
 				<Form.FieldErrors />
 			</Form.Field>
-			<p class="text-sm leading-7 text-muted-foreground">
-				Adding section that is > 1 must follow this format section1,sectio2, etc example
-				<strong>1234567KK1, 1234567KK2, ... </strong>
-			</p>
+			<Popover.Root>
+				<Popover.Trigger class="max-w-fit">
+					<Button size="sm" variant="outline" class="flex items-center gap-[0.321rem]">
+						<span>View Format Guide</span>
+						<CircleHelp class="h-[15px] w-[15px]" />
+					</Button>
+				</Popover.Trigger>
+				<Popover.Content>
+					<p class="text-sm leading-7">
+						Please use formats like <strong>24BSIS-1M, 24BSIS-2M, 23BSIS-2P1E</strong>.
+					</p>
+
+					<p class="text-sm leading-7">Example:</p>
+					<p class="text-sm leading-7">Single section: <strong>24BSIS-1M</strong></p>
+					<p class="text-sm leading-7">
+						Multiple section: <strong>24BSIS-1M, 24BSIS-2M, 23BSIS-2P1E</strong>.
+					</p>
+				</Popover.Content>
+			</Popover.Root>
 
 			<div class="flex justify-end">
 				<Form.Button disabled={$submitting} class="relative ">

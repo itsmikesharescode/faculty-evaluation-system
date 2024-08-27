@@ -69,13 +69,21 @@ export type StudentType = {
 	user_meta_data: UserMetaData;
 };
 
+export interface Departments {
+	bsisDep: ProfessorType[] | [];
+	bseDep: ProfessorType[] | [];
+	btvtedDep: ProfessorType[] | [];
+	domtDep: ProfessorType[] | [];
+	dictDep: ProfessorType[] | [];
+}
+
 export interface AdminLayoutQueryType {
-	professors: ProfessorType[] | null;
-	evaluation_forms: EvaluationType[] | null;
-	students: StudentType[] | null;
+	professors: Departments | null;
+	evaluation_forms: EvaluationType[] | [];
+	students: StudentType[] | [];
 }
 
 export interface StudentLayoutQueryType {
-	evaluation_forms: EvaluationType[] | null;
-	professors: ProfessorType[] | null;
+	evaluation_forms: EvaluationType[] | [];
+	professors: ProfessorType[] | [];
 }

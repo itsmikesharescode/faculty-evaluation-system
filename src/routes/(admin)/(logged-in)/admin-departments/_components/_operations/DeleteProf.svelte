@@ -4,15 +4,16 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { fromDepartmentsRouteState } from '../../../_states/fromAdminDepartments.svelte';
 	import { enhance } from '$app/forms';
-	import type { ProfessorType, ResultModel } from '$lib/types';
+	import type { Departments, ProfessorType, ResultModel } from '$lib/types';
 	import { toast } from 'svelte-sonner';
 	import { Loader } from 'lucide-svelte';
 
 	interface Props {
+		professor: ProfessorType;
 		deleteSignal: boolean;
 	}
 
-	let { deleteSignal = $bindable() }: Props = $props();
+	let { deleteSignal = $bindable(), professor }: Props = $props();
 
 	const departmentRoute = fromDepartmentsRouteState();
 
@@ -20,13 +21,12 @@
 	const deleteProfEvent: SubmitFunction = () => {
 		deleteLoader = true;
 		return async ({ result }) => {
-			const { status, data } = result as ResultModel<{ msg: string; data: ProfessorType[] }>;
+			const { status, data } = result as ResultModel<{ msg: string; data: Departments }>;
 
 			switch (status) {
 				case 200:
 					toast.success('Delete Professor', { description: data.msg });
 					deleteLoader = false;
-					departmentRoute.setActive(null);
 					departmentRoute.setProfs(data.data);
 					deleteSignal = false;
 					break;
@@ -46,7 +46,7 @@
 			<AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
 			<AlertDialog.Description>
 				This action cannot be undone. This will permanently delete <strong
-					>{departmentRoute.getActive()?.fullname}</strong
+					>{professor.fullname}</strong
 				> details from our database.
 			</AlertDialog.Description>
 		</AlertDialog.Header>
@@ -54,12 +54,11 @@
 			<Button
 				variant="secondary"
 				onclick={() => {
-					departmentRoute.setActive(null);
 					deleteSignal = false;
 				}}>Cancel</Button
 			>
 			<form method="post" action="?/deleteProfEvent" use:enhance={deleteProfEvent}>
-				<input name="profId" hidden value={departmentRoute.getActive()?.id} />
+				<input name="profId" hidden value={professor.id} />
 				<Button disabled={deleteLoader} type="submit" class="relative w-full sm:max-w-fit">
 					{#if deleteLoader}
 						<div

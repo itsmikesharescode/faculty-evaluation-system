@@ -6,11 +6,13 @@
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { addProfSchema, type AddProfSchema } from '../admin-departments-schema';
-	import { Loader, X } from 'lucide-svelte';
+	import { CircleHelp, Loader, X } from 'lucide-svelte';
 	import Textarea from '$lib/components/ui/textarea/textarea.svelte';
 	import { fromDepartmentsRouteState } from '../../_states/fromAdminDepartments.svelte';
-	import type { ProfessorType, ResultModel } from '$lib/types';
+	import type { Departments, ResultModel } from '$lib/types';
 	import { toast } from 'svelte-sonner';
+	import { fromDepRouteState } from '../_states/fromDepRoutes.svelte';
+	import * as Popover from '$lib/components/ui/popover';
 
 	interface Props {
 		addProfForm: SuperValidated<Infer<AddProfSchema>>;
@@ -19,14 +21,16 @@
 	const { addProfForm }: Props = $props();
 
 	const departmentRoute = fromDepartmentsRouteState();
+	const depRoute = fromDepRouteState();
 
 	let open = $state(false);
 
 	const form = superForm(addProfForm, {
 		validators: zodClient(addProfSchema),
 		id: crypto.randomUUID(),
+		invalidateAll: false,
 		onUpdate({ result }) {
-			const { status, data } = result as ResultModel<{ msg: string; data: ProfessorType[] }>;
+			const { status, data } = result as ResultModel<{ msg: string; data: Departments }>;
 
 			switch (status) {
 				case 200:
@@ -63,9 +67,9 @@
 		</AlertDialog.Header>
 
 		<form method="POST" action="?/addProfEvent" use:enhance class="flex flex-col gap-[10px]">
-			<Form.Field {form} name="department">
+			<Form.Field {form} name="department" class="hidden">
 				<Form.Control let:attrs>
-					<Input {...attrs} value={departmentRoute.getRoute()} class="hidden" />
+					<Input {...attrs} value={depRoute.getRoute()} />
 				</Form.Control>
 			</Form.Field>
 
@@ -94,10 +98,26 @@
 
 				<Form.FieldErrors />
 			</Form.Field>
-			<p class="text-sm leading-7 text-muted-foreground">
-				Adding section that is > 1 must follow this format section1,sectio2, etc example
-				<strong>24BSIS-1M, 24BSIS-2M, 23BSIS-2P1E.</strong>
-			</p>
+
+			<Popover.Root>
+				<Popover.Trigger class="max-w-fit">
+					<Button size="sm" variant="outline" class="flex items-center gap-[0.321rem]">
+						<span>View Format Guide</span>
+						<CircleHelp class="h-[15px] w-[15px]" />
+					</Button>
+				</Popover.Trigger>
+				<Popover.Content>
+					<p class="text-sm leading-7">
+						Please use formats like <strong>24BSIS-1M, 24BSIS-2M, 23BSIS-2P1E</strong>.
+					</p>
+
+					<p class="text-sm leading-7">Example:</p>
+					<p class="text-sm leading-7">Single section: <strong>24BSIS-1M</strong></p>
+					<p class="text-sm leading-7">
+						Multiple section: <strong>24BSIS-1M, 24BSIS-2M, 23BSIS-2P1E</strong>.
+					</p>
+				</Popover.Content>
+			</Popover.Root>
 
 			<div class="flex justify-end">
 				<Form.Button disabled={$submitting} class="relative ">

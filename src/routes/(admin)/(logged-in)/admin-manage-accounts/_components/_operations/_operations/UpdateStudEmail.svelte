@@ -42,10 +42,6 @@
 	});
 
 	const { form: formData, enhance, submitting } = form;
-
-	$effect(() => {
-		if (updateSignal) $formData.email = props.student.user_meta_data.email;
-	});
 </script>
 
 <form
@@ -64,7 +60,11 @@
 			<Form.Control let:attrs>
 				<Form.Label>Email</Form.Label>
 				<div class="flex items-center gap-[0.625rem]">
-					<Input {...attrs} bind:value={$formData.email} placeholder="Enter student new email" />
+					<Input
+						{...attrs}
+						bind:value={$formData.email}
+						placeholder={props.student.user_meta_data.email}
+					/>
 					<Form.Button disabled={$submitting} class="relative">
 						{#if $submitting}
 							<div

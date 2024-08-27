@@ -57,22 +57,6 @@
 	const courseName = $derived(
 		$formData.course ? { label: $formData.course, value: $formData.course } : undefined
 	);
-
-	const loadInitialData = () => {
-		$formData.idNumber = props.student.user_meta_data.id_number;
-		$formData.firstName = props.student.user_meta_data.fullname.split(',')[1];
-		$formData.middleInitial = props.student.user_meta_data.fullname.split(',')[2];
-		$formData.lastName = props.student.user_meta_data.fullname.split(',')[0];
-		$formData.nameSuffix = props.student.user_meta_data.suffix;
-		$formData.gender = props.student.user_meta_data.gender;
-		$formData.yearLevel = props.student.user_meta_data.year_level;
-		$formData.course = props.student.user_meta_data.course;
-		$formData.sections = props.student.user_meta_data.section;
-	};
-
-	$effect(() => {
-		if (updateSignal) loadInitialData();
-	});
 </script>
 
 <form
@@ -91,7 +75,11 @@
 			<Form.Field {form} name="idNumber">
 				<Form.Control let:attrs>
 					<Form.Label>ID Number</Form.Label>
-					<Input {...attrs} bind:value={$formData.idNumber} placeholder="Enter student id number" />
+					<Input
+						{...attrs}
+						bind:value={$formData.idNumber}
+						placeholder={props.student.user_meta_data.id_number}
+					/>
 				</Form.Control>
 
 				<Form.FieldErrors />
@@ -103,7 +91,7 @@
 					<Input
 						{...attrs}
 						bind:value={$formData.firstName}
-						placeholder="Enter student first name"
+						placeholder={props.student.user_meta_data.fullname.split(',')[1]}
 					/>
 				</Form.Control>
 
@@ -116,7 +104,7 @@
 					<Input
 						{...attrs}
 						bind:value={$formData.middleInitial}
-						placeholder="Enter student middle initial"
+						placeholder={props.student.user_meta_data.fullname.split(',')[2]}
 					/>
 				</Form.Control>
 
@@ -126,7 +114,11 @@
 			<Form.Field {form} name="lastName">
 				<Form.Control let:attrs>
 					<Form.Label>Last Name</Form.Label>
-					<Input {...attrs} bind:value={$formData.lastName} placeholder="Enter student last name" />
+					<Input
+						{...attrs}
+						bind:value={$formData.lastName}
+						placeholder={props.student.user_meta_data.fullname.split(',')[0]}
+					/>
 				</Form.Control>
 
 				<Form.FieldErrors />
@@ -138,7 +130,7 @@
 					<Input
 						{...attrs}
 						bind:value={$formData.nameSuffix}
-						placeholder="Enter student name suffix"
+						placeholder={props.student.user_meta_data.suffix ?? 'N/A'}
 					/>
 				</Form.Control>
 
@@ -156,7 +148,7 @@
 						}}
 					>
 						<Select.Trigger {...attrs}>
-							<Select.Value placeholder="Select student gender" />
+							<Select.Value placeholder={props.student.user_meta_data.gender} />
 						</Select.Trigger>
 						<Select.Content>
 							<Select.Item value="Male" label="Male" />
@@ -179,7 +171,7 @@
 						}}
 					>
 						<Select.Trigger {...attrs}>
-							<Select.Value placeholder="Select student year level" />
+							<Select.Value placeholder={props.student.user_meta_data.year_level} />
 						</Select.Trigger>
 						<Select.Content>
 							<Select.Item value="First Year" label="First Year" />
@@ -204,7 +196,7 @@
 						}}
 					>
 						<Select.Trigger {...attrs}>
-							<Select.Value placeholder="Select your course" />
+							<Select.Value placeholder={props.student.user_meta_data.course} />
 						</Select.Trigger>
 						<Select.Content>
 							{#each courseNames as course}
@@ -225,7 +217,7 @@
 						<Input
 							{...attrs}
 							bind:value={$formData.sections}
-							placeholder="Enter student section"
+							placeholder={props.student.user_meta_data.section}
 							class="pr-[2rem]"
 						/>
 						<Popover.Root>

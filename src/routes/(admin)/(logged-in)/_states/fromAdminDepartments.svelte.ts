@@ -1,23 +1,12 @@
-import type { ProfessorType } from '$lib/types';
+import type { AdminLayoutQueryType, ProfessorType } from '$lib/types';
 import { getContext, setContext } from 'svelte';
 
-export const departments = ['BSIS', 'BSE', 'BTVTED', 'OMT', 'DICT'];
+export const departments = ['BSIS', 'BSE', 'BTVTED', 'DOMT', 'DICT'];
 
 class DepartmentsRoute {
-	private activeRoute = $state(departments[0]);
+	private professors = $state<AdminLayoutQueryType['professors'] | null>(null);
 
-	setRoute(param: string) {
-		this.activeRoute = param;
-	}
-
-	getRoute() {
-		return this.activeRoute;
-	}
-
-	private professors = $state<ProfessorType[] | null>(null);
-	private activeProf = $state<ProfessorType | null>(null);
-
-	setProfs(param: ProfessorType[] | null) {
+	setProfs(param: AdminLayoutQueryType['professors'] | null) {
 		this.professors = param;
 	}
 
@@ -25,18 +14,22 @@ class DepartmentsRoute {
 		return this.professors;
 	}
 
-	setActive(param: ProfessorType | null) {
-		this.activeProf = param;
+	setDepProf(param: ProfessorType[], dep: 'BSIS' | 'BSE' | 'BTVTED' | 'DOMT' | 'DICT') {
+		if (this.professors) {
+			if (dep === 'BSIS') this.professors.bsisDep = param;
+			else if (dep === 'BSE') this.professors.bseDep = param;
+			else if (dep === 'BTVTED') this.professors.btvtedDep = param;
+			else if (dep === 'DICT') this.professors.dictDep = param;
+			else if (dep === 'DOMT') this.professors.domtDep = param;
+		}
 	}
 
-	getActive() {
-		return this.activeProf;
-	}
-
-	getFilteredProf() {
-		const filteredProfs = this.professors?.filter((item) => item.department === this.activeRoute);
-
-		return filteredProfs ? filteredProfs : null;
+	getDepProf(dep: 'BSIS' | 'BSE' | 'BTVTED' | 'DOMT' | 'DICT') {
+		if (dep === 'BSIS') return this.professors?.bsisDep;
+		else if (dep === 'BSE') return this.professors?.bseDep;
+		else if (dep === 'BTVTED') return this.professors?.btvtedDep;
+		else if (dep === 'DICT') return this.professors?.dictDep;
+		else if (dep === 'DOMT') return this.professors?.domtDep;
 	}
 }
 
