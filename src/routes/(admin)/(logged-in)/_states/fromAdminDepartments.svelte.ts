@@ -1,21 +1,10 @@
 import type { ProfessorType } from '$lib/types';
 import { getContext, setContext } from 'svelte';
 
-export const departments = ['BSIS', 'BSE', 'BTVTED', 'OMT', 'DICT'];
+export const departments = ['BSIS', 'BSE', 'BTVTED', 'DOMT', 'DICT'];
 
 class DepartmentsRoute {
-	private activeRoute = $state(departments[0]);
-
-	setRoute(param: string) {
-		this.activeRoute = param;
-	}
-
-	getRoute() {
-		return this.activeRoute;
-	}
-
 	private professors = $state<ProfessorType[] | null>(null);
-	private activeProf = $state<ProfessorType | null>(null);
 
 	setProfs(param: ProfessorType[] | null) {
 		this.professors = param;
@@ -23,20 +12,6 @@ class DepartmentsRoute {
 
 	getProfs() {
 		return this.professors;
-	}
-
-	setActive(param: ProfessorType | null) {
-		this.activeProf = param;
-	}
-
-	getActive() {
-		return this.activeProf;
-	}
-
-	getFilteredProf() {
-		const filteredProfs = this.professors?.filter((item) => item.department === this.activeRoute);
-
-		return filteredProfs ? filteredProfs : null;
 	}
 }
 

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { adminPaths } from '$lib';
 	import { fromSupabaseClient, initSupabase } from '../../_states/fromSupabaseClient.svelte';
 
 	import AdminNav from './_components/AdminNav.svelte';
@@ -29,18 +30,20 @@
 	const departmentRoute = fromDepartmentsRouteState();
 	const manageAccountRoute = fromManageAccountRouteState();
 
-	questionnaireRoute.setEvaluation(data.adminLayoutQ.data?.evaluation_forms ?? null);
-	departmentRoute.setProfs(data.adminLayoutQ.data?.professors ?? null);
-	manageAccountRoute.setStudents(data.adminLayoutQ.data?.students ?? null);
-
 	const supabase = fromSupabaseClient();
-	supabase.setClient(data.supabase);
+
+	$effect(() => {
+		questionnaireRoute.setEvaluation(data.adminLayoutQ.data?.evaluation_forms ?? null);
+		departmentRoute.setProfs(data.adminLayoutQ.data?.professors ?? null);
+		manageAccountRoute.setStudents(data.adminLayoutQ.data?.students ?? null);
+		supabase.setClient(data.supabase);
+	});
 </script>
 
 {#if !($page.url.pathname === '/admin-login')}
 	<AdminNav {children} />
 {/if}
 
-{#if !['/admin-dashboard', '/admin-manage-accounts', '/admin-departments', '/admin-questionnaire', '/admin-questionnaire/create'].includes($page.url.pathname)}
+{#if !adminPaths.includes($page.url.pathname)}
 	{@render children()}
 {/if}
