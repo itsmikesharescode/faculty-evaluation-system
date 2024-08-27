@@ -18,7 +18,13 @@
 </script>
 
 <Table.Root>
-	<Table.Caption>A list of professors for {depRoute.getRoute()}.</Table.Caption>
+	<Table.Caption>
+		{#if departmentRoute.getDepProf(depRoute.getRoute())?.length}
+			A list of professors for <strong>{depRoute.getRoute()}</strong>.
+		{:else}
+			There is no professor present for <strong>{depRoute.getRoute()}</strong>.
+		{/if}
+	</Table.Caption>
 	<Table.Header>
 		<Table.Row>
 			<Table.Head></Table.Head>
@@ -29,7 +35,7 @@
 		</Table.Row>
 	</Table.Header>
 	<Table.Body>
-		{#each departmentRoute.getProfs() ?? [] as professor}
+		{#each departmentRoute.getDepProf(depRoute.getRoute()) ?? [] as professor}
 			<Table.Row>
 				<Table.Cell>
 					<Actions {professor} updateProfForm={props.updateProfForm} />

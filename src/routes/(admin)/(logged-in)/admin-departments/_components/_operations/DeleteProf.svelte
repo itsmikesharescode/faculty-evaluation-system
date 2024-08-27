@@ -4,7 +4,7 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { fromDepartmentsRouteState } from '../../../_states/fromAdminDepartments.svelte';
 	import { enhance } from '$app/forms';
-	import type { ProfessorType, ResultModel } from '$lib/types';
+	import type { Departments, ProfessorType, ResultModel } from '$lib/types';
 	import { toast } from 'svelte-sonner';
 	import { Loader } from 'lucide-svelte';
 
@@ -21,7 +21,7 @@
 	const deleteProfEvent: SubmitFunction = () => {
 		deleteLoader = true;
 		return async ({ result }) => {
-			const { status, data } = result as ResultModel<{ msg: string; data: ProfessorType[] }>;
+			const { status, data } = result as ResultModel<{ msg: string; data: Departments }>;
 
 			switch (status) {
 				case 200:

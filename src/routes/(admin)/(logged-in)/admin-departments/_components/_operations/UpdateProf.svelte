@@ -6,7 +6,7 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { CircleHelp, Loader, X } from 'lucide-svelte';
 	import Textarea from '$lib/components/ui/textarea/textarea.svelte';
-	import type { ProfessorType, ResultModel } from '$lib/types';
+	import type { Departments, ProfessorType, ResultModel } from '$lib/types';
 	import { toast } from 'svelte-sonner';
 	import {
 		departments,
@@ -30,8 +30,12 @@
 	const form = superForm(props.updateProfForm, {
 		validators: zodClient(updateProfSchema),
 		id: crypto.randomUUID(),
+		invalidateAll: false,
 		onUpdate({ result }) {
-			const { status, data } = result as ResultModel<{ msg: string; data: ProfessorType[] }>;
+			const { status, data } = result as ResultModel<{
+				msg: string;
+				data: Departments;
+			}>;
 
 			switch (status) {
 				case 200:

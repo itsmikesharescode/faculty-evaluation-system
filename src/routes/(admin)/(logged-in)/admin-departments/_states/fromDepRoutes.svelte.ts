@@ -3,9 +3,9 @@ import { getContext, setContext } from 'svelte';
 export const departments = ['BSIS', 'BSE', 'BTVTED', 'DOMT', 'DICT'];
 
 class DepRouteState {
-	private route = $state<string>(departments[0]);
+	private route = $state<'BSIS' | 'BSE' | 'BTVTED' | 'DOMT' | 'DICT'>('BSIS');
 
-	setRoute(param: string) {
+	setRoute(param: 'BSIS' | 'BSE' | 'BTVTED' | 'DOMT' | 'DICT') {
 		this.route = param;
 	}
 

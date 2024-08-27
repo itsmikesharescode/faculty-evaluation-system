@@ -4,7 +4,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { addProfSchema, updateProfSchema } from './admin-departments-schema';
 import { fail } from '@sveltejs/kit';
 import type { PostgrestSingleResponse } from '@supabase/supabase-js';
-import type { ProfessorType } from '$lib/types';
+import type { Departments } from '$lib/types';
 
 export const load: PageServerLoad = async () => {
 	return {
@@ -23,7 +23,7 @@ export const actions: Actions = {
 			department_client: form.data.department,
 			fullname_client: form.data.profName,
 			sections_client: form.data.sections
-		})) as PostgrestSingleResponse<ProfessorType[]>;
+		})) as PostgrestSingleResponse<Departments>;
 
 		if (error) return fail(401, { form, msg: error.message });
 		return { form, msg: 'Success added professor', data };
@@ -39,7 +39,7 @@ export const actions: Actions = {
 			fullname_client: form.data.profName,
 			sections_client: form.data.sections,
 			prof_id_client: form.data.profId
-		})) as PostgrestSingleResponse<ProfessorType[]>;
+		})) as PostgrestSingleResponse<Departments>;
 
 		if (error) return fail(401, { form, msg: error.message });
 		return { form, msg: 'Successfully updated.', data };
@@ -50,7 +50,7 @@ export const actions: Actions = {
 
 		const { data, error } = (await supabase.rpc('delete_professor', {
 			prof_id_client: Number(profId)
-		})) as PostgrestSingleResponse<ProfessorType[]>;
+		})) as PostgrestSingleResponse<Departments>;
 
 		if (error) return fail(401, { msg: error.message });
 		return { msg: 'Success deleted a professor', data };
