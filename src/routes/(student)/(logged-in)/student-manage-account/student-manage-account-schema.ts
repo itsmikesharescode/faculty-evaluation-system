@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const sectionRegex = /-/;
+const sectionRegex = /^[A-Z0-9]+-[A-Z0-9]+$/;
 
 export const updateAccInfoSchema = z.object({
 	firstName: z.string().min(1, { message: 'Must enter first name.' }),
@@ -18,16 +18,19 @@ export const updateAccInfoSchema = z.object({
 	course: z.string().min(1, { message: 'Must enter course.' }),
 	sections: z.string().refine(
 		(value) => {
-			// Split the sections by comma
-			const sectionsArray = value.split(',');
+			// Ensure there are no leading or trailing spaces
+			const trimmedValue = value.trim();
 
-			// Ensure multiple sections are provided if there is more than one section
-			if (sectionsArray.length < 1) {
-				return false; // Return false if there's only one section (no commas)
+			// Reject if the trimmed value doesn't match the original value (indicating leading/trailing spaces)
+			if (trimmedValue !== value) {
+				return false;
 			}
 
-			// Check each section against the regex
-			return sectionsArray.every((section) => sectionRegex.test(section.trim()));
+			// Split the sections by comma
+			const sectionsArray = trimmedValue.split(',');
+
+			// Ensure each section is valid and has no leading/trailing spaces
+			return sectionsArray.every((section) => sectionRegex.test(section));
 		},
 		{
 			message: 'Invalid section format.'
