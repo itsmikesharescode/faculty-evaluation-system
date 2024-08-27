@@ -55,6 +55,16 @@
 	const selectedDepartment = $derived(
 		$formData.department ? { label: $formData.department, value: $formData.department } : undefined
 	);
+
+	const loadValues = () => {
+		$formData.department = props.professor.department;
+		$formData.profName = props.professor.fullname;
+		$formData.sections = props.professor.sections;
+	};
+
+	$effect(() => {
+		if (updateSignal) loadValues();
+	});
 </script>
 
 <AlertDialog.Root bind:open={updateSignal}>
