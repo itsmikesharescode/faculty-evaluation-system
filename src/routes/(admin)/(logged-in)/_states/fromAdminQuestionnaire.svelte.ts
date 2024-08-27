@@ -3,7 +3,6 @@ import { getContext, setContext } from 'svelte';
 
 class QuestionnairRoute {
 	private evaluation = $state<EvaluationType[] | null>(null);
-	private activeEvaluation = $state<EvaluationType | null>(null);
 
 	setEvaluation(param: EvaluationType[] | null) {
 		this.evaluation = param;
@@ -11,14 +10,6 @@ class QuestionnairRoute {
 
 	getEvaluation() {
 		return this.evaluation;
-	}
-
-	setActive(param: EvaluationType | null) {
-		this.activeEvaluation = param;
-	}
-
-	getActive() {
-		return this.activeEvaluation;
 	}
 }
 

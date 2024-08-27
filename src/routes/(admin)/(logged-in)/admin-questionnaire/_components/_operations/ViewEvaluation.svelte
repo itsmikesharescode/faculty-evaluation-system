@@ -1,17 +1,16 @@
 <script lang="ts">
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import { X } from 'lucide-svelte';
-	import { Label } from '$lib/components/ui/label';
-	import * as RadioGroup from '$lib/components/ui/radio-group';
 	import { fromQuestionnaireRouteState } from '../../../_states/fromAdminQuestionnaire.svelte';
-	import { SvelteMap } from 'svelte/reactivity';
 	import AdminCustomRadio from '../AdminCustomRadio.svelte';
+	import type { EvaluationType } from '$lib/types';
 
 	interface Props {
 		viewSignal: boolean;
+		evalForm: EvaluationType;
 	}
 
-	let { viewSignal = $bindable() }: Props = $props();
+	let { viewSignal = $bindable(), ...props }: Props = $props();
 
 	const questionnaireRoute = fromQuestionnaireRouteState();
 </script>
@@ -20,7 +19,6 @@
 	<AlertDialog.Content class="flex h-screen max-w-full flex-col gap-[1.25rem]">
 		<button
 			onclick={() => {
-				questionnaireRoute.setActive(null);
 				viewSignal = false;
 			}}
 			class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
@@ -32,7 +30,7 @@
 		<AlertDialog.Header>
 			<AlertDialog.Title>
 				<strong class="text-muted-foreground">You are viewing</strong>
-				{questionnaireRoute.getActive()?.evaluation_data.evalTitle}
+				{props.evalForm.evaluation_data.evalTitle}
 			</AlertDialog.Title>
 			<AlertDialog.Description>
 				Thoroughly reviewing an evaluation form can help identify and rectify potential errors
@@ -41,7 +39,7 @@
 		</AlertDialog.Header>
 
 		<div class="overflow-auto">
-			{#each questionnaireRoute.getActive()?.evaluation_data.headers ?? [] as evaluationForm, index}
+			{#each props.evalForm.evaluation_data.headers ?? [] as evaluationForm, index}
 				<div>
 					<div class="">
 						<p class="text-xl font-semibold text-primary">{evaluationForm.headerTitle}</p>

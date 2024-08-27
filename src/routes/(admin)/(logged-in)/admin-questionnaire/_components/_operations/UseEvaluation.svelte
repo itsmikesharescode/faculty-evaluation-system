@@ -10,9 +10,10 @@
 
 	interface Props {
 		useSignal: boolean;
+		evalForm: EvaluationType;
 	}
 
-	let { useSignal = $bindable() }: Props = $props();
+	let { useSignal = $bindable(), ...props }: Props = $props();
 
 	const questionnaireRoute = fromQuestionnaireRouteState();
 
@@ -27,7 +28,6 @@
 					useLoader = false;
 					questionnaireRoute.setEvaluation(data.data);
 					toast.success('Display Evaluation', { description: data.msg });
-					questionnaireRoute.setActive(null);
 					useSignal = false;
 					break;
 
@@ -52,7 +52,6 @@
 			<Button
 				variant="secondary"
 				onclick={() => {
-					questionnaireRoute.setActive(null);
 					useSignal = false;
 				}}
 			>
@@ -60,7 +59,7 @@
 			</Button>
 
 			<form method="post" action="?/useEvalEvent" use:enhance={useEvalEvent}>
-				<input name="evalId" type="hidden" value={questionnaireRoute.getActive()?.id} />
+				<input name="evalId" type="hidden" value={props.evalForm.id} />
 				<Button disabled={useLoader} type="submit" class="relative">
 					{#if useLoader}
 						<div

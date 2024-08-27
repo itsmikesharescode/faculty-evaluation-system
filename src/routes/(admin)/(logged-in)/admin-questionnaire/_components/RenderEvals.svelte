@@ -1,26 +1,17 @@
 <script lang="ts">
 	import { fromQuestionnaireRouteState } from '../../_states/fromAdminQuestionnaire.svelte';
-	import UseEvaluation from './_operations/UseEvaluation.svelte';
-	import Button from '$lib/components/ui/button/button.svelte';
-	import DeleteEvaluation from './_operations/DeleteEvaluation.svelte';
-	import { EllipsisVertical } from 'lucide-svelte';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import ViewEvaluation from './_operations/ViewEvaluation.svelte';
+	import Actions from './Actions.svelte';
 
 	const questionnaireRoute = fromQuestionnaireRouteState();
-
-	let useSignal = $state(false);
-	let viewSignal = $state(false);
-	let deleteSignal = $state(false);
 </script>
 
 <div class="flex flex-col gap-[20px]">
 	{#if questionnaireRoute.getEvaluation()?.length}
-		{#each questionnaireRoute.getEvaluation() ?? [] as evaluationForms, i}
+		{#each questionnaireRoute.getEvaluation() ?? [] as evalForm, i}
 			<div
 				class="relative flex items-center rounded-lg border-black bg-secondary p-[20px] shadow-lg"
 			>
-				{#if evaluationForms.is_used}
+				{#if evalForm.is_used}
 					<div class="absolute right-0 top-0 m-[1rem] mr-[2rem]">
 						<p class="rounded-sm bg-black px-[0.625rem] text-white">Active</p>
 					</div>
@@ -29,13 +20,13 @@
 				<div class="">
 					<div class="flex flex-wrap gap-[0.3rem]">
 						<p class="text-muted-foreground">Evaluation Title:</p>
-						<p>{evaluationForms.evaluation_data.evalTitle}</p>
+						<p>{evalForm.evaluation_data.evalTitle}</p>
 					</div>
 
 					<div class="flex flex-wrap gap-[0.3rem]">
 						<p class="text-muted-foreground">Total Questions:</p>
 						<p>
-							{evaluationForms.evaluation_data.headers
+							{evalForm.evaluation_data.headers
 								.map((item) => item.questions.length)
 								.reduce((cv, ac) => cv + ac)}
 						</p>
@@ -43,46 +34,7 @@
 				</div>
 
 				<div class="absolute right-0">
-					<DropdownMenu.Root>
-						<DropdownMenu.Trigger>
-							<EllipsisVertical />
-						</DropdownMenu.Trigger>
-						<DropdownMenu.Content>
-							<DropdownMenu.Group>
-								<DropdownMenu.Label class="flex items-center justify-center"
-									>Actions</DropdownMenu.Label
-								>
-								<DropdownMenu.Separator />
-								<DropdownMenu.Item
-									class="flex items-center justify-center"
-									onclick={() => {
-										questionnaireRoute.setActive(evaluationForms);
-										useSignal = true;
-									}}
-								>
-									Use
-								</DropdownMenu.Item>
-								<DropdownMenu.Item
-									class="flex items-center justify-center"
-									onclick={() => {
-										questionnaireRoute.setActive(evaluationForms);
-										viewSignal = true;
-									}}
-								>
-									View
-								</DropdownMenu.Item>
-								<DropdownMenu.Item
-									class="flex items-center justify-center"
-									onclick={() => {
-										questionnaireRoute.setActive(evaluationForms);
-										deleteSignal = true;
-									}}
-								>
-									Delete
-								</DropdownMenu.Item>
-							</DropdownMenu.Group>
-						</DropdownMenu.Content>
-					</DropdownMenu.Root>
+					<Actions {evalForm} />
 				</div>
 			</div>
 		{/each}
@@ -92,8 +44,3 @@
 		</div>
 	{/if}
 </div>
-
-<!--Delete Modal-->
-<UseEvaluation bind:useSignal />
-<ViewEvaluation bind:viewSignal />
-<DeleteEvaluation bind:deleteSignal />
