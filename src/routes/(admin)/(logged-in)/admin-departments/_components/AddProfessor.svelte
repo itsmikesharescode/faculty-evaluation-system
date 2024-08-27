@@ -62,7 +62,7 @@
 		<AlertDialog.Header>
 			<AlertDialog.Title>Add Professor</AlertDialog.Title>
 			<AlertDialog.Description>
-				Answer the following fields to add professor.
+				You are about to add a professor in <strong>{depRoute.getRoute()}</strong> department.
 			</AlertDialog.Description>
 		</AlertDialog.Header>
 
