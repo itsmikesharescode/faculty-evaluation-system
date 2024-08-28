@@ -8,6 +8,7 @@
 	} from '../admin-manage-accounts-schema';
 	import * as Table from '$lib/components/ui/table';
 	import Actions from './Actions.svelte';
+	import Sections from '$lib/components/general/Sections.svelte';
 
 	interface Props {
 		updateStudEmailForm: SuperValidated<Infer<UpdateStudEmailSchema>>;
@@ -48,8 +49,16 @@
 				<Table.Cell class="font-medium">{student.user_meta_data.email}</Table.Cell>
 				<Table.Cell class="truncate">{student.user_meta_data.id_number}</Table.Cell>
 				<Table.Cell class="truncate">{student.user_meta_data.year_level}</Table.Cell>
-				<Table.Cell class="truncate">{student.user_meta_data.section}</Table.Cell>
-				<Table.Cell class="truncate">{student.user_meta_data.course}</Table.Cell>
+				<Table.Cell class="truncate">
+					{#if student.user_meta_data.section.split(',').length > 1}
+						<Sections sections={student.user_meta_data.section.split(',')} />
+					{:else}
+						<span>{student.user_meta_data.section}</span>
+					{/if}
+				</Table.Cell>
+				<Table.Cell class="truncate"
+					>{student.user_meta_data.course.match(/\(([^)]+)\)/)?.[1]}</Table.Cell
+				>
 			</Table.Row>
 		{/each}
 	</Table.Body>

@@ -4,10 +4,10 @@
 	import { ChevronDown } from 'lucide-svelte';
 
 	interface Props {
-		professor: ProfessorType;
+		sections: string[];
 	}
 
-	const { professor }: Props = $props();
+	const { sections }: Props = $props();
 </script>
 
 <DropdownMenu.Root>
@@ -17,7 +17,7 @@
 	<DropdownMenu.Content class="w-[300px]">
 		<DropdownMenu.Group class="flex flex-col p-[10px]">
 			<div class="flex max-h-[18rem] flex-col gap-4 overflow-auto">
-				{#each professor.sections.split(',') as section, index}
+				{#each sections as section, index}
 					<p>{section}</p>
 				{/each}
 			</div>
