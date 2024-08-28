@@ -67,9 +67,9 @@
 		$formData.sections = user.getUser()?.user_metadata.section;
 	};
 
-	if (browser) {
+	$effect(() => {
 		initialLoad();
-	}
+	});
 </script>
 
 <p class="p-[20px] text-center text-xl font-semibold leading-7">Update Information</p>
