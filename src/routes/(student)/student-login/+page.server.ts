@@ -32,7 +32,6 @@ export const actions: Actions = {
 
 	studentRegisterEvent: async ({ locals: { supabase }, request }) => {
 		const form = await superValidate(request, zod(studentCreateSchema));
-		console.log(form.data);
 		if (!form.valid) return fail(400, { form });
 
 		const {

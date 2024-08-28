@@ -2,11 +2,12 @@
 	import { fromDashboardRouteState } from '../../../_states/fromDashboardRoute.svelte';
 
 	interface Props {
+		headerTitle: string;
 		index: number;
 		questionObj: { id: string; question: string };
 	}
 
-	const { index, questionObj }: Props = $props();
+	const { ...props }: Props = $props();
 
 	const dashboardRoute = fromDashboardRouteState();
 
@@ -38,7 +39,7 @@
 
 <div class="">
 	<p>
-		{index + 1} ). {questionObj.question}
+		{props.index + 1} ). {props.questionObj.question}
 	</p>
 </div>
 
@@ -47,7 +48,8 @@
 		<button
 			onclick={() => {
 				dashboardRoute.setAnswer({
-					id: questionObj.id,
+					headerTitle: props.headerTitle,
+					id: props.questionObj.id,
 					value: rating.value
 				});
 				active = rating.title;

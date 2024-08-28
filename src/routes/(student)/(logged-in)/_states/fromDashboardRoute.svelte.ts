@@ -1,5 +1,6 @@
 import type { EvaluationType, ProfessorType } from '$lib/types';
 import { getContext, setContext } from 'svelte';
+import { answerFormatter } from '../student-dashboard/evaluation/_helpers/answerFormatter';
 
 class DashboardRoute {
 	private evaluationForms = $state<EvaluationType[] | null>(null);
@@ -31,9 +32,9 @@ class DashboardRoute {
 		return this.activeProf;
 	}
 
-	private studentAnswer = $state<{ id: string; value: number }[]>([]);
+	private studentAnswer = $state<{ headerTitle: string; id: string; value: number }[]>([]);
 
-	setAnswer(param: { id: string; value: number }) {
+	setAnswer(param: { headerTitle: string; id: string; value: number }) {
 		const checkId = this.studentAnswer.map((item) => item.id);
 		if (checkId.includes(param.id)) {
 			const index = checkId.indexOf(param.id);

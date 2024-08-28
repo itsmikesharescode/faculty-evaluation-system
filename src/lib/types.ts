@@ -60,7 +60,6 @@ export type ProfessorType = {
 	department: string;
 	fullname: string;
 	sections: string;
-	ratings: number;
 };
 
 export type StudentType = {
