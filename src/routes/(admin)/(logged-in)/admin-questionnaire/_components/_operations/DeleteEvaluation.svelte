@@ -10,9 +10,10 @@
 
 	interface Props {
 		deleteSignal: boolean;
+		evalForm: EvaluationType;
 	}
 
-	let { deleteSignal = $bindable() }: Props = $props();
+	let { deleteSignal = $bindable(), ...props }: Props = $props();
 
 	const questionnaireRoute = fromQuestionnaireRouteState();
 
@@ -26,7 +27,6 @@
 			switch (status) {
 				case 200:
 					toast.success('Delete Evaluation', { description: data.msg });
-					questionnaireRoute.setActive(null);
 					questionnaireRoute.setEvaluation(data.data);
 					deleteSignal = false;
 					deleteLoader = false;
@@ -54,14 +54,13 @@
 			<Button
 				variant="secondary"
 				onclick={() => {
-					questionnaireRoute.setActive(null);
 					deleteSignal = false;
 				}}
 			>
 				Cancel
 			</Button>
 			<form method="post" action="?/deleteEvalEvent" use:enhance={deleteEvalEvent}>
-				<input name="evalId" type="hidden" value={questionnaireRoute.getActive()?.id} />
+				<input name="evalId" type="hidden" value={props.evalForm.id} />
 				<Button disabled={deleteLoader} type="submit" class="relative">
 					{#if deleteLoader}
 						<div

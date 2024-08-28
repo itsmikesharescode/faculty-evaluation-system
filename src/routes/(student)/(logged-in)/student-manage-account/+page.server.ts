@@ -39,7 +39,7 @@ export const actions: Actions = {
 		});
 
 		if (error) return fail(401, { form, msg: error.message });
-		else if (user) return { form, msg: 'Update successfully.', user };
+		else if (user) return { form, msg: 'Update successfully.' };
 	},
 
 	updatePasswordEvent: async ({ locals: { supabase }, request }) => {

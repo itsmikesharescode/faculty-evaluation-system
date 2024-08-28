@@ -21,10 +21,10 @@
 		{#each departments as department}
 			<button
 				onclick={() => {
-					depRoute.setRoute(department);
+					depRoute.setRoute(department as 'BSIS' | 'BSE' | 'BTVTED' | 'DOMT' | 'DICT');
 				}}
 				class=" {department === depRoute.getRoute() ? 'bg-primary text-white' : ''}
-				flex items-center gap-[5px] p-[10px] text-black"
+				flex items-center gap-[5px] px-[0.625rem] text-black"
 			>
 				{department}
 				<MoveUpRight class="h-[15px] w-[15px]" />

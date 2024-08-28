@@ -62,7 +62,7 @@
 		<AlertDialog.Header>
 			<AlertDialog.Title>Add Professor</AlertDialog.Title>
 			<AlertDialog.Description>
-				Answer the following fields to add professor.
+				You are about to add a professor in <strong>{depRoute.getRoute()}</strong> department.
 			</AlertDialog.Description>
 		</AlertDialog.Header>
 
@@ -108,13 +108,13 @@
 				</Popover.Trigger>
 				<Popover.Content>
 					<p class="text-sm leading-7">
-						Please use formats like <strong>24BSIS-1M, 24BSIS-2M, 23BSIS-2P1E</strong>.
+						Please use formats like <strong>24BSIS-1M,24BSIS-2M,23BSIS-2P1E</strong>
 					</p>
 
 					<p class="text-sm leading-7">Example:</p>
 					<p class="text-sm leading-7">Single section: <strong>24BSIS-1M</strong></p>
 					<p class="text-sm leading-7">
-						Multiple section: <strong>24BSIS-1M, 24BSIS-2M, 23BSIS-2P1E</strong>.
+						Multiple section: <strong>24BSIS-1M,24BSIS-2M,23BSIS-2P1E</strong>
 					</p>
 				</Popover.Content>
 			</Popover.Root>

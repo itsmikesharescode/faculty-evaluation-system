@@ -7,10 +7,13 @@
 	import { updateAccInfoSchema, type UpdateAccInfoSchema } from '../student-manage-account-schema';
 	import type { ResultModel } from '$lib/types';
 	import { toast } from 'svelte-sonner';
-	import type { User } from '@supabase/supabase-js';
 	import { fromUserState } from '../../../../_states/fromRootState.svelte';
 	import { CircleHelp, Loader } from 'lucide-svelte';
 	import * as Popover from '$lib/components/ui/popover';
+	import { courseNames, yearLevels } from '$lib';
+	import { goto } from '$app/navigation';
+	import { tick } from 'svelte';
+	import { browser } from '$app/environment';
 
 	interface Props {
 		updateAccInfoForm: SuperValidated<Infer<UpdateAccInfoSchema>>;
@@ -23,14 +26,12 @@
 	const form = superForm(updateAccInfoForm, {
 		validators: zodClient(updateAccInfoSchema),
 		id: crypto.randomUUID(),
-		invalidateAll: false,
 		onUpdate({ result }) {
-			const { status, data } = result as ResultModel<{ msg: string; user: User }>;
+			const { status, data } = result as ResultModel<{ msg: string }>;
 
 			switch (status) {
 				case 200:
 					toast.success('Manage Account', { description: data.msg });
-					user.setUser(data.user);
 					break;
 				case 401:
 					toast.error('Manage Account', { description: data.msg });
@@ -38,17 +39,23 @@
 			}
 		},
 		onUpdated({ form }) {
-			if (form.valid) bindPrevValues();
+			if (form.valid) {
+				initialLoad();
+			}
 		}
 	});
 
-	const { form: formData, enhance, submitting, reset } = form;
+	const { form: formData, enhance, submitting } = form;
 
 	const yearLevel = $derived(
 		$formData.yearLevel ? { label: $formData.yearLevel, value: $formData.yearLevel } : undefined
 	);
 
-	const bindPrevValues = () => {
+	const courseName = $derived(
+		$formData.course ? { label: $formData.course, value: $formData.course } : undefined
+	);
+
+	const initialLoad = () => {
 		$formData.address = user.getUser()?.user_metadata.address;
 		$formData.contactNumber = user.getUser()?.user_metadata.mobile_number;
 		$formData.firstName = user.getUser()?.user_metadata.fullname.split(',')[1];
@@ -61,7 +68,7 @@
 	};
 
 	$effect(() => {
-		bindPrevValues();
+		initialLoad();
 	});
 </script>
 
@@ -91,7 +98,7 @@
 	<Form.Field {form} name="firstName">
 		<Form.Control let:attrs>
 			<Form.Label>First Name</Form.Label>
-			<Input {...attrs} bind:value={$formData.firstName} placeholder="Enter your first name" />
+			<Input {...attrs} bind:value={$formData.firstName} placeholder="Enter your new first name" />
 		</Form.Control>
 
 		<Form.FieldErrors />
@@ -103,7 +110,7 @@
 			<Input
 				{...attrs}
 				bind:value={$formData.middleInitial}
-				placeholder="Enter your middle initial"
+				placeholder="Enter your new middle initial"
 			/>
 		</Form.Control>
 
@@ -113,7 +120,7 @@
 	<Form.Field {form} name="lastName">
 		<Form.Control let:attrs>
 			<Form.Label>Last Name</Form.Label>
-			<Input {...attrs} bind:value={$formData.lastName} placeholder="Enter your last name" />
+			<Input {...attrs} bind:value={$formData.lastName} placeholder="Enter your new last name" />
 		</Form.Control>
 
 		<Form.FieldErrors />
@@ -122,7 +129,7 @@
 	<Form.Field {form} name="nameSuffix">
 		<Form.Control let:attrs>
 			<Form.Label>Name Suffix (optional)</Form.Label>
-			<Input {...attrs} bind:value={$formData.nameSuffix} placeholder="Enter your name suffix" />
+			<Input {...attrs} bind:value={$formData.nameSuffix} placeholder="Enter your new suffix" />
 		</Form.Control>
 
 		<Form.FieldErrors />
@@ -138,13 +145,12 @@
 				}}
 			>
 				<Select.Trigger {...attrs}>
-					<Select.Value placeholder="Select your year level" />
+					<Select.Value placeholder="Select year level" />
 				</Select.Trigger>
 				<Select.Content>
-					<Select.Item value="First Year" label="First Year" />
-					<Select.Item value="Second Year" label="Second Year" />
-					<Select.Item value="Third Year" label="Third Year" />
-					<Select.Item value="Fourth Year" label="Fourth Year" />
+					{#each yearLevels as yearLevel}
+						<Select.Item value={yearLevel} label={yearLevel} />
+					{/each}
 				</Select.Content>
 			</Select.Root>
 			<input hidden bind:value={$formData.yearLevel} name={attrs.name} />
@@ -156,7 +162,22 @@
 	<Form.Field {form} name="course">
 		<Form.Control let:attrs>
 			<Form.Label>Course</Form.Label>
-			<Input {...attrs} bind:value={$formData.course} placeholder="Enter your course" />
+			<Select.Root
+				selected={courseName}
+				onSelectedChange={(v) => {
+					v && ($formData.course = v.value);
+				}}
+			>
+				<Select.Trigger {...attrs}>
+					<Select.Value placeholder="Select your course" />
+				</Select.Trigger>
+				<Select.Content>
+					{#each courseNames as course}
+						<Select.Item value={course} label={course} />
+					{/each}
+				</Select.Content>
+			</Select.Root>
+			<input hidden bind:value={$formData.course} name={attrs.name} />
 		</Form.Control>
 
 		<Form.FieldErrors />
@@ -169,7 +190,7 @@
 				<Input
 					{...attrs}
 					bind:value={$formData.sections}
-					placeholder="Enter your section"
+					placeholder="Enter your new section"
 					class="pr-[2rem]"
 				/>
 				<Popover.Root>
@@ -178,13 +199,13 @@
 					</Popover.Trigger>
 					<Popover.Content>
 						<p class="text-sm leading-7">
-							Please use formats like <strong>24BSIS-1M, 24BSIS-2M, 23BSIS-2P1E</strong>.
+							Please use formats like <strong>24BSIS-1M,24BSIS-2M,23BSIS-2P1E</strong>.
 						</p>
 
 						<p class="text-sm leading-7">Example:</p>
 						<p class="text-sm leading-7">Single section: <strong>24BSIS-1M</strong></p>
 						<p class="text-sm leading-7">
-							Multiple section: <strong>24BSIS-1M, 24BSIS-2M, 23BSIS-2P1E</strong>.
+							Multiple section: <strong>24BSIS-1M,24BSIS-2M,23BSIS-2P1E</strong>.
 						</p>
 					</Popover.Content>
 				</Popover.Root>

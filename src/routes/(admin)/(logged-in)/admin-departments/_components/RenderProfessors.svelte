@@ -1,11 +1,11 @@
 <script lang="ts">
-	import Section from './_components/Section.svelte';
 	import { fromDepartmentsRouteState } from '../../_states/fromAdminDepartments.svelte';
 	import type { Infer, SuperValidated } from 'sveltekit-superforms';
 	import type { UpdateProfSchema } from '../admin-departments-schema';
 	import * as Table from '$lib/components/ui/table';
 	import Actions from './Actions.svelte';
 	import { fromDepRouteState } from '../_states/fromDepRoutes.svelte';
+	import Sections from '$lib/components/general/Sections.svelte';
 
 	interface Props {
 		updateProfForm: SuperValidated<Infer<UpdateProfSchema>>;
@@ -42,7 +42,11 @@
 				</Table.Cell>
 				<Table.Cell class="truncate font-medium">{professor.fullname}</Table.Cell>
 				<Table.Cell class="truncate">
-					<Section {professor} />
+					{#if professor.sections.split(',').length > 1}
+						<Sections sections={professor.sections.split(',')} />
+					{:else}
+						<span>{professor.sections}</span>
+					{/if}
 				</Table.Cell>
 				<Table.Cell class="truncate"
 					>{new Date(professor.created_at).toLocaleDateString()} @

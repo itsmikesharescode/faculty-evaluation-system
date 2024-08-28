@@ -15,11 +15,13 @@
 	const supabase = fromSupabaseClient();
 	const dashboardRoute = fromDashboardRouteState();
 
-	supabase.setClient(data.supabase);
-	dashboardRoute.setEvals(data.studentLayoutQ.data?.evaluation_forms ?? null);
-	dashboardRoute.setProfs(data.studentLayoutQ.data?.professors ?? null);
-
 	const navBlockedList = ['/student-login', '/student-login/update-password'];
+
+	$effect(() => {
+		supabase.setClient(data.supabase);
+		dashboardRoute.setEvals(data.studentLayoutQ.data?.evaluation_forms ?? null);
+		dashboardRoute.setProfs(data.studentLayoutQ.data?.professors ?? null);
+	});
 </script>
 
 {#if !navBlockedList.includes($page.url.pathname)}

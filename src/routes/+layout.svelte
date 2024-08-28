@@ -6,14 +6,16 @@
 	import { fromUserState, initUser } from './_states/fromRootState.svelte';
 	import { Toaster } from '$lib/components/ui/sonner';
 	import Footer from '$lib/components/general/Footer.svelte';
+	import { browser } from '$app/environment';
 
 	const { data, children } = $props();
 
 	initUser();
 	const user = fromUserState();
-	user.setUser(data.user);
 
-	onMount(() => {
+	$effect(() => {
+		user.setUser(data.user);
+
 		const { session, supabase } = data;
 
 		const { data: subs } = supabase.auth.onAuthStateChange((_, newSession) => {

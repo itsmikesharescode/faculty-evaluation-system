@@ -13,12 +13,15 @@ export const studentPaths = [
 ];
 
 export const formatName = (fullname: string, suffix: string | null) => {
-	const formatter = fullname.split(',');
-	const lastName = formatter[0];
-	const firstName = formatter[1];
-	const middleInitial = formatter[2];
+	if (fullname) {
+		const formatter = fullname.split(',');
+		const lastName = formatter[0];
+		const firstName = formatter[1];
+		const middleInitial = formatter[2];
+		return `${lastName}, ${firstName} ${middleInitial} ${suffix ?? ''}`;
+	}
 
-	return `${lastName}, ${firstName} ${middleInitial} ${suffix ?? ''}`;
+	return '';
 };
 
 export const yearLevels = ['First Year', 'Second Year', 'Third Year', 'Fourth Year'];
