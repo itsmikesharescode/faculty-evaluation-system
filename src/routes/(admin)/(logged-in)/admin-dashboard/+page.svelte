@@ -48,7 +48,7 @@
 		/>
 	</div>
 
-	<div class="">
+	<div class="px-[1.25rem]">
 		<Table.Root>
 			<Table.Caption>No Record</Table.Caption>
 			<Table.Header>
