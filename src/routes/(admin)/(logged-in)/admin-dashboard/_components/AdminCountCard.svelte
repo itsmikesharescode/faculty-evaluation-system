@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { UserRound, UserRoundCheck, MoveUpRight } from 'lucide-svelte';
+	import AdminBarChart from './AdminBarChart.svelte';
 
 	interface Props {
 		link: string;
