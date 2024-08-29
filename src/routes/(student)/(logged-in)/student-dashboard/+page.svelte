@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { BellRing, ListChecks, MoveUpRight, Logs, ArrowRight } from 'lucide-svelte';
+	import { BellRing, MoveUpRight } from 'lucide-svelte';
 	import { fromStudentRouteState } from '../_states/fromStudentRoute.svelte';
 	import { fromDashboardRouteState } from '../_states/fromDashboardRoute.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
