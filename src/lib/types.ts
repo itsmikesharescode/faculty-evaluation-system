@@ -54,6 +54,24 @@ export type EvaluationType = {
 	evaluation_data: SurveyCreationSchema;
 };
 
+export type AnswerCopyType = {
+	sum: number;
+	length: number;
+	percentage: number;
+	headerTitle: string;
+};
+
+export type EvaluatedType = {
+	id: number;
+	fullname: string;
+	sections: string;
+	created_at: string;
+	department: string;
+	student_id: string;
+	answers_copy: AnswerCopyType[];
+	professor_id: number;
+};
+
 export type ProfessorType = {
 	id: number;
 	created_at: string;
@@ -84,5 +102,6 @@ export interface AdminLayoutQueryType {
 
 export interface StudentLayoutQueryType {
 	evaluation_forms: EvaluationType[] | [];
+	evluated_forms: EvaluatedType[] | [];
 	professors: ProfessorType[] | [];
 }

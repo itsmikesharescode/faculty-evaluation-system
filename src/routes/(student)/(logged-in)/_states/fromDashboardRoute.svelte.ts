@@ -1,6 +1,5 @@
-import type { EvaluationType, ProfessorType } from '$lib/types';
+import type { EvaluatedType, EvaluationType, ProfessorType } from '$lib/types';
 import { getContext, setContext } from 'svelte';
-import { answerFormatter } from '../student-dashboard/evaluation/_helpers/answerFormatter';
 
 class DashboardRoute {
 	private evaluationForms = $state<EvaluationType[] | null>(null);
@@ -11,6 +10,16 @@ class DashboardRoute {
 
 	getEvals() {
 		return this.evaluationForms;
+	}
+
+	private evaluatedForms = $state<EvaluatedType[] | null>(null);
+
+	setEvalds(param: EvaluatedType[] | null) {
+		this.evaluatedForms = param;
+	}
+
+	getEvalds() {
+		return this.evaluatedForms;
 	}
 
 	private professors = $state<ProfessorType[] | null>(null);

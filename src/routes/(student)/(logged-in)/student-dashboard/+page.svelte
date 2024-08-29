@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { BellRing, ListChecks, MoveUpRight } from 'lucide-svelte';
+	import { BellRing, ListChecks, MoveUpRight, Logs } from 'lucide-svelte';
 	import { fromStudentRouteState } from '../_states/fromStudentRoute.svelte';
 	import { fromDashboardRouteState } from '../_states/fromDashboardRoute.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
@@ -91,7 +91,7 @@
 		</div>
 	</div>
 
-	<!--To be evaluated-->
+	<!--Evaluated area-->
 	<div class="p-[0.625rem]">
 		<div class="flex flex-col p-[10px]">
 			<p class="text-xl font-semibold">Evaluation History</p>
@@ -108,13 +108,19 @@
 
 		<!--Looping table here-->
 		<div class="mt-[2dvh] flex flex-col gap-[10px] md:mt-0 md:gap-0">
-			{#each dashboardRoute.getProfs() ?? [] as professor, index}
+			{#each dashboardRoute.getEvalds() ?? [] as professor, index}
 				<div
 					class="hidden border-b-[1px] md:grid md:grid-cols-[50%,25%,25%] lg:grid-cols-[55%,30%,15%]"
 				>
 					<span class="flex items-center p-[10px] text-sm">{professor.fullname}</span>
 					<span class="flex items-center p-[10px] text-sm">{professor.department}</span>
-					<span class="flex items-center p-[10px] text-sm"> Satisfied </span>
+					<span class="flex items-center p-[10px] text-sm">
+						{(
+							professor.answers_copy
+								.map((item) => item.percentage)
+								.reduce((acc, curr) => acc + curr) / professor.answers_copy.length
+						).toFixed(0)} %
+					</span>
 				</div>
 
 				<!--Render for mobile view-->

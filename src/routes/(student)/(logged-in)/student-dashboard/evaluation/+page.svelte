@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { Progress } from '$lib/components/ui/progress/index.js';
-	import Button from '$lib/components/ui/button/button.svelte';
 	import { fromStudentRouteState } from '../../_states/fromStudentRoute.svelte';
 	import { fromDashboardRouteState } from '../../_states/fromDashboardRoute.svelte';
 	import CustomRadioGroup from './_component/CustomRadioGroup.svelte';
@@ -105,7 +104,7 @@
 						</div>
 					{/each}
 
-					{#if !(percentage >= 100)}
+					{#if percentage >= 100}
 						<div class="flex justify-end">
 							<SubmitAnswer />
 						</div>

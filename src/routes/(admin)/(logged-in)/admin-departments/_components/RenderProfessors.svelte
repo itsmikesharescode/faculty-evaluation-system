@@ -27,11 +27,10 @@
 	</Table.Caption>
 	<Table.Header>
 		<Table.Row>
-			<Table.Head></Table.Head>
+			<Table.Head class="max-w-fit"></Table.Head>
 			<Table.Head class="truncate">Professor Name</Table.Head>
-			<Table.Head class="truncate">Section</Table.Head>
 			<Table.Head class="truncate">Created At</Table.Head>
-			<Table.Head class="truncate text-center">Result</Table.Head>
+			<Table.Head class="truncate">Section</Table.Head>
 		</Table.Row>
 	</Table.Header>
 	<Table.Body>
@@ -42,17 +41,16 @@
 				</Table.Cell>
 				<Table.Cell class="truncate font-medium">{professor.fullname}</Table.Cell>
 				<Table.Cell class="truncate">
+					{new Date(professor.created_at).toLocaleDateString()} @
+					{new Date(professor.created_at).toLocaleTimeString()}
+				</Table.Cell>
+				<Table.Cell class="truncate">
 					{#if professor.sections.split(',').length > 1}
 						<Sections sections={professor.sections.split(',')} />
 					{:else}
 						<span>{professor.sections}</span>
 					{/if}
 				</Table.Cell>
-				<Table.Cell class="truncate"
-					>{new Date(professor.created_at).toLocaleDateString()} @
-					{new Date(professor.created_at).toLocaleTimeString()}
-				</Table.Cell>
-				<Table.Cell class="truncate text-center">{professor.ratings ?? 0} %</Table.Cell>
 			</Table.Row>
 		{/each}
 	</Table.Body>

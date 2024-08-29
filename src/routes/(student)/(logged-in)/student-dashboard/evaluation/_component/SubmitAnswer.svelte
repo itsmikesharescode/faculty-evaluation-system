@@ -5,6 +5,9 @@
 	import { enhance } from '$app/forms';
 	import { Loader } from 'lucide-svelte';
 	import { answerFormatter } from '../_helpers/answerFormatter';
+	import type { ResultModel } from '$lib/types';
+	import { toast } from 'svelte-sonner';
+	import { goto } from '$app/navigation';
 
 	const dashboardRoute = fromDashboardRouteState();
 
@@ -13,13 +16,16 @@
 	const submitAnsEvent: SubmitFunction = () => {
 		submitLoader = true;
 		return async ({ result, update }) => {
-			const { status } = result;
+			const { status, data } = result as ResultModel<{ msg: string }>;
 
 			switch (status) {
 				case 200:
+					toast.success('', { description: data.msg });
+					await goto('/student-dashboard');
 					break;
 
 				case 401:
+					toast.error('', { description: data.msg });
 					break;
 			}
 			await update();
@@ -29,7 +35,7 @@
 </script>
 
 <form method="post" action="?/submitAnsEvent" use:enhance={submitAnsEvent}>
-	<input name="projObj" type="hidden" value={dashboardRoute.getActiveProf()} />
+	<input name="profObj" type="hidden" value={JSON.stringify(dashboardRoute.getActiveProf())} />
 	<input
 		name="answersArr"
 		type="hidden"
