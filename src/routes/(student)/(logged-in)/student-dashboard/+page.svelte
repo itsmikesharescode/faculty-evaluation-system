@@ -44,6 +44,9 @@
 		</div>
 
 		<Table.Root>
+			{#if !dashboardRoute.getProfs()?.length}
+				<Table.Caption>There is no record.</Table.Caption>
+			{/if}
 			<Table.Header>
 				<Table.Row>
 					<Table.Head class="truncate">Teacher Name</Table.Head>
@@ -80,6 +83,9 @@
 		</div>
 
 		<Table.Root>
+			{#if !dashboardRoute.getEvalds()?.length}
+				<Table.Caption>There is no record.</Table.Caption>
+			{/if}
 			<Table.Header>
 				<Table.Row>
 					<Table.Head class="w-[3rem]"></Table.Head>

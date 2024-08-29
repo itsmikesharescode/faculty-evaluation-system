@@ -33,7 +33,7 @@
 					goto('/admin-dashboard');
 					break;
 
-				default:
+				case 401:
 					toast.error('Admin Login', { description: data.msg });
 					break;
 			}
