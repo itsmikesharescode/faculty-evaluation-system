@@ -16,7 +16,7 @@
 </script>
 
 <div class="min-h-screen border-l-[1px] border-slate-300">
-	<div class="grid gap-[0.625rem] p-[1.25rem] md:grid-cols-2">
+	<!-- <div class="grid gap-[0.625rem] p-[1.25rem] md:grid-cols-2">
 		<div class="h-[30dvh]">
 			<AdminBarChart first={5} sec={3} third={5} fourth={5} fifth={10} sixth={3} />
 		</div>
@@ -24,7 +24,7 @@
 		<div class="h-[30dvh]">
 			<AdminLineChart first={5} sec={3} third={5} fourth={5} fifth={10} sixth={3} />
 		</div>
-	</div>
+	</div> -->
 	<div class="mt-[1.25rem] grid gap-[1.25rem] p-[1.25rem] md:grid-cols-3">
 		<AdminCountCard
 			title="Total Student"
