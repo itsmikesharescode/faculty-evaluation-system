@@ -1,7 +1,15 @@
 <script lang="ts">
 	import fes_icon from '$lib/assets/fes_icon.png?enhanced';
 	import type { Snippet } from 'svelte';
-	import { Rocket, CircleUser, LogOut, Menu, ArrowUpNarrowWide, FileQuestion } from 'lucide-svelte';
+	import {
+		Rocket,
+		CircleUser,
+		LogOut,
+		Menu,
+		ArrowUpNarrowWide,
+		FileQuestion,
+		ListChecks
+	} from 'lucide-svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { fly } from 'svelte/transition';
 	import * as Sheet from '$lib/components/ui/sheet/index.js';

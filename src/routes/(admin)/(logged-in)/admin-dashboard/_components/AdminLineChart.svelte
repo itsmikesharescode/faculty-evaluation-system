@@ -3,18 +3,21 @@
 	import Chart from 'chart.js/auto';
 
 	interface Props {
-		totalStudents: number | null;
-		totalEvaluated: number | null;
-		totalProfessors: number | null;
+		first: number;
+		sec: number;
+		third: number;
+		fourth: number;
+		fifth: number;
+		sixth: number;
 	}
 
-	const { totalStudents, totalEvaluated, totalProfessors }: Props = $props();
+	const { first, sec, third, fourth, fifth, sixth }: Props = $props();
 
 	let chartCanvas: HTMLCanvasElement | undefined = $state(undefined);
 	let chartInstance: Chart | null = $state(null);
 
-	const chartValues: number[] = [totalStudents ?? 0, totalEvaluated ?? 0, totalProfessors ?? 0];
-	const chartLabels: string[] = ['Total Students', 'Total Evaluated', 'Total Professors'];
+	const chartValues: number[] = [first, sec, third, fourth, fifth, sixth];
+	const chartLabels: string[] = ['1', '2', '3', '4', '5', '6'];
 
 	onMount(async () => {
 		if (typeof window !== 'undefined') {
@@ -34,7 +37,7 @@
 				labels: chartLabels,
 				datasets: [
 					{
-						label: 'Line View',
+						label: 'User Evaluated This Week',
 						backgroundColor: '#000',
 						borderColor: '#000', // Added borderColor for line chart
 						data: chartValues,

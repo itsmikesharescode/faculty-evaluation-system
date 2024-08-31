@@ -2,11 +2,9 @@
 	import '../app.css';
 	import '@fontsource/poppins';
 	import { invalidate, onNavigate } from '$app/navigation';
-	import { onMount } from 'svelte';
 	import { fromUserState, initUser } from './_states/fromRootState.svelte';
 	import { Toaster } from '$lib/components/ui/sonner';
 	import Footer from '$lib/components/general/Footer.svelte';
-	import { browser } from '$app/environment';
 
 	const { data, children } = $props();
 

@@ -25,6 +25,18 @@
 
 	const manageAccountRoute = fromManageAccountRouteState();
 
+	const initialLoad = () => {
+		$formData.idNumber = props.student.user_meta_data.id_number;
+		$formData.firstName = props.student.user_meta_data.fullname.split(',')[1];
+		$formData.middleInitial = props.student.user_meta_data.fullname.split(',')[2];
+		$formData.lastName = props.student.user_meta_data.fullname.split(',')[0];
+		$formData.nameSuffix = props.student.user_meta_data.suffix;
+		$formData.gender = props.student.user_meta_data.gender;
+		$formData.yearLevel = props.student.user_meta_data.year_level;
+		$formData.course = props.student.user_meta_data.course;
+		$formData.sections = props.student.user_meta_data.section;
+	};
+
 	const form = superForm(props.updateStudInfoForm, {
 		validators: zodClient(updateStudInfoSchema),
 		id: crypto.randomUUID(),
@@ -41,6 +53,9 @@
 					toast.error('Update Account', { description: data.msg });
 					break;
 			}
+		},
+		onUpdated({ form }) {
+			if (form.valid) initialLoad();
 		}
 	});
 
@@ -57,6 +72,10 @@
 	const courseName = $derived(
 		$formData.course ? { label: $formData.course, value: $formData.course } : undefined
 	);
+
+	$effect(() => {
+		if (updateSignal) initialLoad();
+	});
 </script>
 
 <form

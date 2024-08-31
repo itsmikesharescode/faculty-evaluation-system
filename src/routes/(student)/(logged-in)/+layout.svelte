@@ -21,6 +21,7 @@
 		supabase.setClient(data.supabase);
 		dashboardRoute.setEvals(data.studentLayoutQ.data?.evaluation_forms ?? null);
 		dashboardRoute.setProfs(data.studentLayoutQ.data?.professors ?? null);
+		dashboardRoute.setEvalds(data.studentLayoutQ.data?.evluated_forms ?? null);
 	});
 </script>
 

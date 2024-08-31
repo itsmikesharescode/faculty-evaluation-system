@@ -54,5 +54,9 @@ export const actions: Actions = {
 
 		if (error) return fail(401, { msg: error.message });
 		return { msg: 'Success deleted a professor', data };
+	},
+
+	viewEvent: async ({ locals: { supabase }, request }) => {
+		console.log('PING ME');
 	}
 };

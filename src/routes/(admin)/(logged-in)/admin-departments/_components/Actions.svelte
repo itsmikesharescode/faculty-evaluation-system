@@ -6,6 +6,7 @@
 	import { type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import UpdateProf from './_operations/UpdateProf.svelte';
 	import DeleteProf from './_operations/DeleteProf.svelte';
+	import ViewResult from './_operations/ViewResult.svelte';
 
 	interface Props {
 		professor: ProfessorType;
@@ -14,9 +15,11 @@
 
 	const { ...props }: Props = $props();
 
+	let viewSignal = $state(false);
 	let updateSignal = $state(false);
 	let deleteSignal = $state(false);
 
+	const handleView = () => (viewSignal = true);
 	const handleUpdate = () => (updateSignal = true);
 	const handleDelete = () => (deleteSignal = true);
 </script>
@@ -27,6 +30,9 @@
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content>
 		<DropdownMenu.Group class="">
+			<DropdownMenu.Item class="flex items-center justify-center" onclick={handleView}>
+				View Results
+			</DropdownMenu.Item>
 			<DropdownMenu.Item class="flex items-center justify-center" onclick={handleUpdate}>
 				Update
 			</DropdownMenu.Item>
@@ -39,3 +45,4 @@
 
 <UpdateProf bind:updateSignal professor={props.professor} updateProfForm={props.updateProfForm} />
 <DeleteProf bind:deleteSignal professor={props.professor} />
+<ViewResult bind:viewSignal professor={props.professor} />

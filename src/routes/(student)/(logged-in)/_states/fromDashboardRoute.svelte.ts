@@ -1,4 +1,4 @@
-import type { EvaluationType, ProfessorType } from '$lib/types';
+import type { EvaluatedType, EvaluationType, ProfessorType } from '$lib/types';
 import { getContext, setContext } from 'svelte';
 
 class DashboardRoute {
@@ -10,6 +10,16 @@ class DashboardRoute {
 
 	getEvals() {
 		return this.evaluationForms;
+	}
+
+	private evaluatedForms = $state<EvaluatedType[] | null>(null);
+
+	setEvalds(param: EvaluatedType[] | null) {
+		this.evaluatedForms = param;
+	}
+
+	getEvalds() {
+		return this.evaluatedForms;
 	}
 
 	private professors = $state<ProfessorType[] | null>(null);
@@ -31,9 +41,9 @@ class DashboardRoute {
 		return this.activeProf;
 	}
 
-	private studentAnswer = $state<{ id: string; value: number }[]>([]);
+	private studentAnswer = $state<{ headerTitle: string; id: string; value: number }[]>([]);
 
-	setAnswer(param: { id: string; value: number }) {
+	setAnswer(param: { headerTitle: string; id: string; value: number }) {
 		const checkId = this.studentAnswer.map((item) => item.id);
 		if (checkId.includes(param.id)) {
 			const index = checkId.indexOf(param.id);

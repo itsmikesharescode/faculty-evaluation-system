@@ -1,24 +1,23 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Chart from 'chart.js/auto';
+	import type { ProfessorType } from '$lib/types';
 
 	interface Props {
-		first: number;
-		sec: number;
-		third: number;
-		fourth: number;
-		fifth: number;
-		sixth: number;
+		professor: ProfessorType;
+		datas: {
+			headerTitle: string;
+			percentage: number;
+		}[];
 	}
 
-	const { first, sec, third, fourth, fifth, sixth }: Props = $props();
+	const { ...props }: Props = $props();
 
 	let chartCanvas: HTMLCanvasElement | undefined = $state(undefined);
 	let chartInstance: Chart | null = $state(null);
 
-	// needs optimize for now lets cohers this sht
-	const chartValues: number[] = [first, sec, third, fourth, fifth, sixth];
-	const chartLabels: string[] = ['1', '2', '3', '4', '5', '6'];
+	const chartValues: number[] = props.datas.map((item) => item.percentage);
+	const chartLabels: string[] = props.datas.map((item) => item.headerTitle);
 
 	onMount(async () => {
 		if (typeof window !== 'undefined') {
@@ -39,7 +38,7 @@
 				labels: chartLabels,
 				datasets: [
 					{
-						label: 'Users Log This Week',
+						label: `Chart bar results for ${props.professor.fullname}`,
 						backgroundColor: '#000',
 						data: chartValues
 					}
