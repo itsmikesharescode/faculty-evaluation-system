@@ -61,6 +61,14 @@ export type AnswerCopyType = {
 	headerTitle: string;
 };
 
+export type EvaluatedOrigType = {
+	id: number;
+	created_at: string;
+	student_id: string;
+	professor_id: string;
+	answers_copy: AnswerCopyType[];
+};
+
 export type EvaluatedType = {
 	id: number;
 	fullname: string;

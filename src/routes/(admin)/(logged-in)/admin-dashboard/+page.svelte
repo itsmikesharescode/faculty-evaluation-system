@@ -3,9 +3,7 @@
 	import { fromManageAccountRouteState } from '../_states/fromAdminManageAccounts.svelte';
 	import { fromQuestionnaireRouteState } from '../_states/fromAdminQuestionnaire.svelte';
 	import { fromAdminRouteState } from '../_states/fromAdminRoute.svelte';
-	import * as Table from '$lib/components/ui/table';
 	import AdminCountCard from './_components/AdminCountCard.svelte';
-	import Actions from './_components/Actions.svelte';
 	import AdminLineChart from './_components/AdminLineChart.svelte';
 	import AdminBarChart from './_components/AdminBarChart.svelte';
 
@@ -46,31 +44,5 @@
 			count={0}
 			link="/admin-departments"
 		/>
-	</div>
-
-	<div class="px-[1.25rem]">
-		<Table.Root>
-			<Table.Caption>No Record</Table.Caption>
-			<Table.Header>
-				<Table.Row>
-					<Table.Head class="w-[3rem]"></Table.Head>
-					<Table.Head class="truncate">Teacher Name</Table.Head>
-					<Table.Head class="truncate">Department</Table.Head>
-					<Table.Head class="truncate">Result</Table.Head>
-				</Table.Row>
-			</Table.Header>
-			<Table.Body>
-				{#each Array(10) as _}
-					<Table.Row>
-						<Table.Cell>
-							<Actions />
-						</Table.Cell>
-						<Table.Cell class="truncate font-medium">DR Husay</Table.Cell>
-						<Table.Cell class="truncate">BSIS</Table.Cell>
-						<Table.Cell class="w-[7rem] truncate text-center">90%</Table.Cell>
-					</Table.Row>
-				{/each}
-			</Table.Body>
-		</Table.Root>
 	</div>
 </div>
