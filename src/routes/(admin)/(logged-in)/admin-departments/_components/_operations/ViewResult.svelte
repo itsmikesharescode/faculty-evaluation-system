@@ -40,8 +40,8 @@
 
 			if (error) {
 				toast.error('Viewing Result', { description: error.message });
-				return [];
-			} else if (data) {
+				return { voteCount: 0, averageArray: [] };
+			} else if (data.length) {
 				const arrayOfAns = data.map((item) => item.answers_copy);
 
 				const flattenedArray = arrayOfAns.flat();
@@ -65,13 +65,13 @@
 					};
 				});
 
-				return averageArray;
+				return { voteCount: data.length, averageArray };
 			}
 
-			return [];
+			return { voteCount: 0, averageArray: [] };
 		}
 
-		return [];
+		return { voteCount: 0, averageArray: [] };
 	};
 </script>
 
@@ -95,37 +95,51 @@
 
 		<div class="h-full overflow-auto">
 			{#await getResults()}
-				<Skeleton class="h-full w-full rounded-none bg-slate-400" />
+				<Skeleton class="h-[40dvh] w-full rounded-none bg-slate-400" />
 			{:then datas}
-				<div class="flex flex-col gap-[1rem]">
-					<div class="flex flex-wrap gap-[1rem]">
-						{#each datas as result}
-							<div class="bg-secondary p-[1rem]">
-								<p class="text-sm font-semibold">{result.headerTitle}</p>
-								<p class="text-sm">Score: <strong>{result.percentage.toFixed(0)} %</strong></p>
+				{#if datas.averageArray.length}
+					<div class="flex flex-col gap-[1rem]">
+						<div class="flex flex-wrap gap-[1rem]">
+							{#each datas.averageArray as result}
+								<div class="bg-secondary p-[1rem]">
+									<p class="text-sm font-semibold">{result.headerTitle}</p>
+									<p class="text-sm">Score: <strong>{result.percentage.toFixed(0)} %</strong></p>
+								</div>
+							{/each}
+
+							<div class="bg-primary p-[1rem] text-white">
+								<p class="text-sm font-semibold">Total Score</p>
+								<p class="text-center">
+									{(
+										datas.averageArray
+											.map((item) => item.percentage)
+											.reduce((acc, curr) => acc + curr) / datas.averageArray.length
+									).toFixed(0)} %
+								</p>
 							</div>
-						{/each}
 
-						<div class="bg-primary p-[1rem] text-white">
-							<p class="text-sm font-semibold">Total Score</p>
-							<p class="text-center">
-								{(
-									datas.map((item) => item.percentage).reduce((acc, curr) => acc + curr) /
-									datas.length
-								).toFixed(0)} %
-							</p>
+							<div class="bg-primary p-[1rem] text-white">
+								<p class="text-sm font-semibold">Student Evaluated</p>
+								<p class="text-center">
+									{datas.voteCount}
+								</p>
+							</div>
+						</div>
+
+						<div class="grid md:grid-cols-2">
+							<div class="h-[40dvh]">
+								<ResultLineChart datas={datas.averageArray} {professor} />
+							</div>
+							<div class="h-[40dvh]">
+								<ResultBarChart datas={datas.averageArray} {professor} />
+							</div>
 						</div>
 					</div>
-
-					<div class="grid md:grid-cols-2">
-						<div class="h-[40dvh]">
-							<ResultLineChart {datas} {professor} />
-						</div>
-						<div class="h-[40dvh]">
-							<ResultBarChart {datas} {professor} />
-						</div>
+				{:else}
+					<div class="flex h-[40dvh] items-center justify-center">
+						<p class="text-sm font-semibold text-muted-foreground">No Records</p>
 					</div>
-				</div>
+				{/if}
 			{/await}
 		</div>
 	</AlertDialog.Content>
