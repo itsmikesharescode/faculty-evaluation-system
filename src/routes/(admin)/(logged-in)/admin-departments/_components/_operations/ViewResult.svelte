@@ -73,6 +73,47 @@
 
 		return { voteCount: 0, averageArray: [] };
 	};
+
+	const getScoreDescription = (percentage: number) => {
+		if (percentage < 0 || percentage > 100) {
+			return 'Invalid percentage. Please provide a value between 0 and 100.';
+		}
+
+		// Convert the percentage to the corresponding score range
+		const score = (percentage / 100) * (5.0 - 2.51) + 2.51;
+
+		// Determine the corresponding description based on the score
+		let description;
+		if (score >= 4.51 && score <= 5.0) {
+			description = 'Excellent';
+		} else if (score >= 4.01 && score <= 4.5) {
+			description = 'Very Satisfactory';
+		} else if (score >= 3.51 && score <= 4.0) {
+			description = 'Satisfactory';
+		} else if (score >= 3.0 && score <= 3.5) {
+			description = 'Fair';
+		} else if (score >= 2.51 && score <= 3.0) {
+			description = 'Needs Improvement';
+		} else {
+			description = 'Score out of range.';
+		}
+
+		// Return the score range and description
+		return `${score.toFixed(2)} - ${description}`;
+	};
+
+	const calculateTotalAvg = (
+		arrays: {
+			headerTitle: string;
+			percentage: number;
+		}[]
+	) => {
+		const resultAvg = (
+			arrays.map((item) => item.percentage).reduce((acc, curr) => acc + curr) / arrays.length
+		).toFixed(0);
+
+		return Number(resultAvg);
+	};
 </script>
 
 <AlertDialog.Root bind:open={viewSignal}>
@@ -110,11 +151,7 @@
 							<div class="bg-primary p-[1rem] text-white">
 								<p class="text-sm font-semibold">Total Score</p>
 								<p class="text-center">
-									{(
-										datas.averageArray
-											.map((item) => item.percentage)
-											.reduce((acc, curr) => acc + curr) / datas.averageArray.length
-									).toFixed(0)} %
+									{calculateTotalAvg(datas.averageArray)} %
 								</p>
 							</div>
 
@@ -122,6 +159,13 @@
 								<p class="text-sm font-semibold">Student Evaluated</p>
 								<p class="text-center">
 									{datas.voteCount}
+								</p>
+							</div>
+
+							<div class="bg-primary p-[1rem] text-white">
+								<p class="text-sm font-semibold">Final Grade</p>
+								<p class="text-center">
+									{getScoreDescription(calculateTotalAvg(datas.averageArray))}
 								</p>
 							</div>
 						</div>
