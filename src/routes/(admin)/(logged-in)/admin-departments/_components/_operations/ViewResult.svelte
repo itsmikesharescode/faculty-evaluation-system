@@ -1,6 +1,5 @@
 <script lang="ts">
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
-	import Button from '$lib/components/ui/button/button.svelte';
 	import { Skeleton } from '$lib/components/ui/skeleton';
 	import { fromDepartmentsRouteState } from '../../../_states/fromAdminDepartments.svelte';
 	import type { EvaluatedOrigType, ProfessorType } from '$lib/types';
@@ -10,6 +9,7 @@
 	import { fromSupabaseClient } from '../../../../../_states/fromSupabaseClient.svelte';
 	import type { PostgrestSingleResponse } from '@supabase/supabase-js';
 	import ResultBarChart from '../ResultBarChart.svelte';
+	import { getScoreDescription } from '../../_helpers/getScoreDescription';
 
 	interface Props {
 		professor: ProfessorType;
@@ -72,34 +72,6 @@
 		}
 
 		return { voteCount: 0, averageArray: [] };
-	};
-
-	const getScoreDescription = (percentage: number) => {
-		if (percentage < 0 || percentage > 100) {
-			return 'Invalid percentage. Please provide a value between 0 and 100.';
-		}
-
-		// Convert the percentage to the corresponding score range
-		const score = (percentage / 100) * (5.0 - 2.51) + 2.51;
-
-		// Determine the corresponding description based on the score
-		let description;
-		if (score >= 4.51 && score <= 5.0) {
-			description = 'Excellent';
-		} else if (score >= 4.01 && score <= 4.5) {
-			description = 'Very Satisfactory';
-		} else if (score >= 3.51 && score <= 4.0) {
-			description = 'Satisfactory';
-		} else if (score >= 3.0 && score <= 3.5) {
-			description = 'Fair';
-		} else if (score >= 2.51 && score <= 3.0) {
-			description = 'Needs Improvement';
-		} else {
-			description = 'Score out of range.';
-		}
-
-		// Return the score range and description
-		return `${score.toFixed(2)} - ${description}`;
 	};
 
 	const calculateTotalAvg = (

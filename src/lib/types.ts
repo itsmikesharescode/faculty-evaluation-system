@@ -86,6 +86,7 @@ export type ProfessorType = {
 	department: string;
 	fullname: string;
 	sections: string;
+	final_grade: string | null;
 };
 
 export type StudentType = {
@@ -103,6 +104,7 @@ export interface Departments {
 }
 
 export interface AdminLayoutQueryType {
+	dashboard: { total_evaluated: number; total_professor: number; total_students: number };
 	professors: Departments | null;
 	evaluation_forms: EvaluationType[] | [];
 	students: StudentType[] | [];
