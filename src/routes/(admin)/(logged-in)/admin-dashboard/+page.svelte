@@ -7,9 +7,9 @@
 	import AdminLineChart from './_components/AdminLineChart.svelte';
 	import AdminBarChart from './_components/AdminBarChart.svelte';
 
+	const { data } = $props();
+
 	const route = fromAdminRouteState();
-	const questionnaireRoute = fromQuestionnaireRouteState();
-	const departmentRoute = fromDepartmentsRouteState();
 	const manageAccountRoute = fromManageAccountRouteState();
 
 	route.setRoute('/admin-dashboard');
@@ -29,19 +29,19 @@
 		<AdminCountCard
 			title="Total Student"
 			selection="totalStudents"
-			count={manageAccountRoute.getStudents()?.length ?? 0}
+			count={data.adminLayoutQ.data?.dashboard.total_students ?? 0}
 			link="/admin-manage-accounts"
 		/>
 		<AdminCountCard
 			title="Total Evaluated"
 			selection="totalEvaluated"
-			count={40}
+			count={data.adminLayoutQ.data?.dashboard.total_evaluated ?? 0}
 			link="/admin-departments"
 		/>
 		<AdminCountCard
 			title="Total Professor"
 			selection="totalProfessors"
-			count={0}
+			count={data.adminLayoutQ.data?.dashboard.total_professor ?? 0}
 			link="/admin-departments"
 		/>
 	</div>

@@ -6,6 +6,7 @@
 	import Actions from './Actions.svelte';
 	import { fromDepRouteState } from '../_states/fromDepRoutes.svelte';
 	import Sections from '$lib/components/general/Sections.svelte';
+	import { getScoreDescription } from '../_helpers/getScoreDescription';
 
 	interface Props {
 		updateProfForm: SuperValidated<Infer<UpdateProfSchema>>;
@@ -31,6 +32,7 @@
 			<Table.Head class="truncate">Professor Name</Table.Head>
 			<Table.Head class="truncate">Created At</Table.Head>
 			<Table.Head class="truncate">Section</Table.Head>
+			<Table.Head class="truncate">Final Grade</Table.Head>
 		</Table.Row>
 	</Table.Header>
 	<Table.Body>
@@ -50,6 +52,9 @@
 					{:else}
 						<span>{professor.sections}</span>
 					{/if}
+				</Table.Cell>
+				<Table.Cell class="truncate"
+					>{professor.final_grade ? getScoreDescription(Number(professor.final_grade)) : 'N/A'}
 				</Table.Cell>
 			</Table.Row>
 		{/each}
