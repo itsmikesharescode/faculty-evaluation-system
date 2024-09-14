@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { initDepRouteState } from './_states/fromDepRoutes.svelte';
+  import { initDepRouteState } from './_states/fromDepRoutes.svelte';
 
-	const { children } = $props();
+  const { children } = $props();
 
-	initDepRouteState();
+  initDepRouteState();
 </script>
 
 {@render children()}
