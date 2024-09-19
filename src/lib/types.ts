@@ -86,6 +86,7 @@ export type ProfessorType = {
   department: string;
   fullname: string;
   sections: string;
+  subjects: string;
   final_grade: string | null;
 };
 
