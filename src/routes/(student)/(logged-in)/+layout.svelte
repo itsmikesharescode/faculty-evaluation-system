@@ -5,6 +5,8 @@
   import { studentPaths } from '$lib';
   import { fromSupabaseClient, initSupabase } from '../../_states/fromSupabaseClient.svelte';
   import { fromDashboardRouteState, initDashboardRoute } from './_states/fromDashboardRoute.svelte';
+  import SystemPolicy from './_components/SystemPolicy.svelte';
+  import { onMount } from 'svelte';
 
   const { data, children } = $props();
 
@@ -15,6 +17,8 @@
   const supabase = fromSupabaseClient();
   const dashboardRoute = fromDashboardRouteState();
 
+  let name: string = 'my name';
+
   const navBlockedList = ['/student-login', '/student-login/update-password'];
 
   $effect(() => {
@@ -23,7 +27,19 @@
     dashboardRoute.setProfs(data.studentLayoutQ.data?.professors ?? null);
     dashboardRoute.setEvalds(data.studentLayoutQ.data?.evluated_forms ?? null);
   });
+
+  let firstVisit = $state(false);
+
+  onMount(() => {
+    const hasRecord = localStorage.getItem('policy');
+
+    if (!hasRecord) {
+      firstVisit = true;
+    }
+  });
 </script>
+
+<SystemPolicy bind:firstVisit />
 
 {#if !navBlockedList.includes($page.url.pathname)}
   <StudentNav {children} />

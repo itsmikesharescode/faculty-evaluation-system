@@ -38,7 +38,7 @@
   </p>
 </div>
 
-<div class="flex flex-col gap-[0.625rem] p-[0.625rem]">
+<div class="flex flex-col gap-[0.625rem] p-[0.625rem] md:flex-row">
   {#each ratings as rating}
     <button
       onclick={() => {
