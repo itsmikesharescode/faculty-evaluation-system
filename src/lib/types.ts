@@ -73,6 +73,7 @@ export type EvaluatedType = {
   id: number;
   fullname: string;
   sections: string;
+  subjects: string;
   created_at: string;
   department: string;
   student_id: string;
@@ -86,6 +87,7 @@ export type ProfessorType = {
   department: string;
   fullname: string;
   sections: string;
+  subjects: string;
   final_grade: string | null;
 };
 

@@ -13,6 +13,8 @@
   import { toast } from 'svelte-sonner';
   import { fromDepRouteState } from '../_states/fromDepRoutes.svelte';
   import * as Popover from '$lib/components/ui/popover';
+  import * as Select from '$lib/components/ui/select/index.js';
+  import { departments } from '../_states/fromDepRoutes.svelte';
 
   interface Props {
     addProfForm: SuperValidated<Infer<AddProfSchema>>;
@@ -46,6 +48,10 @@
   });
 
   const { form: formData, enhance, submitting } = form;
+
+  const selectedDepartment = $derived(
+    $formData.department ? { label: $formData.department, value: $formData.department } : undefined
+  );
 </script>
 
 <Button onclick={() => (open = true)} class="max-w-fit">Add Professor</Button>
@@ -67,10 +73,27 @@
     </AlertDialog.Header>
 
     <form method="POST" action="?/addProfEvent" use:enhance class="flex flex-col gap-[10px]">
-      <Form.Field {form} name="department" class="hidden">
+      <Form.Field {form} name="department">
         <Form.Control let:attrs>
-          <Input {...attrs} value={depRoute.getRoute()} />
+          <Form.Label>Department</Form.Label>
+          <Select.Root
+            selected={selectedDepartment}
+            onSelectedChange={(v) => {
+              v && ($formData.department = v.value);
+            }}
+          >
+            <Select.Trigger {...attrs}>
+              <Select.Value placeholder="Select department" />
+            </Select.Trigger>
+            <Select.Content>
+              {#each departments as department}
+                <Select.Item value={department} label={department} />
+              {/each}
+            </Select.Content>
+          </Select.Root>
+          <input hidden bind:value={$formData.department} name={attrs.name} />
         </Form.Control>
+        <Form.FieldErrors />
       </Form.Field>
 
       <Form.Field {form} name="profName">
@@ -93,6 +116,19 @@
             {...attrs}
             bind:value={$formData.sections}
             placeholder="Enter the professor sections"
+          />
+        </Form.Control>
+
+        <Form.FieldErrors />
+      </Form.Field>
+
+      <Form.Field {form} name="subjects">
+        <Form.Control let:attrs>
+          <Form.Label>Subjects</Form.Label>
+          <Textarea
+            {...attrs}
+            bind:value={$formData.subjects}
+            placeholder="Enter the professor subjects"
           />
         </Form.Control>
 

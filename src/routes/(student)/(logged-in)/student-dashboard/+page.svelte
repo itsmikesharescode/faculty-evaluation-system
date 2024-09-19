@@ -7,6 +7,7 @@
   import { goto } from '$app/navigation';
   import * as Table from '$lib/components/ui/table';
   import Actions from './_components/Actions.svelte';
+  import Subjects from '$lib/components/general/Subjects.svelte';
 
   const route = fromStudentRouteState();
   const dashboardRoute = fromDashboardRouteState();
@@ -91,6 +92,7 @@
           <Table.Head class="w-[3rem]"></Table.Head>
           <Table.Head class="truncate">Teacher Name</Table.Head>
           <Table.Head class="truncate">Department</Table.Head>
+          <Table.Head class="truncate">Subjects</Table.Head>
           <Table.Head class="truncate">Result for you(%)</Table.Head>
         </Table.Row>
       </Table.Header>
@@ -102,6 +104,13 @@
             </Table.Cell>
             <Table.Cell class="truncate font-medium">{professor.fullname}</Table.Cell>
             <Table.Cell class="truncate">{professor.department}</Table.Cell>
+            <Table.Cell class="truncate">
+              {#if professor.subjects.split(',').length > 1}
+                <Subjects subjects={professor.subjects.split(',')} />
+              {:else}
+                <span>{professor.subjects}</span>
+              {/if}
+            </Table.Cell>
             <Table.Cell class="w-[7rem] truncate text-center">
               {(
                 professor.answers_copy

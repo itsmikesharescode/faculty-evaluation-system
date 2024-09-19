@@ -7,6 +7,7 @@
   import { fromDepRouteState } from '../_states/fromDepRoutes.svelte';
   import Sections from '$lib/components/general/Sections.svelte';
   import { getScoreDescription } from '../_helpers/getScoreDescription';
+  import Subjects from '$lib/components/general/Subjects.svelte';
 
   interface Props {
     updateProfForm: SuperValidated<Infer<UpdateProfSchema>>;
@@ -31,6 +32,7 @@
       <Table.Head class="max-w-fit"></Table.Head>
       <Table.Head class="truncate">Professor Name</Table.Head>
       <Table.Head class="truncate">Created At</Table.Head>
+      <Table.Head class="truncate">Subjects</Table.Head>
       <Table.Head class="truncate">Section</Table.Head>
       <Table.Head class="truncate">Final Grade</Table.Head>
     </Table.Row>
@@ -46,6 +48,14 @@
           {new Date(professor.created_at).toLocaleDateString()} @
           {new Date(professor.created_at).toLocaleTimeString()}
         </Table.Cell>
+        <Table.Cell class="truncate">
+          {#if professor.subjects.split(',').length > 1}
+            <Subjects subjects={professor.subjects.split(',')} />
+          {:else}
+            <span>{professor.subjects}</span>
+          {/if}
+        </Table.Cell>
+
         <Table.Cell class="truncate">
           {#if professor.sections.split(',').length > 1}
             <Sections sections={professor.sections.split(',')} />

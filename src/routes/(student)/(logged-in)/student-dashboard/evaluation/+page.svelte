@@ -58,7 +58,7 @@
     </Breadcrumb.Root>
     {#if dashboardRoute.getEvals()?.length}
       <div class="flex flex-col gap-[10px] bg-white p-[20px]">
-        <div class="sticky top-[3.3rem] flex items-center justify-center">
+        <div class="sticky top-[3.1rem] flex items-center justify-center md:top-[5.2rem]">
           <Progress value={percentage ?? 0} max={100} class="h-[20px] w-full rounded-none" />
           <p class="absolute bottom-0 text-xs font-semibold text-black">
             {percentage.toFixed(0)} % Completion

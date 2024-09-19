@@ -135,10 +135,12 @@
     >
       <p class="text-xl leading-7 text-primary"><strong>ProfEval</strong> System</p>
 
-      <div class="hidden items-center gap-[5px] text-xl md:flex">
-        <p class=" leading-7 text-muted-foreground">{user.getUser()?.user_metadata.role}</p>
+      <div class="hidden flex-col items-center gap-[5px] text-xl md:flex">
         <p class=" leading-7">
           {formatName(user.getUser()?.user_metadata.fullname, user.getUser()?.user_metadata.suffix)}
+        </p>
+        <p class=" text-sm leading-7 text-muted-foreground">
+          {user.getUser()?.user_metadata.role.toUpperCase()}
         </p>
       </div>
 
