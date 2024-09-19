@@ -73,6 +73,7 @@ export type EvaluatedType = {
   id: number;
   fullname: string;
   sections: string;
+  subjects: string;
   created_at: string;
   department: string;
   student_id: string;
