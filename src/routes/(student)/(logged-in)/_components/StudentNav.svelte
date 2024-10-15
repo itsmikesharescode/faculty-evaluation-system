@@ -10,6 +10,7 @@
   import Logout from './Logout.svelte';
   import { formatName } from '$lib';
   import { fromUserState } from '../../../_states/fromRootState.svelte';
+  import Button from '$lib/components/ui/button/button.svelte';
 
   interface Props {
     children: Snippet;
@@ -135,18 +136,28 @@
     >
       <p class="text-xl leading-7 text-primary"><strong>ProfEval</strong> System</p>
 
-      <div class="hidden flex-col items-center gap-[5px] text-xl md:flex">
-        <p class=" leading-7">
-          {formatName(user.getUser()?.user_metadata.fullname, user.getUser()?.user_metadata.suffix)}
-        </p>
-        <p class=" text-sm leading-7 text-muted-foreground">
-          {user.getUser()?.user_metadata.role.toUpperCase()}
-        </p>
-      </div>
+      <div class="flex items-center gap-2.5">
+        <Button
+          onclick={() => goto('/student-dashboard?tutorial=true&step=1')}
+          class="hidden md:flex">Play Tutorial</Button
+        >
 
-      <button class="md:hidden" onclick={() => (showMobileMenu = true)}>
-        <Menu />
-      </button>
+        <div class="hidden flex-col items-center gap-[5px] text-xl md:flex">
+          <p class=" leading-7">
+            {formatName(
+              user.getUser()?.user_metadata.fullname,
+              user.getUser()?.user_metadata.suffix
+            )}
+          </p>
+          <p class=" text-sm leading-7 text-muted-foreground">
+            {user.getUser()?.user_metadata.role.toUpperCase()}
+          </p>
+        </div>
+
+        <button class="md:hidden" onclick={() => (showMobileMenu = true)}>
+          <Menu />
+        </button>
+      </div>
     </nav>
 
     <div class="">
