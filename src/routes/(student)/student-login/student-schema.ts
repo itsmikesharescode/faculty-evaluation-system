@@ -7,11 +7,13 @@ export const studentLoginSchema = z.object({
   email: z.string().email({ message: 'Must enter a valid email.' }),
   password: z.string().min(1, { message: 'Must enter a password' })
 });
-
+///2021-01999
 export const studentCreateSchema = z
   .object({
     email: z.string().email({ message: 'Must enter a valid email.' }),
-    idNumber: z.string().min(5, { message: 'Must enter a valid id number.' }),
+    idNumber: z.string().regex(/^\d{4}-\d{5}$/, {
+      message: 'Not valid id number'
+    }),
     firstName: z.string().min(1, { message: 'Must enter first name.' }),
     middleInitial: z
       .string()

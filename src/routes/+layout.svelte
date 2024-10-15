@@ -5,15 +5,14 @@
   import { fromUserState, initUser } from './_states/fromRootState.svelte';
   import { Toaster } from '$lib/components/ui/sonner';
   import Footer from '$lib/components/general/Footer.svelte';
+  import { onMount } from 'svelte';
 
   const { data, children } = $props();
 
   initUser();
   const user = fromUserState();
 
-  $effect(() => {
-    user.setUser(data.user);
-
+  onMount(() => {
     const { session, supabase } = data;
 
     const { data: subs } = supabase.auth.onAuthStateChange((_, newSession) => {
@@ -23,6 +22,10 @@
     });
 
     return () => subs.subscription.unsubscribe();
+  });
+
+  $effect(() => {
+    user.setUser(data.user);
   });
 
   onNavigate((navigation) => {

@@ -49,35 +49,35 @@ const supabase: Handle = async ({ event, resolve }) => {
     }
   });
 
-  event.locals.getSession = async () => {
+  event.locals.safeGetSession = async () => {
     const {
       data: { session }
     } = await event.locals.supabase.auth.getSession();
-
-    if (!session) return { session: null, user: null };
-
-    try {
-      const decoded = jwt.verify(session.access_token, jwtSecret) as SupabaseJwt;
-      const validated_session: Session = {
-        access_token: session.access_token,
-        refresh_token: session.refresh_token,
-        expires_at: decoded.exp,
-        expires_in: decoded.exp - Math.round(Date.now() / 1000),
-        token_type: 'bearer',
-        user: {
-          app_metadata: decoded.app_metadata ?? {},
-          aud: 'authenticated',
-          created_at: '',
-          id: decoded.sub,
-          user_metadata: decoded.user_metadata
-        }
-      };
-
-      return { session: validated_session, user: validated_session.user };
-    } catch (err) {
+    if (!session) {
       return { session: null, user: null };
     }
+
+    const {
+      data: { user },
+      error
+    } = await event.locals.supabase.auth.getUser();
+    if (error) {
+      // JWT validation has failed
+      return { session: null, user: null };
+    }
+
+    return { session, user };
   };
+
+  return resolve(event, {
+    filterSerializedResponseHeaders(name) {
+      /**
+       * Supabase libraries use the `content-range` and `x-supabase-api-version`
+       * headers, so we need to tell SvelteKit to pass it through.
+       */
+      return name === 'content-range' || name === 'x-supabase-api-version';
+    }
+  });
 
   return resolve(event, {
     filterSerializedResponseHeaders(name) {
@@ -91,7 +91,7 @@ const supabase: Handle = async ({ event, resolve }) => {
 };
 
 const authGuard: Handle = async ({ event, resolve }) => {
-  const { session, user } = await event.locals.getSession();
+  const { session, user } = await event.locals.safeGetSession();
   event.locals.session = session;
   event.locals.user = user;
 
