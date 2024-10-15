@@ -13,6 +13,8 @@
   const manageAccountRoute = fromManageAccountRouteState();
 
   route.setRoute('/admin-dashboard');
+
+  console.log(data.adminLayoutQ.data);
 </script>
 
 <div class="min-h-screen border-l-[1px] border-slate-300">

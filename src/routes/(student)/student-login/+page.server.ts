@@ -57,6 +57,8 @@ export const actions: Actions = {
       }
     });
 
+    console.log(error?.message, user);
+
     if (error) return fail(401, { form, msg: error.message });
     else if (user) return { form, msg: 'Account created.', user };
   },
