@@ -217,11 +217,11 @@
       {/if}
       <Table.Header>
         <Table.Row>
-          <Table.Head class="w-[3rem]"></Table.Head>
+          <!-- <Table.Head class="w-[3rem]"></Table.Head> -->
           <Table.Head class="truncate">Teacher Name</Table.Head>
           <Table.Head class="truncate">Department</Table.Head>
           <Table.Head class="truncate">Subjects</Table.Head>
-          <Table.Head class="truncate">Result for you(%)</Table.Head>
+          <!--  <Table.Head class="truncate">Result for you(%)</Table.Head> -->
         </Table.Row>
       </Table.Header>
       <Table.Body>
@@ -250,9 +250,9 @@
         {:else}
           {#each dashboardRoute.getEvalds() ?? [] as professor, index}
             <Table.Row>
-              <Table.Cell>
+              <!-- <Table.Cell>
                 <Actions {professor} />
-              </Table.Cell>
+              </Table.Cell> -->
               <Table.Cell class="truncate font-medium">{professor.fullname}</Table.Cell>
               <Table.Cell class="truncate">{professor.department}</Table.Cell>
               <Table.Cell class="truncate">
@@ -262,13 +262,13 @@
                   <span>{professor.subjects}</span>
                 {/if}
               </Table.Cell>
-              <Table.Cell class="w-[7rem] truncate text-center">
+              <!-- <Table.Cell class="w-[7rem] truncate text-center">
                 {(
                   professor.answers_copy
                     .map((item) => item.percentage)
                     .reduce((acc, curr) => acc + curr) / professor.answers_copy.length
                 ).toFixed(0)} %
-              </Table.Cell>
+              </Table.Cell> -->
             </Table.Row>
           {/each}
         {/if}
