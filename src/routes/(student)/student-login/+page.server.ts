@@ -57,8 +57,6 @@ export const actions: Actions = {
       }
     });
 
-    console.log(error?.message, user);
-
     if (error) return fail(401, { form, msg: 'Check id number or email or internet connection.' });
     else if (user) return { form, msg: 'Account created.', user };
   },
