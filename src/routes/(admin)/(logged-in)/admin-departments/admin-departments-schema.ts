@@ -7,16 +7,7 @@ const subjectRegex = /^[a-zA-Z0-9]+(,[a-zA-Z0-9]+)*$/;
 export const addProfSchema = z.object({
   department: z.string().refine((v) => departments.includes(v)),
   profName: z.string().min(1, { message: 'Must enter professor name.' }),
-  subjects: z.string().refine(
-    (val) => {
-      // Allow a single subject (without commas) or multiple subjects separated by commas
-      const subjectPattern = /^[a-zA-Z0-9]+(,[a-zA-Z0-9]+)*$/;
-      return subjectPattern.test(val);
-    },
-    {
-      message: 'Subjects must be either a single subject or a comma-separated list of subjects.'
-    }
-  ),
+  subjects: z.string(),
   sections: z.string().refine(
     (value) => {
       // Ensure there are no leading or trailing spaces
