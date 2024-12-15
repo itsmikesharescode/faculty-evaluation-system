@@ -20,6 +20,8 @@
 
   const supabase = fromSupabaseClient();
 
+  console.log($state.snapshot(props.evalForm));
+
   let updateLoader = $state(false);
   const handleUpdate = async () => {
     const sb = supabase.getClient();
@@ -81,7 +83,7 @@
       </AlertDialog.Description>
     </AlertDialog.Header>
 
-    <div class="overflow-auto px-[2rem]">
+    <div class="overflow-auto p-[2rem] pt-0">
       {#each props.evalForm.evaluation_data.headers ?? [] as evaluationForm, index}
         <div>
           <div class="">
@@ -120,6 +122,21 @@
           </div>
         </div>
       {/each}
+
+      {#if showUpdateStatue}
+        <div class="flex w-full max-w-3xl flex-col gap-1.5">
+          <Label for="headerTitle">Comment Title</Label>
+          <Input
+            type="headerTitle"
+            id="headerTitle"
+            placeholder="Enter new header title"
+            bind:value={props.evalForm.evaluation_data.comment}
+          />
+        </div>
+      {:else}
+        <p class="text-xl font-semibold text-primary">{props.evalForm.evaluation_data.comment}</p>
+        <div class="h-[0.25rem] w-[1.875rem] bg-yellow-500"></div>
+      {/if}
     </div>
 
     <div class="flex justify-end gap-[0.5rem] p-2">

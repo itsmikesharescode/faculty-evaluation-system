@@ -34,13 +34,18 @@
           }
         ]
       }
-    ]
+    ],
+    comment: ''
   });
 
   let errors = $state<ZodIssue[]>();
 
   const evalErrMsg = (): string | undefined => {
     return errors?.find((item) => item.path[0] === 'evalTitle')?.message;
+  };
+
+  const commentErrMsg = () => {
+    return errors?.find((item) => item.path[0] === 'comment')?.message;
   };
 
   const headerErrMsg = (i: number): string | undefined => {
@@ -209,6 +214,20 @@
     </div>
   {/each}
 
+  <div class="rounded-lg bg-white px-[0.625rem] py-[1.25rem] shadow-lg">
+    <div class="grid w-full items-center gap-1.5">
+      <Label for="comment" class="font-semibold">Comment Title</Label>
+      <Input
+        type="text"
+        id="comment"
+        bind:value={questionContainer.comment}
+        placeholder="Enter the comment title"
+      />
+      <p class="text-sm text-red-500">{commentErrMsg()}</p>
+    </div>
+  </div>
+
+  <!--Submission area-->
   <div class="flex items-center justify-between gap-[5px]">
     <Button
       onclick={() => {

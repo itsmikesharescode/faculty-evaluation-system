@@ -3,7 +3,7 @@ import { type Handle, redirect } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { adminPaths, studentPaths } from '$lib';
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public';
-import { PRIVATE_SUPABASE_ADMIN_KEY, PRIVATE_MAIL_API_KEY } from '$env/static/private';
+import { PRIVATE_SUPABASE_ADMIN_KEY } from '$env/static/private';
 
 const supabase: Handle = async ({ event, resolve }) => {
   event.locals.supabase = createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
