@@ -13,6 +13,8 @@ declare global {
     }
     interface PageData {
       session: Session | null;
+      supabase?: SupabaseClient;
+      user?: User | null;
     }
     // interface PageState {}
     // interface Platform {}
