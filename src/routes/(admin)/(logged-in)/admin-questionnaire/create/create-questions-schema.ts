@@ -14,7 +14,10 @@ const headerArray = z.object({
 export const surveyCreationSchema = z.object({
   evalTitle: z.string().min(1, { message: 'Must enter an evaluation title.' }),
   headers: z.array(headerArray).min(1, { message: 'Must have at least 1 header.' }),
-  comment: z.string().min(1, { message: 'Must add a comment title.' })
+  remark: z.object({
+    title: z.string().min(1, { message: 'Must enter title' }),
+    value: z.string().optional()
+  })
 });
 
 export type SurveyCreationSchema = z.infer<typeof surveyCreationSchema>;

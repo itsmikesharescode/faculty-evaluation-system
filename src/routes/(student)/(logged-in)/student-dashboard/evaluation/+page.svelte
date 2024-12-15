@@ -8,6 +8,7 @@
   import { goto } from '$app/navigation';
   import { Activity } from 'lucide-svelte';
   import SubmitAnswer from './_component/SubmitAnswer.svelte';
+  import Textarea from '$lib/components/ui/textarea/textarea.svelte';
 
   const route = fromStudentRouteState();
   const dashboardRoute = fromDashboardRouteState();
@@ -101,6 +102,17 @@
                   {/each}
                 </div>
               {/each}
+            </div>
+
+            <div class="flex flex-col gap-[20px]">
+              <p class="text-center text-xl font-semibold text-primary">
+                {evaluationForm.evaluation_data.remark.title}
+              </p>
+              <Textarea
+                onchange={() => {}}
+                placeholder="Say something... {evaluationForm.evaluation_data.remark.title}"
+                bind:value={evaluationForm.evaluation_data.remark.value}
+              />
             </div>
           {/each}
 

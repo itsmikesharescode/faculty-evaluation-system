@@ -8,6 +8,7 @@
   import Input from '$lib/components/ui/input/input.svelte';
   import { fromSupabaseClient } from '../../../../../_states/fromSupabaseClient.svelte';
   import { toast } from 'svelte-sonner';
+  import MessageCircle from 'lucide-svelte/icons/message-circle';
 
   interface Props {
     viewSignal: boolean;
@@ -130,11 +131,14 @@
             type="headerTitle"
             id="headerTitle"
             placeholder="Enter new header title"
-            bind:value={props.evalForm.evaluation_data.comment}
+            bind:value={props.evalForm.evaluation_data.remark.title}
           />
         </div>
       {:else}
-        <p class="text-xl font-semibold text-primary">{props.evalForm.evaluation_data.comment}</p>
+        <p class="flex items-center gap-2.5 text-xl font-semibold text-primary">
+          {props.evalForm.evaluation_data.remark.title}
+          <MessageCircle />
+        </p>
         <div class="h-[0.25rem] w-[1.875rem] bg-yellow-500"></div>
       {/if}
     </div>

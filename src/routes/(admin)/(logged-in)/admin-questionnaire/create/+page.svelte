@@ -35,7 +35,10 @@
         ]
       }
     ],
-    comment: ''
+    remark: {
+      title: '',
+      value: ''
+    }
   });
 
   let errors = $state<ZodIssue[]>();
@@ -44,8 +47,8 @@
     return errors?.find((item) => item.path[0] === 'evalTitle')?.message;
   };
 
-  const commentErrMsg = () => {
-    return errors?.find((item) => item.path[0] === 'comment')?.message;
+  const remarkTitleErr = () => {
+    return errors?.find((item) => item.path[0] === 'remark')?.message;
   };
 
   const headerErrMsg = (i: number): string | undefined => {
@@ -216,14 +219,14 @@
 
   <div class="rounded-lg bg-white px-[0.625rem] py-[1.25rem] shadow-lg">
     <div class="grid w-full items-center gap-1.5">
-      <Label for="comment" class="font-semibold">Comment Title</Label>
+      <Label for="comment" class="font-semibold">Remark Title</Label>
       <Input
         type="text"
         id="comment"
-        bind:value={questionContainer.comment}
-        placeholder="Enter the comment title"
+        bind:value={questionContainer.remark.title}
+        placeholder="Enter the remark title"
       />
-      <p class="text-sm text-red-500">{commentErrMsg()}</p>
+      <p class="text-sm text-red-500">{remarkTitleErr()}</p>
     </div>
   </div>
 
