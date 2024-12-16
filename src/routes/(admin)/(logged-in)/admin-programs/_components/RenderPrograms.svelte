@@ -3,8 +3,8 @@
   import type { Infer, SuperValidated } from 'sveltekit-superforms';
   import * as Table from '$lib/components/ui/table';
   import Actions from './Actions.svelte';
-  import Sections from '$lib/components/general/Sections.svelte';
   import type { DeleteProgramSchema, UpdateProgramSchema } from '../admin-programs-schema';
+  import { page } from '$app/stores';
 
   interface Props {
     updateProgramForm: SuperValidated<Infer<UpdateProgramSchema>>;
@@ -12,12 +12,10 @@
   }
 
   const { updateProgramForm, deleteProgramForm }: Props = $props();
-
-  const manageAccountRoute = fromManageAccountRouteState();
 </script>
 
 <Table.Root>
-  <Table.Caption>A list of student accounts</Table.Caption>
+  <Table.Caption>A list of all programs</Table.Caption>
   <Table.Header>
     <Table.Row>
       <Table.Head class="w-fit"></Table.Head>
@@ -27,14 +25,18 @@
     </Table.Row>
   </Table.Header>
   <Table.Body>
-    {#each Array(5) as _}
+    {#each $page.data.adminLayoutQ.programs as program}
       <Table.Row>
         <Table.Cell>
-          <Actions {updateProgramForm} {deleteProgramForm} />
+          <Actions {program} {updateProgramForm} {deleteProgramForm} />
         </Table.Cell>
-        <Table.Cell class="">Bachelor of Science in Information Tech</Table.Cell>
-        <Table.Cell class="">BSIT</Table.Cell>
-        <Table.Cell class="truncate">{new Date()}</Table.Cell>
+        <Table.Cell class="">{program.name}</Table.Cell>
+        <Table.Cell class="">{program.code}</Table.Cell>
+        <Table.Cell class="truncate">
+          {new Date(program.created_at).toLocaleDateString()} @ {new Date(
+            program.created_at
+          ).toLocaleTimeString()}
+        </Table.Cell>
       </Table.Row>
     {/each}
   </Table.Body>

@@ -4,17 +4,18 @@
   import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import { Loader, X } from 'lucide-svelte';
-  import type { ResultModel, StudentType } from '$lib/types';
+  import type { Program, ResultModel, StudentType } from '$lib/types';
   import { toast } from 'svelte-sonner';
   import { deleteProgramSchema, type DeleteProgramSchema } from '../../admin-programs-schema';
   import Button from '$lib/components/ui/button/button.svelte';
 
   interface Props {
+    program: Program;
     deleteSignal: boolean;
     deleteProgramForm: SuperValidated<Infer<DeleteProgramSchema>>;
   }
 
-  let { deleteSignal = $bindable(), deleteProgramForm }: Props = $props();
+  let { deleteSignal = $bindable(), deleteProgramForm, program }: Props = $props();
 
   const form = superForm(deleteProgramForm, {
     validators: zodClient(deleteProgramSchema),
@@ -37,7 +38,7 @@
 
   $effect(() => {
     if (deleteSignal) {
-      $formData.id = 0;
+      $formData.id = program.id;
     }
   });
 </script>

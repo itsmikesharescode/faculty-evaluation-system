@@ -5,16 +5,17 @@
   import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import { Loader, X } from 'lucide-svelte';
-  import type { ResultModel, StudentType } from '$lib/types';
+  import type { Program, ResultModel, StudentType } from '$lib/types';
   import { toast } from 'svelte-sonner';
   import { updateProgramSchema, type UpdateProgramSchema } from '../../admin-programs-schema';
 
   interface Props {
+    program: Program;
     updateSignal: boolean;
     updateProgramForm: SuperValidated<Infer<UpdateProgramSchema>>;
   }
 
-  let { updateSignal = $bindable(), updateProgramForm }: Props = $props();
+  let { updateSignal = $bindable(), updateProgramForm, program }: Props = $props();
 
   const form = superForm(updateProgramForm, {
     validators: zodClient(updateProgramSchema),
@@ -37,9 +38,9 @@
 
   $effect(() => {
     if (updateSignal) {
-      $formData.id = 0;
-      $formData.name = '';
-      $formData.code = '';
+      $formData.id = program.id;
+      $formData.name = program.name;
+      $formData.code = program.code;
     }
   });
 </script>
