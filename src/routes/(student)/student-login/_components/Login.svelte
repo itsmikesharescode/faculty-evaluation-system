@@ -46,25 +46,29 @@
 <p class="mt-[5dvh] p-[20px] text-center text-xl font-semibold leading-7">Student Log in</p>
 <form method="POST" action="?/studentLoginEvent" use:enhance class="flex flex-col gap-[10px]">
   <Form.Field {form} name="email">
-    <Form.Control let:attrs>
-      <Form.Label>Student Email</Form.Label>
-      <Input {...attrs} bind:value={$formData.email} placeholder="Enter your email" />
+    <Form.Control>
+      {#snippet children({ props })}
+        <Form.Label>Email</Form.Label>
+        <Input {...props} bind:value={$formData.email} placeholder="Enter email" />
+      {/snippet}
     </Form.Control>
-
+    <Form.Description />
     <Form.FieldErrors />
   </Form.Field>
 
   <Form.Field {form} name="password">
-    <Form.Control let:attrs>
-      <Form.Label>Student Password</Form.Label>
-      <Input
-        type="password"
-        {...attrs}
-        bind:value={$formData.password}
-        placeholder="Enter your password"
-      />
+    <Form.Control>
+      {#snippet children({ props })}
+        <Form.Label>Password</Form.Label>
+        <Input
+          type="password"
+          {...props}
+          bind:value={$formData.password}
+          placeholder="Enter password"
+        />
+      {/snippet}
     </Form.Control>
-
+    <Form.Description />
     <Form.FieldErrors />
   </Form.Field>
 
