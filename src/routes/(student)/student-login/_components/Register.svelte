@@ -5,14 +5,16 @@
   import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
   import { studentCreateSchema, type StudentCreateSchema } from '../student-schema';
   import { zodClient } from 'sveltekit-superforms/adapters';
-  import type { ResultModel } from '$lib/types';
+  import type { Program, ResultModel } from '$lib/types';
   import { toast } from 'svelte-sonner';
   import { goto } from '$app/navigation';
   import { fromUserState } from '../../../_states/fromRootState.svelte';
-  import type { User } from '@supabase/supabase-js';
+  import type { PostgrestSingleResponse, User } from '@supabase/supabase-js';
   import { CircleHelp, Loader } from 'lucide-svelte';
   import * as Popover from '$lib/components/ui/popover';
   import SelectPicker from '$lib/components/general/SelectPicker.svelte';
+  import { page } from '$app/stores';
+  import { tick } from 'svelte';
 
   interface Props {
     studentCreateForm: SuperValidated<Infer<StudentCreateSchema>>;
@@ -44,6 +46,25 @@
   });
 
   const { form: formData, enhance, submitting } = form;
+
+  const getPrograms = async () => {
+    if (!$page.data.supabase) return [];
+    const { data, error } = (await $page.data.supabase
+      ?.from('programs_tb')
+      .select('*')
+      .order('created_at', { ascending: false })) as PostgrestSingleResponse<Program[]>;
+
+    if (error) return [];
+    return data;
+  };
+
+  let programs = $state<Awaited<ReturnType<typeof getPrograms>>>([]);
+
+  $effect(() => {
+    tick().then(async () => {
+      programs = await getPrograms();
+    });
+  });
 </script>
 
 <p class="p-[20px] text-center text-xl font-semibold leading-7">Student Registration</p>
@@ -157,11 +178,15 @@
   <Form.Field {form} name="course">
     <Form.Control>
       {#snippet children({ props })}
-        <Form.Label>Year Level</Form.Label>
+        <Form.Label>Program</Form.Label>
         <SelectPicker
-          placeholder="Select course"
-          bind:selected={$formData.yearLevel}
-          selections={[{ label: 'BSIT', value: 'BSIT' }]}
+          placeholder="Select program"
+          hasDescription
+          bind:selected={$formData.course}
+          selections={programs.map((item) => ({
+            label: item.name,
+            value: item.code
+          }))}
         />
         <input type="hidden" name={props.name} bind:value={$formData.course} />
       {/snippet}
