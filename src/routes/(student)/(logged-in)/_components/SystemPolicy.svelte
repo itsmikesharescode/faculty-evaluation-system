@@ -9,6 +9,7 @@
 
   const handleContinue = () => {
     localStorage.setItem('policy', 'accepted');
+    firstVisit = false;
   };
 </script>
 

@@ -7,7 +7,6 @@
   import { fromDashboardRouteState, initDashboardRoute } from './_states/fromDashboardRoute.svelte';
   import SystemPolicy from './_components/SystemPolicy.svelte';
   import { onMount } from 'svelte';
-
   const { data, children } = $props();
 
   initStudentRoute();
@@ -17,15 +16,13 @@
   const supabase = fromSupabaseClient();
   const dashboardRoute = fromDashboardRouteState();
 
-  let name: string = 'my name';
-
   const navBlockedList = ['/student-login', '/student-login/update-password'];
 
   $effect(() => {
     supabase.setClient(data.supabase);
-    dashboardRoute.setEvals(data.studentLayoutQ.data?.evaluation_forms ?? null);
-    dashboardRoute.setProfs(data.studentLayoutQ.data?.professors ?? null);
-    dashboardRoute.setEvalds(data.studentLayoutQ.data?.evluated_forms ?? null);
+    dashboardRoute.setEvals($page.data.studentLayoutQ.evaluation_forms);
+    dashboardRoute.setProfs($page.data.studentLayoutQ.professors);
+    dashboardRoute.setEvalds($page.data.studentLayoutQ.evluated_forms);
   });
 
   let firstVisit = $state(false);

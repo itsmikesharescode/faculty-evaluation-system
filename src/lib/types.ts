@@ -89,4 +89,5 @@ export interface StudentLayoutQueryType {
   evaluation_forms: EvaluationType[] | [];
   evluated_forms: EvaluatedType[] | [];
   professors: ProfessorType[] | [];
+  programs: Program[] | [];
 }

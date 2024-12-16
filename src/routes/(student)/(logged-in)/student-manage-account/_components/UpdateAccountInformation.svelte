@@ -1,7 +1,6 @@
 <script lang="ts">
   import * as Form from '$lib/components/ui/form';
   import { Input } from '$lib/components/ui/input';
-  import * as Select from '$lib/components/ui/select/index.js';
   import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import { updateAccInfoSchema, type UpdateAccInfoSchema } from '../student-manage-account-schema';
@@ -10,11 +9,8 @@
   import { fromUserState } from '../../../../_states/fromRootState.svelte';
   import { CircleHelp, Loader } from 'lucide-svelte';
   import * as Popover from '$lib/components/ui/popover';
-  import { courseNames, yearLevels } from '$lib';
-  import { goto } from '$app/navigation';
-  import { tick } from 'svelte';
-  import { browser } from '$app/environment';
   import SelectPicker from '$lib/components/general/SelectPicker.svelte';
+  import { page } from '$app/stores';
 
   interface Props {
     updateAccInfoForm: SuperValidated<Infer<UpdateAccInfoSchema>>;
@@ -181,7 +177,11 @@
         <SelectPicker
           placeholder="Select new year level"
           bind:selected={$formData.course}
-          selections={[{ label: 'BSIT', value: 'BSIT' }]}
+          hasDescription
+          selections={$page.data.studentLayoutQ.programs.map((item) => ({
+            label: item.name,
+            value: item.code
+          }))}
         />
         <input type="hidden" name={props.name} bind:value={$formData.course} />
       {/snippet}

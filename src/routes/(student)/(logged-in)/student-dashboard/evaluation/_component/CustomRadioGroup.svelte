@@ -4,7 +4,17 @@
   interface Props {
     headerTitle: string;
     index: number;
-    questionObj: { id: string; question: string };
+    questionObj: {
+      id: string;
+      question: string;
+      selections: {
+        selectionFiveTitle: string;
+        selectionFourTitle: string;
+        selectionOneTitle: string;
+        selectionThreeTitle: string;
+        selectionTwoTitle: string;
+      };
+    };
   }
 
   const { ...props }: Props = $props();
@@ -13,23 +23,23 @@
 
   const ratings = [
     {
-      title: 'Always',
+      title: props.questionObj.selections.selectionOneTitle,
       value: 5
     },
     {
-      title: 'Often',
+      title: props.questionObj.selections.selectionTwoTitle,
       value: 4
     },
     {
-      title: 'Sometimes',
+      title: props.questionObj.selections.selectionThreeTitle,
       value: 3
     },
     {
-      title: 'Rarely',
+      title: props.questionObj.selections.selectionFourTitle,
       value: 2
     },
     {
-      title: 'Never',
+      title: props.questionObj.selections.selectionFiveTitle,
       value: 1
     }
   ];
