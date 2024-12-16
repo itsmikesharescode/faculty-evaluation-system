@@ -7,7 +7,7 @@ export const studentLoginSchema = z.object({
   email: z.string().email({ message: 'Must enter a valid email.' }),
   password: z.string().min(1, { message: 'Must enter a password' })
 });
-///2021-01999
+
 export const studentCreateSchema = z
   .object({
     email: z.string().email({ message: 'Must enter a valid email.' }),
@@ -27,9 +27,7 @@ export const studentCreateSchema = z
     yearLevel: z.string().refine((v) => yearLevels.includes(v), {
       message: 'Must enter a valid year level'
     }),
-    course: z
-      .string()
-      .refine((v) => courseNames.includes(v), { message: 'Must choose your course.' }),
+    course: z.string().min(1, { message: 'Must select program.' }),
     sections: z.string().refine(
       (value) => {
         // Ensure there are no leading or trailing spaces

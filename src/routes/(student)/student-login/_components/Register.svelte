@@ -84,7 +84,7 @@
     <Form.Control>
       {#snippet children({ props })}
         <Form.Label>Email</Form.Label>
-        <Input {...props} bind:value={$formData.idNumber} placeholder="youremail@gmail.com" />
+        <Input {...props} bind:value={$formData.email} placeholder="youremail@gmail.com" />
       {/snippet}
     </Form.Control>
     <Form.Description />
