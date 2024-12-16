@@ -50,42 +50,38 @@
   use:enhance
   class="flex flex-col gap-[10px] overflow-auto px-[1.5rem] pb-[1.5rem]"
 >
-  <Form.Field {form} name="studentId" class="hidden">
-    <Form.Control let:attrs>
-      <Input {...attrs} value={props.student.student_id} />
-    </Form.Control>
-  </Form.Field>
+  <input type="hidden" name="studentId" value={props.student.student_id} />
 
   <div class="grid gap-[0.625rem] sm:grid-cols-2">
     <Form.Field {form} name="newPwd">
-      <Form.Control let:attrs>
-        <Form.Label>New Password</Form.Label>
-        <div class="flex items-center gap-[0.625rem]">
+      <Form.Control>
+        {#snippet children({ props })}
+          <Form.Label>New Password</Form.Label>
           <Input
             type="password"
-            {...attrs}
+            {...props}
             bind:value={$formData.newPwd}
             placeholder="Enter student new password"
           />
-        </div>
+        {/snippet}
       </Form.Control>
-
+      <Form.Description />
       <Form.FieldErrors />
     </Form.Field>
 
     <Form.Field {form} name="confirmNewPwd">
-      <Form.Control let:attrs>
-        <Form.Label>Confirm New Password</Form.Label>
-        <div class="flex items-center gap-[0.625rem]">
+      <Form.Control>
+        {#snippet children({ props })}
+          <Form.Label>Confirm New Password</Form.Label>
           <Input
             type="password"
-            {...attrs}
+            {...props}
             bind:value={$formData.confirmNewPwd}
-            placeholder="Confirm student new password"
+            placeholder="Enter student new password"
           />
-        </div>
+        {/snippet}
       </Form.Control>
-
+      <Form.Description />
       <Form.FieldErrors />
     </Form.Field>
   </div>

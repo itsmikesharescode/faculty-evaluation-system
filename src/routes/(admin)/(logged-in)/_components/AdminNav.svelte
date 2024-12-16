@@ -6,9 +6,9 @@
     CircleUser,
     LogOut,
     Menu,
-    ArrowUpNarrowWide,
     FileQuestion,
-    ListChecks
+    ListChecks,
+    DatabaseZap
   } from 'lucide-svelte';
   import Separator from '$lib/components/ui/separator/separator.svelte';
   import { fly } from 'svelte/transition';
@@ -80,13 +80,11 @@
         <Separator />
 
         <button
-          onclick={() => setRouteFunc('/admin-departments')}
-          class="{route.getRoute() === '/admin-departments'
-            ? 'bg-primary text-white'
-            : 'text-black'}
+          onclick={() => setRouteFunc('/admin-records')}
+          class="{route.getRoute() === '/admin-records' ? 'bg-primary text-white' : 'text-black'}
 					p-[10px]"
         >
-          <ArrowUpNarrowWide class="h-[25px] w-[25px]" />
+          <DatabaseZap class="h-[25px] w-[25px]" />
         </button>
 
         <Separator />
@@ -155,13 +153,11 @@
         <Separator />
 
         <button
-          onclick={() => setRouteFunc('/admin-departments')}
-          class="{route.getRoute() === '/admin-departments'
-            ? 'bg-primary text-white'
-            : 'text-black'}
+          onclick={() => setRouteFunc('/admin-records')}
+          class="{route.getRoute() === '/admin-records' ? 'bg-primary text-white' : 'text-black'}
 					p-[10px] text-left"
         >
-          <p class="h-[25px] truncate">Departments</p>
+          <p class="h-[25px] truncate">Records</p>
         </button>
 
         <Separator />
@@ -259,20 +255,20 @@
             ? 'bg-primary text-white'
             : ''} flex items-center gap-[5px] p-[10px]"
         >
-          <ArrowUpNarrowWide class="h-[25px] w-[25px]" />
+          <DatabaseZap class="h-[25px] w-[25px]" />
           <p class="w-full text-center">Questionnaire</p>
         </button>
 
         <Separator />
 
         <button
-          onclick={() => setRouteFunc('/admin-departments')}
-          class="{route.getRoute() === '/admin-departments'
+          onclick={() => setRouteFunc('/admin-records')}
+          class="{route.getRoute() === '/admin-records'
             ? 'bg-primary text-white'
             : ''} flex items-center gap-[5px] p-[10px]"
         >
-          <ArrowUpNarrowWide class="h-[25px] w-[25px]" />
-          <p class="w-full text-center">Departments</p>
+          <DatabaseZap class="h-[25px] w-[25px]" />
+          <p class="w-full text-center">Records</p>
         </button>
 
         <Separator />

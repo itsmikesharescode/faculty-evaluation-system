@@ -50,21 +50,14 @@
   use:enhance
   class="flex flex-col gap-[10px] overflow-auto px-[1.5rem] pb-[1.5rem]"
 >
-  <Form.Field {form} name="studentId" class="hidden">
-    <Form.Control let:attrs>
-      <Input {...attrs} value={props.student.student_id} />
-    </Form.Control>
-  </Form.Field>
-  <div>
-    <Form.Field {form} name="email">
-      <Form.Control let:attrs>
+  <input type="hidden" name="studentId" value={props.student.student_id} />
+
+  <Form.Field {form} name="email">
+    <Form.Control>
+      {#snippet children({ props })}
         <Form.Label>Email</Form.Label>
         <div class="flex items-center gap-[0.625rem]">
-          <Input
-            {...attrs}
-            bind:value={$formData.email}
-            placeholder={props.student.user_meta_data.email}
-          />
+          <Input {...props} bind:value={$formData.email} placeholder="Enter new email" />
           <Form.Button disabled={$submitting} class="relative">
             {#if $submitting}
               <div
@@ -76,9 +69,9 @@
             Update Email
           </Form.Button>
         </div>
-      </Form.Control>
-
-      <Form.FieldErrors />
-    </Form.Field>
-  </div>
+      {/snippet}
+    </Form.Control>
+    <Form.Description />
+    <Form.FieldErrors />
+  </Form.Field>
 </form>
