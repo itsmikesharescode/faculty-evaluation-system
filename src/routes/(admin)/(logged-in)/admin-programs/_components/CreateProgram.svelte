@@ -17,8 +17,6 @@
 
   const { createProgramForm }: Props = $props();
 
-  const manageAccountRoute = fromManageAccountRouteState();
-
   let open = $state(false);
 
   const form = superForm(createProgramForm, {
@@ -28,12 +26,11 @@
       const { status, data } = result as ResultModel<{ msg: string; data: StudentType[] }>;
       switch (status) {
         case 200:
-          toast.success('Create Account', { description: data.msg });
-          manageAccountRoute.setStudents(data.data);
+          toast.success('Create Program', { description: data.msg });
           open = false;
           break;
         case 401:
-          toast.error('Create Account', { description: data.msg });
+          toast.error('Create Program', { description: data.msg });
           break;
       }
     }

@@ -23,11 +23,11 @@
       const { status, data } = result as ResultModel<{ msg: string; data: StudentType[] }>;
       switch (status) {
         case 200:
-          toast.success('Create Account', { description: data.msg });
+          toast.success('Delete Program', { description: data.msg });
           deleteSignal = false;
           break;
         case 401:
-          toast.error('Create Account', { description: data.msg });
+          toast.error('Delete Program', { description: data.msg });
           break;
       }
     }
