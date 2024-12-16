@@ -49,7 +49,7 @@
       <AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
       <AlertDialog.Description>
         This action cannot be undone. This will permanently delete
-        <strong>program name</strong>
+        <strong>{program.name}</strong>
       </AlertDialog.Description>
     </AlertDialog.Header>
 

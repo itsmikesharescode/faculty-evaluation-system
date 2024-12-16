@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { fromManageAccountRouteState } from '../../_states/fromAdminManageAccounts.svelte';
   import type { Infer, SuperValidated } from 'sveltekit-superforms';
+  import { page } from '$app/stores';
   import type {
     UpdateStudEmailSchema,
     UpdateStudInfoSchema,
@@ -17,8 +17,6 @@
   }
 
   const { ...props }: Props = $props();
-
-  const manageAccountRoute = fromManageAccountRouteState();
 </script>
 
 <Table.Root>
@@ -31,11 +29,11 @@
       <Table.Head class="truncate">ID Number</Table.Head>
       <Table.Head class="truncate">Year Level</Table.Head>
       <Table.Head class="truncate">Section</Table.Head>
-      <Table.Head class="truncate">Course</Table.Head>
+      <Table.Head class="truncate">Program</Table.Head>
     </Table.Row>
   </Table.Header>
   <Table.Body>
-    {#each manageAccountRoute.getStudents() ?? [] as student}
+    {#each $page.data.adminLayoutQ.students ?? [] as student}
       <Table.Row>
         <Table.Cell>
           <Actions

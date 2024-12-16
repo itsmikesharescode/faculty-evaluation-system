@@ -5,7 +5,7 @@
   import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import { fromManageAccountRouteState } from '../../../../_states/fromAdminManageAccounts.svelte';
-
+  import { page } from '$app/stores';
   import {
     updateStudInfoSchema,
     type UpdateStudInfoSchema
@@ -23,46 +23,37 @@
 
   let { updateSignal = $bindable(), ...props }: Props = $props();
 
-  const manageAccountRoute = fromManageAccountRouteState();
-
-  const initialLoad = () => {
-    $formData.idNumber = props.student.user_meta_data.id_number;
-    $formData.firstName = props.student.user_meta_data.fullname.split(',')[1];
-    $formData.middleInitial = props.student.user_meta_data.fullname.split(',')[2];
-    $formData.lastName = props.student.user_meta_data.fullname.split(',')[0];
-    $formData.nameSuffix = props.student.user_meta_data.suffix;
-    $formData.gender = props.student.user_meta_data.gender;
-    $formData.yearLevel = props.student.user_meta_data.year_level;
-    $formData.course = props.student.user_meta_data.course;
-    $formData.sections = props.student.user_meta_data.section;
-  };
-
   const form = superForm(props.updateStudInfoForm, {
     validators: zodClient(updateStudInfoSchema),
     id: crypto.randomUUID(),
-    invalidateAll: false,
     onUpdate({ result }) {
-      const { status, data } = result as ResultModel<{ msg: string; data: StudentType[] }>;
+      const { status, data } = result as ResultModel<{ msg: string }>;
       switch (status) {
         case 200:
           toast.success('Update Account', { description: data.msg });
-          manageAccountRoute.setStudents(data.data);
           updateSignal = false;
           break;
         case 401:
           toast.error('Update Account', { description: data.msg });
           break;
       }
-    },
-    onUpdated({ form }) {
-      if (form.valid) initialLoad();
     }
   });
 
   const { form: formData, enhance, submitting } = form;
 
   $effect(() => {
-    if (updateSignal) initialLoad();
+    if (updateSignal) {
+      $formData.idNumber = props.student.user_meta_data.id_number;
+      $formData.firstName = props.student.user_meta_data.fullname.split(',')[1];
+      $formData.middleInitial = props.student.user_meta_data.fullname.split(',')[2];
+      $formData.lastName = props.student.user_meta_data.fullname.split(',')[0];
+      $formData.nameSuffix = props.student.user_meta_data.suffix;
+      $formData.gender = props.student.user_meta_data.gender;
+      $formData.yearLevel = props.student.user_meta_data.year_level;
+      $formData.course = props.student.user_meta_data.course;
+      $formData.sections = props.student.user_meta_data.section;
+    }
   });
 </script>
 
@@ -183,11 +174,15 @@
       <Form.Field {form} name="course">
         <Form.Control>
           {#snippet children({ props })}
-            <Form.Label>Year Level</Form.Label>
+            <Form.Label>Program</Form.Label>
             <SelectPicker
-              placeholder="Select year level"
+              placeholder="Select program"
               bind:selected={$formData.course}
-              selections={[{ label: 'BSIT', value: 'BSIT' }]}
+              hasDescription
+              selections={$page.data.adminLayoutQ.programs.map((item) => ({
+                label: item.name,
+                value: item.code
+              }))}
             />
             <input type="hidden" name={props.name} bind:value={$formData.course} />
           {/snippet}

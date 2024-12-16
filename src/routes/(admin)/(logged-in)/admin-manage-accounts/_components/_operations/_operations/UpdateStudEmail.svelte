@@ -20,18 +20,14 @@
 
   let { updateSignal = $bindable(), ...props }: Props = $props();
 
-  const manageAccountRoute = fromManageAccountRouteState();
-
   const form = superForm(props.updateStudEmailForm, {
     validators: zodClient(updateStudEmailSchema),
     id: crypto.randomUUID(),
-    invalidateAll: false,
     onUpdate({ result }) {
-      const { status, data } = result as ResultModel<{ msg: string; data: StudentType[] }>;
+      const { status, data } = result as ResultModel<{ msg: string }>;
       switch (status) {
         case 200:
           toast.success('Update Account', { description: data.msg });
-          manageAccountRoute.setStudents(data.data);
           updateSignal = false;
           break;
         case 401:

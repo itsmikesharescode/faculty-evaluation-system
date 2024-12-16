@@ -11,7 +11,7 @@
   import type { ResultModel, StudentType } from '$lib/types';
   import { toast } from 'svelte-sonner';
   import { fromManageAccountRouteState } from '../../_states/fromAdminManageAccounts.svelte';
-  import { courseNames } from '$lib';
+  import { page } from '$app/stores';
   import * as Popover from '$lib/components/ui/popover';
   import SelectPicker from '$lib/components/general/SelectPicker.svelte';
 
@@ -198,11 +198,15 @@
           <Form.Field {form} name="course">
             <Form.Control>
               {#snippet children({ props })}
-                <Form.Label>Course</Form.Label>
+                <Form.Label>Program</Form.Label>
                 <SelectPicker
-                  placeholder="Select year level"
+                  placeholder="Select program"
                   bind:selected={$formData.course}
-                  selections={[{ label: 'BSIT', value: 'BSIT' }]}
+                  hasDescription
+                  selections={$page.data.adminLayoutQ.programs.map((item) => ({
+                    label: item.name,
+                    value: item.code
+                  }))}
                 />
                 <input type="hidden" name={props.name} bind:value={$formData.course} />
               {/snippet}
