@@ -92,6 +92,16 @@
         <Separator />
 
         <button
+          onclick={() => setRouteFunc('/admin-programs')}
+          class="{route.getRoute() === '/admin-programs' ? 'bg-primary text-white' : 'text-black'}
+					p-[10px]"
+        >
+          <ListChecks class="h-[25px] w-[25px]" />
+        </button>
+
+        <Separator />
+
+        <button
           onclick={() => setRouteFunc('/admin-manage-accounts')}
           class="{route.getRoute() === '/admin-manage-accounts'
             ? 'bg-primary text-white'
@@ -152,6 +162,16 @@
 					p-[10px] text-left"
         >
           <p class="h-[25px] truncate">Departments</p>
+        </button>
+
+        <Separator />
+
+        <button
+          onclick={() => setRouteFunc('/admin-programs')}
+          class="{route.getRoute() === '/admin-programs' ? 'bg-primary text-white' : 'text-black'}
+					p-[10px] text-left"
+        >
+          <p class="h-[25px] truncate">Programs</p>
         </button>
 
         <Separator />
@@ -253,6 +273,18 @@
         >
           <ArrowUpNarrowWide class="h-[25px] w-[25px]" />
           <p class="w-full text-center">Departments</p>
+        </button>
+
+        <Separator />
+
+        <button
+          onclick={() => setRouteFunc('/admin-programs')}
+          class="{route.getRoute() === '/admin-programs'
+            ? 'bg-primary text-white'
+            : ''} flex items-center gap-[5px] p-[10px]"
+        >
+          <ListChecks class="h-[25px] w-[25px]" />
+          <p class="w-full text-center">Programs</p>
         </button>
 
         <Separator />
