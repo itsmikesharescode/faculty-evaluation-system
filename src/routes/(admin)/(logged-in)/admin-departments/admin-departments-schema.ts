@@ -5,7 +5,7 @@ const sectionRegex = /^[A-Z0-9]+-[A-Z0-9]+$/;
 const subjectRegex = /^[a-zA-Z0-9]+(,[a-zA-Z0-9]+)*$/;
 
 export const addProfSchema = z.object({
-  department: z.string().refine((v) => departments.includes(v)),
+  department: z.string().min(1, { message: 'Must enter department.' }),
   profName: z.string().min(1, { message: 'Must enter professor name.' }),
   subjects: z.string(),
   sections: z.string().refine(

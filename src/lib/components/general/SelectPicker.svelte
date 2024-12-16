@@ -8,7 +8,6 @@
     }[];
     selected: string;
     placeholder?: string;
-    onValueChange?: (v: string) => string;
     hasDescription?: boolean;
   }
 
@@ -16,14 +15,18 @@
     selected = $bindable(),
     selections,
     placeholder = 'Select item',
-    onValueChange,
     hasDescription = false
   }: Props = $props();
 
   const selectedValue = $derived(selections.find((item) => item.value === selected));
 </script>
 
-<Select.Root type="single" {onValueChange}>
+<Select.Root
+  type="single"
+  onValueChange={(v) => {
+    selected = v;
+  }}
+>
   <Select.Trigger>
     {selectedValue ? selectedValue.label : placeholder}
   </Select.Trigger>

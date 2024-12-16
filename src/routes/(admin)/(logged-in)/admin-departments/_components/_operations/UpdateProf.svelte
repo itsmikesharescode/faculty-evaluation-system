@@ -16,6 +16,7 @@
   import * as Select from '$lib/components/ui/select';
   import * as Popover from '$lib/components/ui/popover';
   import Button from '$lib/components/ui/button/button.svelte';
+  import SelectPicker from '$lib/components/general/SelectPicker.svelte';
 
   interface Props {
     professor: ProfessorType;
@@ -87,60 +88,55 @@
     </AlertDialog.Header>
 
     <form method="POST" action="?/updateProfEvent" use:enhance class="flex flex-col gap-[10px]">
-      <Form.Field {form} name="profId" class="hidden">
-        <Form.Control let:attrs>
-          <Input type="number" {...attrs} value={props.professor.id} />
-        </Form.Control>
-      </Form.Field>
-
+      <input type="hidden" name="profId" value={props.professor.id} />
       <Form.Field {form} name="department">
-        <Form.Control let:attrs>
-          <Form.Label>Department</Form.Label>
-          <Select.Root
-            selected={selectedDepartment}
-            onSelectedChange={(v) => {
-              v && ($formData.department = v.value);
-            }}
-          >
-            <Select.Trigger {...attrs}>
-              <Select.Value placeholder={props.professor.department} />
-            </Select.Trigger>
-            <Select.Content>
-              {#each departments as department}
-                <Select.Item value={department} label={department} />
-              {/each}
-            </Select.Content>
-          </Select.Root>
-          <input hidden bind:value={$formData.department} name={attrs.name} />
+        <Form.Control>
+          {#snippet children({ props })}
+            <Form.Label>Department</Form.Label>
+            <SelectPicker
+              placeholder="Select department"
+              bind:selected={$formData.department}
+              selections={[
+                {
+                  label: 'BSIT',
+                  value: 'BSIT'
+                }
+              ]}
+            />
+
+            <input type="hidden" name={props.name} bind:value={$formData.department} />
+          {/snippet}
         </Form.Control>
+        <Form.Description />
         <Form.FieldErrors />
       </Form.Field>
 
       <Form.Field {form} name="profName">
-        <Form.Control let:attrs>
-          <Form.Label>Professor Name</Form.Label>
-          <Input
-            {...attrs}
-            bind:value={$formData.profName}
-            placeholder={props.professor.fullname}
-          />
+        <Form.Control>
+          {#snippet children({ props })}
+            <Form.Label>Professor Name</Form.Label>
+            <Input {...props} bind:value={$formData.profName} />
+          {/snippet}
         </Form.Control>
-
+        <Form.Description />
         <Form.FieldErrors />
       </Form.Field>
 
       <Form.Field {form} name="sections">
-        <Form.Control let:attrs>
-          <Form.Label>Sections</Form.Label>
-          <Textarea
-            {...attrs}
-            bind:value={$formData.sections}
-            placeholder={props.professor.sections}
-          />
+        <Form.Control>
+          {#snippet children({ props })}
+            <Form.Label>Sections</Form.Label>
+            <Textarea
+              {...props}
+              bind:value={$formData.sections}
+              placeholder="24BSIS-1M or view format guides"
+            />
+          {/snippet}
         </Form.Control>
-
+        <Form.Description />
         <Form.FieldErrors />
       </Form.Field>
+
       <Popover.Root>
         <Popover.Trigger class="max-w-fit">
           <Button size="sm" variant="outline" class="flex items-center gap-[0.321rem]">
