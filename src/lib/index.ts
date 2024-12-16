@@ -2,7 +2,8 @@ export const adminPaths = [
   '/admin-dashboard',
   '/admin-questionnaire',
   '/admin-questionnaire/create',
-  '/admin-departments',
+  '/admin-records',
+  '/admin-programs',
   '/admin-manage-accounts'
 ];
 

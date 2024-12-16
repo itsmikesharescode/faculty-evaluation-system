@@ -18,9 +18,17 @@
 
   let activeProgram = $state($page.data.adminLayoutQ.programs[0].code);
 
-  const filteredProgram = $derived(
-    $page.data.adminLayoutQ.professors.filter((item) => item.department === activeProgram)
-  );
+  const filteredProgram = $derived.by(() => {
+    const programCodes = $page.data.adminLayoutQ.programs.map((item) => item.code);
+
+    if (activeProgram === 'No Programs') {
+      return $page.data.adminLayoutQ.professors.filter(
+        (prof) => !programCodes.includes(prof.department)
+      );
+    } else {
+      return $page.data.adminLayoutQ.professors.filter((item) => item.department === activeProgram);
+    }
+  });
 
   const specificDownload = () => {
     if (!activeProgram) return;
@@ -78,6 +86,17 @@
         <MoveUpRight class="h-[15px] w-[15px]" />
       </button>
     {/each}
+
+    <button
+      onclick={() => {
+        activeProgram = 'No Programs';
+      }}
+      class=" {activeProgram === 'No Programs' ? 'bg-primary text-white' : ''}
+				flex items-center gap-[5px] px-[0.625rem] text-black"
+    >
+      No Program
+      <MoveUpRight class="h-[15px] w-[15px]" />
+    </button>
   </div>
 
   <div class="flex items-center justify-between gap-2.5">
