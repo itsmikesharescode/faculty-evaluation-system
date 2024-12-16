@@ -44,30 +44,28 @@
 <p class="p-[20px] text-center text-xl font-semibold leading-7">Update Password</p>
 <form method="POST" action="?/updatePasswordEvent" use:enhance class="flex flex-col gap-[10px]">
   <Form.Field {form} name="newPwd">
-    <Form.Control let:attrs>
-      <Form.Label>New Password</Form.Label>
-      <Input
-        type="password"
-        {...attrs}
-        bind:value={$formData.newPwd}
-        placeholder="Enter your new password"
-      />
+    <Form.Control>
+      {#snippet children({ props })}
+        <Form.Label>New Password</Form.Label>
+        <Input {...props} bind:value={$formData.newPwd} placeholder="Enter your new password" />
+      {/snippet}
     </Form.Control>
-
+    <Form.Description />
     <Form.FieldErrors />
   </Form.Field>
 
   <Form.Field {form} name="confirmNewPwd">
-    <Form.Control let:attrs>
-      <Form.Label>Confirm New Password</Form.Label>
-      <Input
-        type="password"
-        {...attrs}
-        bind:value={$formData.confirmNewPwd}
-        placeholder="Confirm your new password"
-      />
+    <Form.Control>
+      {#snippet children({ props })}
+        <Form.Label>Confirm new password</Form.Label>
+        <Input
+          {...props}
+          bind:value={$formData.confirmNewPwd}
+          placeholder="Enter your new password"
+        />
+      {/snippet}
     </Form.Control>
-
+    <Form.Description />
     <Form.FieldErrors />
   </Form.Field>
 

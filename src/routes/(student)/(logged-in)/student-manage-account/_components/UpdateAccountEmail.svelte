@@ -1,7 +1,6 @@
 <script lang="ts">
   import * as Form from '$lib/components/ui/form';
   import { Input } from '$lib/components/ui/input';
-  import * as Select from '$lib/components/ui/select/index.js';
   import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import { updateEmailSchema, type UpdateEmailSchema } from '../student-manage-account-schema';
@@ -45,15 +44,13 @@
 <p class="p-[20px] text-center text-xl font-semibold leading-7">Update Email</p>
 <form method="POST" action="?/updateEmailEvent" use:enhance class="flex flex-col gap-[10px]">
   <Form.Field {form} name="newEmail">
-    <Form.Control let:attrs>
-      <Form.Label>New Email</Form.Label>
-      <Input
-        {...attrs}
-        bind:value={$formData.newEmail}
-        placeholder={user.getUser()?.user_metadata.email}
-      />
+    <Form.Control>
+      {#snippet children({ props })}
+        <Form.Label>Email</Form.Label>
+        <Input {...props} bind:value={$formData.newEmail} placeholder="Enter your new email" />
+      {/snippet}
     </Form.Control>
-
+    <Form.Description />
     <Form.FieldErrors />
   </Form.Field>
 

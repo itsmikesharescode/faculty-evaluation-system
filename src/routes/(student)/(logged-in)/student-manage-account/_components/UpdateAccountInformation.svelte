@@ -14,6 +14,7 @@
   import { goto } from '$app/navigation';
   import { tick } from 'svelte';
   import { browser } from '$app/environment';
+  import SelectPicker from '$lib/components/general/SelectPicker.svelte';
 
   interface Props {
     updateAccInfoForm: SuperValidated<Infer<UpdateAccInfoSchema>>;
@@ -75,143 +76,151 @@
 <p class="p-[20px] text-center text-xl font-semibold leading-7">Update Information</p>
 <form method="POST" action="?/updateAccountEvent" use:enhance class="flex flex-col gap-[10px]">
   <Form.Field {form} name="contactNumber">
-    <Form.Control let:attrs>
-      <Form.Label>Contact Number (optional)</Form.Label>
-      <Input
-        {...attrs}
-        bind:value={$formData.contactNumber}
-        placeholder="Enter your contact number"
-      />
+    <Form.Control>
+      {#snippet children({ props })}
+        <Form.Label>Contact Number (optional)</Form.Label>
+        <Input
+          {...props}
+          bind:value={$formData.contactNumber}
+          placeholder="Enter your contact number"
+        />
+      {/snippet}
     </Form.Control>
-
+    <Form.Description />
     <Form.FieldErrors />
   </Form.Field>
 
   <Form.Field {form} name="address">
-    <Form.Control let:attrs>
-      <Form.Label>Address (optional)</Form.Label>
-      <Input {...attrs} bind:value={$formData.address} placeholder="Enter your address" />
+    <Form.Control>
+      {#snippet children({ props })}
+        <Form.Label>Address (optional)</Form.Label>
+        <Input {...props} bind:value={$formData.address} placeholder="Enter your address" />
+      {/snippet}
     </Form.Control>
-
+    <Form.Description />
     <Form.FieldErrors />
   </Form.Field>
-  <Form.Field {form} name="firstName">
-    <Form.Control let:attrs>
-      <Form.Label>First Name</Form.Label>
-      <Input {...attrs} bind:value={$formData.firstName} placeholder="Enter your new first name" />
-    </Form.Control>
 
+  <Form.Field {form} name="firstName">
+    <Form.Control>
+      {#snippet children({ props })}
+        <Form.Label>First Name</Form.Label>
+        <Input
+          {...props}
+          bind:value={$formData.firstName}
+          placeholder="Enter your new first name"
+        />
+      {/snippet}
+    </Form.Control>
+    <Form.Description />
     <Form.FieldErrors />
   </Form.Field>
 
   <Form.Field {form} name="middleInitial">
-    <Form.Control let:attrs>
-      <Form.Label>Middle Initial</Form.Label>
-      <Input
-        {...attrs}
-        bind:value={$formData.middleInitial}
-        placeholder="Enter your new middle initial"
-      />
+    <Form.Control>
+      {#snippet children({ props })}
+        <Form.Label>Middle Initial</Form.Label>
+        <Input
+          {...props}
+          bind:value={$formData.middleInitial}
+          placeholder="Enter your new middle initial"
+        />
+      {/snippet}
     </Form.Control>
-
+    <Form.Description />
     <Form.FieldErrors />
   </Form.Field>
 
   <Form.Field {form} name="lastName">
-    <Form.Control let:attrs>
-      <Form.Label>Last Name</Form.Label>
-      <Input {...attrs} bind:value={$formData.lastName} placeholder="Enter your new last name" />
+    <Form.Control>
+      {#snippet children({ props })}
+        <Form.Label>Last Name</Form.Label>
+        <Input {...props} bind:value={$formData.lastName} placeholder="Enter your new last name" />
+      {/snippet}
     </Form.Control>
-
+    <Form.Description />
     <Form.FieldErrors />
   </Form.Field>
 
   <Form.Field {form} name="nameSuffix">
-    <Form.Control let:attrs>
-      <Form.Label>Name Suffix (optional)</Form.Label>
-      <Input {...attrs} bind:value={$formData.nameSuffix} placeholder="Enter your new suffix" />
+    <Form.Control>
+      {#snippet children({ props })}
+        <Form.Label>Last Name</Form.Label>
+        <Input {...props} bind:value={$formData.nameSuffix} placeholder="Enter your suffix name" />
+      {/snippet}
     </Form.Control>
-
+    <Form.Description />
     <Form.FieldErrors />
   </Form.Field>
 
   <Form.Field {form} name="yearLevel">
-    <Form.Control let:attrs>
-      <Form.Label>Year Level</Form.Label>
-      <Select.Root
-        selected={yearLevel}
-        onSelectedChange={(v) => {
-          v && ($formData.yearLevel = v.value);
-        }}
-      >
-        <Select.Trigger {...attrs}>
-          <Select.Value placeholder="Select year level" />
-        </Select.Trigger>
-        <Select.Content>
-          {#each yearLevels as yearLevel}
-            <Select.Item value={yearLevel} label={yearLevel} />
-          {/each}
-        </Select.Content>
-      </Select.Root>
-      <input hidden bind:value={$formData.yearLevel} name={attrs.name} />
+    <Form.Control>
+      {#snippet children({ props })}
+        <Form.Label>Year Level</Form.Label>
+        <SelectPicker
+          placeholder="Select new year level"
+          bind:selected={$formData.yearLevel}
+          selections={[
+            { label: 'First Year', value: 'First Year' },
+            { label: 'Second Year', value: 'Second Year' },
+            { label: 'Third Year', value: 'Third Year' },
+            { label: 'Fourth Year', value: 'Fourth Year' }
+          ]}
+        />
+        <input type="hidden" name={props.name} bind:value={$formData.yearLevel} />
+      {/snippet}
     </Form.Control>
-
+    <Form.Description />
     <Form.FieldErrors />
   </Form.Field>
 
   <Form.Field {form} name="course">
-    <Form.Control let:attrs>
-      <Form.Label>Course</Form.Label>
-      <Select.Root
-        selected={courseName}
-        onSelectedChange={(v) => {
-          v && ($formData.course = v.value);
-        }}
-      >
-        <Select.Trigger {...attrs}>
-          <Select.Value placeholder="Select your course" />
-        </Select.Trigger>
-        <Select.Content>
-          {#each courseNames as course}
-            <Select.Item value={course} label={course} />
-          {/each}
-        </Select.Content>
-      </Select.Root>
-      <input hidden bind:value={$formData.course} name={attrs.name} />
+    <Form.Control>
+      {#snippet children({ props })}
+        <Form.Label>Course</Form.Label>
+        <SelectPicker
+          placeholder="Select new year level"
+          bind:selected={$formData.course}
+          selections={[{ label: 'BSIT', value: 'BSIT' }]}
+        />
+        <input type="hidden" name={props.name} bind:value={$formData.course} />
+      {/snippet}
     </Form.Control>
-
+    <Form.Description />
     <Form.FieldErrors />
   </Form.Field>
 
-  <Form.Field {form} name="sections">
-    <Form.Control let:attrs>
-      <Form.Label>Section</Form.Label>
-      <div class="relative flex items-center">
-        <Input
-          {...attrs}
-          bind:value={$formData.sections}
-          placeholder="Enter your new section"
-          class="pr-[2rem]"
-        />
-        <Popover.Root>
-          <Popover.Trigger class="absolute right-0 mr-[5px]">
-            <CircleHelp />
-          </Popover.Trigger>
-          <Popover.Content>
-            <p class="text-sm leading-7">
-              Please use formats like <strong>24BSIS-1M,24BSIS-2M,23BSIS-2P1E</strong>.
-            </p>
+  <Form.Field {form} name="nameSuffix">
+    <Form.Control>
+      {#snippet children({ props })}
+        <Form.Label>Section</Form.Label>
+        <div class="relative flex items-center">
+          <Input
+            {...props}
+            bind:value={$formData.sections}
+            placeholder="Enter your new section"
+            class="pr-[2rem]"
+          />
+          <Popover.Root>
+            <Popover.Trigger class="absolute right-0 mr-[5px]">
+              <CircleHelp />
+            </Popover.Trigger>
+            <Popover.Content>
+              <p class="text-sm leading-7">
+                Please use formats like <strong>24BSIS-1M,24BSIS-2M,23BSIS-2P1E</strong>.
+              </p>
 
-            <p class="text-sm leading-7">Example:</p>
-            <p class="text-sm leading-7">Single section: <strong>24BSIS-1M</strong></p>
-            <p class="text-sm leading-7">
-              Multiple section: <strong>24BSIS-1M,24BSIS-2M,23BSIS-2P1E</strong>.
-            </p>
-          </Popover.Content>
-        </Popover.Root>
-      </div>
+              <p class="text-sm leading-7">Example:</p>
+              <p class="text-sm leading-7">Single section: <strong>24BSIS-1M</strong></p>
+              <p class="text-sm leading-7">
+                Multiple section: <strong>24BSIS-1M,24BSIS-2M,23BSIS-2P1E</strong>.
+              </p>
+            </Popover.Content>
+          </Popover.Root>
+        </div>
+      {/snippet}
     </Form.Control>
-
+    <Form.Description />
     <Form.FieldErrors />
   </Form.Field>
 
