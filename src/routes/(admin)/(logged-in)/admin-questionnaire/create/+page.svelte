@@ -30,7 +30,14 @@
         questions: [
           {
             id: crypto.randomUUID(),
-            question: ''
+            question: '',
+            selections: {
+              selectionOneTitle: 'Always',
+              selectionTwoTitle: 'Often',
+              selectionThreeTitle: 'Sometimes',
+              selectionFourTitle: 'Rarely',
+              selectionFiveTitle: 'Never'
+            }
           }
         ]
       }
@@ -68,11 +75,23 @@
     )?.message;
   };
 
+  const selectionErrMsg = (i: number, ii: number, selectionField: string): string | undefined => {
+    return errors?.find(
+      (item) =>
+        item.path[0] === 'headers' &&
+        item.path[1] === i &&
+        item.path[2] === 'questions' &&
+        item.path[3] === ii &&
+        item.path[4] === 'selections' &&
+        item.path[5] === selectionField
+    )?.message;
+  };
+
   let submitLoader = $state(false);
 
   const handleSubmit = async () => {
     const res = surveyCreationSchema.safeParse(questionContainer);
-
+    console.log(res.error);
     if (res.success) {
       errors = undefined;
 
@@ -153,12 +172,12 @@
       {/if}
 
       <div class="grid w-full items-center gap-1.5">
-        <Label for={header.id} class="font-semibold">Header Title {i + 1}</Label>
+        <Label for={header.id} class="font-semibold">Criteria Title {i + 1}</Label>
         <Input
           type="text"
           id={header.id}
           bind:value={header.headerTitle}
-          placeholder={`Enter your header title ${i + 1}`}
+          placeholder={`Enter your criteria title ${i + 1}`}
         />
         <p class="text-sm text-red-500">{headerErrMsg(i)}</p>
       </div>
@@ -197,6 +216,57 @@
               />
               <p class="text-sm text-red-500">{questionErrMsg(i, ii)}</p>
             </div>
+
+            <div class="flex flex-wrap gap-2.5">
+              <div class="grid items-center gap-1.5">
+                <Label for={question.id}>Selection One Title {ii + 1}</Label>
+                <Input
+                  id="selectionOneTitle"
+                  bind:value={question.selections.selectionOneTitle}
+                  placeholder="Enter selection one title (5)"
+                />
+                <p class="text-sm text-red-500">{selectionErrMsg(i, ii, 'selectionOneTitle')}</p>
+              </div>
+              <div class="grid items-center gap-1.5">
+                <Label for={question.id}>Selection Two Title {ii + 1}</Label>
+                <Input
+                  id="selectionTwoTitle"
+                  bind:value={question.selections.selectionTwoTitle}
+                  placeholder="Enter selection two title (4)"
+                />
+                <p class="text-sm text-red-500">{selectionErrMsg(i, ii, 'selectionTwoTitle')}</p>
+              </div>
+
+              <div class="grid items-center gap-1.5">
+                <Label for={question.id}>Selection Three Title {ii + 1}</Label>
+                <Input
+                  id="selectionThreeTitle"
+                  bind:value={question.selections.selectionThreeTitle}
+                  placeholder="Enter selection three title (3)"
+                />
+                <p class="text-sm text-red-500">{selectionErrMsg(i, ii, 'selectionThreeTitle')}</p>
+              </div>
+
+              <div class="grid items-center gap-1.5">
+                <Label for={question.id}>Selection Four Title {ii + 1}</Label>
+                <Input
+                  id="selectionFourTitle"
+                  bind:value={question.selections.selectionFourTitle}
+                  placeholder="Enter selection four title (2)"
+                />
+                <p class="text-sm text-red-500">{selectionErrMsg(i, ii, 'selectionFourTitle')}</p>
+              </div>
+
+              <div class="grid items-center gap-1.5">
+                <Label for={question.id}>Selection Five Title {ii + 1}</Label>
+                <Input
+                  id="selectionFiveTitle"
+                  bind:value={question.selections.selectionFiveTitle}
+                  placeholder="Enter selection one title (1)"
+                />
+                <p class="text-sm text-red-500">{selectionErrMsg(i, ii, 'selectionFiveTitle')}</p>
+              </div>
+            </div>
           </div>
         {/each}
 
@@ -206,7 +276,14 @@
             onclick={() => {
               questionContainer.headers[i].questions.push({
                 id: crypto.randomUUID(),
-                question: ''
+                question: '',
+                selections: {
+                  selectionOneTitle: 'Always',
+                  selectionTwoTitle: 'Often',
+                  selectionThreeTitle: 'Sometimes',
+                  selectionFourTitle: 'Rarely',
+                  selectionFiveTitle: 'Never'
+                }
               });
             }}
           >
@@ -240,7 +317,14 @@
           questions: [
             {
               id: crypto.randomUUID(),
-              question: ''
+              question: '',
+              selections: {
+                selectionOneTitle: 'Always',
+                selectionTwoTitle: 'Often',
+                selectionThreeTitle: 'Sometimes',
+                selectionFourTitle: 'Rarely',
+                selectionFiveTitle: 'Never'
+              }
             }
           ]
         });

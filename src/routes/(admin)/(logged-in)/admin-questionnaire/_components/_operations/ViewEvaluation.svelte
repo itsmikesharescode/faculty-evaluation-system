@@ -116,6 +116,52 @@
                     bind:value={questionObj.question}
                   />
                 </div>
+
+                <div class="flex flex-wrap gap-2.5">
+                  <div class="grid items-center gap-1.5">
+                    <Label for={questionObj.id}>Selection One Title</Label>
+                    <Input
+                      id="selectionOneTitle"
+                      bind:value={questionObj.selections.selectionOneTitle}
+                      placeholder="Enter selection one title (5)"
+                    />
+                  </div>
+                  <div class="grid items-center gap-1.5">
+                    <Label for={questionObj.id}>Selection Two Title</Label>
+                    <Input
+                      id="selectionTwoTitle"
+                      bind:value={questionObj.selections.selectionTwoTitle}
+                      placeholder="Enter selection two title (4)"
+                    />
+                  </div>
+
+                  <div class="grid items-center gap-1.5">
+                    <Label for={questionObj.id}>Selection Three Title</Label>
+                    <Input
+                      id="selectionThreeTitle"
+                      bind:value={questionObj.selections.selectionThreeTitle}
+                      placeholder="Enter selection three title (3)"
+                    />
+                  </div>
+
+                  <div class="grid items-center gap-1.5">
+                    <Label for={questionObj.id}>Selection Four Title</Label>
+                    <Input
+                      id="selectionFourTitle"
+                      bind:value={questionObj.selections.selectionFourTitle}
+                      placeholder="Enter selection four title (2)"
+                    />
+                  </div>
+
+                  <div class="grid items-center gap-1.5">
+                    <Label for={questionObj.id}>Selection Five Title</Label>
+                    <Input
+                      id="selectionFiveTitle"
+                      bind:value={questionObj.selections.selectionFiveTitle}
+                      placeholder="Enter selection one title (1)"
+                    />
+                  </div>
+                </div>
               {:else}
                 <AdminCustomRadio {questionObj} index={innerIndex} />
               {/if}

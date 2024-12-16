@@ -2,7 +2,14 @@ import { z } from 'zod';
 
 const questionArray = z.object({
   id: z.string().min(1, { message: 'Must have an unique id.' }),
-  question: z.string().min(1, { message: 'Must enter a question.' })
+  question: z.string().min(1, { message: 'Must enter a question.' }),
+  selections: z.object({
+    selectionOneTitle: z.string().min(1, { message: 'Must enter selection title.' }),
+    selectionTwoTitle: z.string().min(1, { message: 'Must enter selection title.' }),
+    selectionThreeTitle: z.string().min(1, { message: 'Must enter selection title.' }),
+    selectionFourTitle: z.string().min(1, { message: 'Must enter selection title.' }),
+    selectionFiveTitle: z.string().min(1, { message: 'Must enter selection title.' })
+  })
 });
 
 const headerArray = z.object({

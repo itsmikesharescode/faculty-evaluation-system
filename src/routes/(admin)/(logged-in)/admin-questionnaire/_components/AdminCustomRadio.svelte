@@ -1,30 +1,40 @@
 <script lang="ts">
   interface Props {
     index: number;
-    questionObj: { id: string; question: string };
+    questionObj: {
+      id: string;
+      question: string;
+      selections: {
+        selectionFiveTitle: string;
+        selectionFourTitle: string;
+        selectionOneTitle: string;
+        selectionThreeTitle: string;
+        selectionTwoTitle: string;
+      };
+    };
   }
 
   const { index, questionObj }: Props = $props();
 
   const ratings = [
     {
-      title: 'Always',
+      title: questionObj.selections.selectionOneTitle,
       value: 5
     },
     {
-      title: 'Often',
+      title: questionObj.selections.selectionTwoTitle,
       value: 4
     },
     {
-      title: 'Sometimes',
+      title: questionObj.selections.selectionThreeTitle,
       value: 3
     },
     {
-      title: 'Rarely',
+      title: questionObj.selections.selectionFourTitle,
       value: 2
     },
     {
-      title: 'Never',
+      title: questionObj.selections.selectionFiveTitle,
       value: 1
     }
   ];
