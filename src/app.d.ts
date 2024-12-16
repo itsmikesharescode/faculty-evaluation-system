@@ -1,3 +1,4 @@
+import type { AdminLayoutQueryType } from '$lib/types';
 import type { Session, SupabaseClient, User } from '@supabase/supabase-js';
 
 declare global {
@@ -15,6 +16,7 @@ declare global {
       session: Session | null;
       supabase?: SupabaseClient;
       user?: User | null;
+      adminLayoutQ: AdminLayoutQueryType;
     }
     // interface PageState {}
     // interface Platform {}

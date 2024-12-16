@@ -1,31 +1,29 @@
 <script lang="ts">
-  import { fromDepartmentsRouteState } from '../../_states/fromAdminDepartments.svelte';
   import type { Infer, SuperValidated } from 'sveltekit-superforms';
-  import type { UpdateProfSchema } from '../admin-departments-schema';
+  import type { DeleteProfSchema, UpdateProfSchema } from '../admin-records-schema';
   import * as Table from '$lib/components/ui/table';
   import Actions from './Actions.svelte';
-  import { fromDepRouteState } from '../_states/fromDepRoutes.svelte';
   import Sections from '$lib/components/general/Sections.svelte';
   import { getScoreDescription } from '../_helpers/getScoreDescription';
   import Subjects from '$lib/components/general/Subjects.svelte';
+  import type { ProfessorType } from '$lib/types';
 
   interface Props {
     updateProfForm: SuperValidated<Infer<UpdateProfSchema>>;
+    deleteProfForm: SuperValidated<Infer<DeleteProfSchema>>;
+    filteredProgram: ProfessorType[];
   }
 
-  const { ...props }: Props = $props();
-
-  const departmentRoute = fromDepartmentsRouteState();
-  const depRoute = fromDepRouteState();
+  const { filteredProgram, updateProfForm, deleteProfForm }: Props = $props();
 </script>
 
 <Table.Root>
   <Table.Caption>
-    {#if departmentRoute.getDepProf(depRoute.getRoute())?.length}
+    <!-- {#if departmentRoute.getDepProf(depRoute.getRoute())?.length}
       A list of professors for <strong>{depRoute.getRoute()}</strong>.
     {:else}
       There is no professor present for <strong>{depRoute.getRoute()}</strong>.
-    {/if}
+    {/if} -->
   </Table.Caption>
   <Table.Header>
     <Table.Row>
@@ -38,10 +36,10 @@
     </Table.Row>
   </Table.Header>
   <Table.Body>
-    {#each departmentRoute.getDepProf(depRoute.getRoute()) ?? [] as professor}
+    {#each filteredProgram ?? [] as professor}
       <Table.Row>
         <Table.Cell>
-          <Actions {professor} updateProfForm={props.updateProfForm} />
+          <Actions {professor} {updateProfForm} {deleteProfForm} />
         </Table.Cell>
         <Table.Cell class="truncate font-medium">{professor.fullname}</Table.Cell>
         <Table.Cell class="truncate">

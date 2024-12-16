@@ -1,4 +1,3 @@
-import type { UserMetadata } from '@supabase/supabase-js';
 import type { SurveyCreationSchema } from '../routes/(admin)/(logged-in)/admin-questionnaire/create/create-questions-schema';
 
 export type ResultModel<T> = {
@@ -6,32 +5,6 @@ export type ResultModel<T> = {
   type: string;
   data: T;
 };
-
-//supabase workaround
-export type SupabaseJwt = {
-  aal: string;
-  aud: string;
-  email: string;
-  exp: number;
-  iat: number;
-  phone: string;
-  role: string;
-  session_id: string;
-  sub: string;
-  amr?: { method: string; timestamp: number }[];
-  app_metadata?: {
-    provider?: string;
-    providers?: string[];
-    [key: string]: any;
-  };
-  is_anonymous?: boolean;
-  iss?: string;
-  jti?: string;
-  nbf?: string;
-  user_metadata: UserMetadata;
-};
-
-// db types
 
 export type UserMetaData = {
   role: string;
@@ -69,6 +42,13 @@ export type EvaluatedOrigType = {
   answers_copy: AnswerCopyType[];
 };
 
+export type Program = {
+  id: number;
+  created_at: string;
+  name: string;
+  code: string;
+};
+
 export type EvaluatedType = {
   id: number;
   fullname: string;
@@ -97,19 +77,12 @@ export type StudentType = {
   user_meta_data: UserMetaData;
 };
 
-export interface Departments {
-  bsisDep: ProfessorType[] | [];
-  bseDep: ProfessorType[] | [];
-  btvtedDep: ProfessorType[] | [];
-  domtDep: ProfessorType[] | [];
-  dictDep: ProfessorType[] | [];
-}
-
 export interface AdminLayoutQueryType {
   dashboard: { total_evaluated: number; total_professor: number; total_students: number };
-  professors: Departments | null;
+  professors: ProfessorType[] | [];
   evaluation_forms: EvaluationType[] | [];
   students: StudentType[] | [];
+  programs: Program[] | [];
 }
 
 export interface StudentLayoutQueryType {

@@ -4,10 +4,7 @@
   import { fromSupabaseClient, initSupabase } from '../../_states/fromSupabaseClient.svelte';
 
   import AdminNav from './_components/AdminNav.svelte';
-  import {
-    fromDepartmentsRouteState,
-    initDepartmentsRoute
-  } from './_states/fromAdminDepartments.svelte';
+
   import {
     fromManageAccountRouteState,
     initManageAccountRoute
@@ -22,20 +19,17 @@
 
   initSupabase();
   initAdminRoute();
-  initDepartmentsRoute();
   initQuestionnaireRoute();
   initManageAccountRoute();
 
   const questionnaireRoute = fromQuestionnaireRouteState();
-  const departmentRoute = fromDepartmentsRouteState();
   const manageAccountRoute = fromManageAccountRouteState();
 
   const supabase = fromSupabaseClient();
 
   $effect(() => {
-    questionnaireRoute.setEvaluation(data.adminLayoutQ.data?.evaluation_forms ?? null);
-    departmentRoute.setProfs(data.adminLayoutQ.data?.professors ?? null);
-    manageAccountRoute.setStudents(data.adminLayoutQ.data?.students ?? null);
+    questionnaireRoute.setEvaluation($page.data.adminLayoutQ.evaluation_forms);
+    manageAccountRoute.setStudents($page.data.adminLayoutQ.students);
     supabase.setClient(data.supabase);
   });
 </script>

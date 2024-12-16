@@ -1,8 +1,6 @@
 import { z } from 'zod';
-import { departments } from '../_states/fromAdminDepartments.svelte';
 
 const sectionRegex = /^[A-Z0-9]+-[A-Z0-9]+$/;
-const subjectRegex = /^[a-zA-Z0-9]+(,[a-zA-Z0-9]+)*$/;
 
 export const addProfSchema = z.object({
   department: z.string().min(1, { message: 'Must enter department.' }),
@@ -32,9 +30,7 @@ export const addProfSchema = z.object({
 
 export const updateProfSchema = z.object({
   profId: z.number(),
-  department: z
-    .string()
-    .refine((v) => departments.includes(v), { message: 'Must enter a valid department' }),
+  department: z.string().min(1, { message: 'Must select department.' }),
   profName: z.string().min(1, { message: 'Must enter professor name.' }),
   sections: z.string().refine(
     (value) => {
@@ -58,5 +54,10 @@ export const updateProfSchema = z.object({
   )
 });
 
+export const deleteProfSchema = z.object({
+  profId: z.number()
+});
+
 export type AddProfSchema = typeof addProfSchema;
 export type UpdateProfSchema = typeof updateProfSchema;
+export type DeleteProfSchema = typeof deleteProfSchema;

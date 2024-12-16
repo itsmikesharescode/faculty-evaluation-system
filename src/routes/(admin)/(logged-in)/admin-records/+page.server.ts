@@ -1,15 +1,14 @@
 import { superValidate } from 'sveltekit-superforms';
 import type { Actions, PageServerLoad } from './$types';
 import { zod } from 'sveltekit-superforms/adapters';
-import { addProfSchema, updateProfSchema } from './admin-departments-schema';
+import { addProfSchema, updateProfSchema, deleteProfSchema } from './admin-records-schema';
 import { fail } from '@sveltejs/kit';
-import type { PostgrestSingleResponse } from '@supabase/supabase-js';
-import type { Departments } from '$lib/types';
 
 export const load: PageServerLoad = async () => {
   return {
     addProfForm: await superValidate(zod(addProfSchema)),
-    updateProfForm: await superValidate(zod(updateProfSchema))
+    updateProfForm: await superValidate(zod(updateProfSchema)),
+    deleteProfForm: await superValidate(zod(deleteProfSchema))
   };
 };
 
@@ -18,42 +17,45 @@ export const actions: Actions = {
     const form = await superValidate(request, zod(addProfSchema));
 
     if (!form.valid) return fail(400, { form });
-
-    const { data, error } = (await supabase.rpc('add_professor', {
-      department_client: form.data.department,
-      fullname_client: form.data.profName,
-      sections_client: form.data.sections,
-      subjects_client: form.data.subjects
-    })) as PostgrestSingleResponse<Departments>;
-
+    console.log(form.data);
+    const { error } = await supabase.from('professor_list_tb').insert({
+      fullname: form.data.profName,
+      sections: form.data.sections,
+      department: form.data.department,
+      subjects: form.data.subjects
+    });
     if (error) return fail(401, { form, msg: error.message });
-    return { form, msg: 'Success added professor', data };
+    return { form, msg: 'Professor successfully added.' };
   },
 
   updateProfEvent: async ({ locals: { supabase }, request }) => {
     const form = await superValidate(request, zod(updateProfSchema));
 
     if (!form.valid) return fail(400, { form });
-
-    const { data, error } = (await supabase.rpc('update_professor', {
-      department_client: form.data.department,
-      fullname_client: form.data.profName,
-      sections_client: form.data.sections,
-      prof_id_client: form.data.profId
-    })) as PostgrestSingleResponse<Departments>;
+    const { error } = await supabase
+      .from('professor_list_tb')
+      .update({
+        fullname: form.data.profName,
+        sections: form.data.sections,
+        department: form.data.department
+      })
+      .eq('id', form.data.profId);
 
     if (error) return fail(401, { form, msg: error.message });
-    return { form, msg: 'Successfully updated.', data };
+    return { form, msg: 'Professor successfully updated.' };
   },
 
   deleteProfEvent: async ({ locals: { supabase }, request }) => {
-    const profId = (await request.formData()).get('profId') as string;
+    const form = await superValidate(request, zod(deleteProfSchema));
 
-    const { data, error } = (await supabase.rpc('delete_professor', {
-      prof_id_client: Number(profId)
-    })) as PostgrestSingleResponse<Departments>;
+    if (!form.valid) return fail(400, { form });
+    console.log(form.data);
+    const { error } = await supabase
+      .from('professor_list_tb')
+      .delete()
+      .eq('id', Number(form.data.profId));
 
-    if (error) return fail(401, { msg: error.message });
-    return { msg: 'Success deleted a professor', data };
+    if (error) return fail(401, { form, msg: error.message });
+    return { form, msg: 'Professor successfully deleted.' };
   }
 };

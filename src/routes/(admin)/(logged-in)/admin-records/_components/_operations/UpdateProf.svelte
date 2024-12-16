@@ -6,17 +6,13 @@
   import { zodClient } from 'sveltekit-superforms/adapters';
   import { CircleHelp, Loader, X } from 'lucide-svelte';
   import Textarea from '$lib/components/ui/textarea/textarea.svelte';
-  import type { Departments, ProfessorType, ResultModel } from '$lib/types';
+  import type { ProfessorType, ResultModel } from '$lib/types';
   import { toast } from 'svelte-sonner';
-  import {
-    departments,
-    fromDepartmentsRouteState
-  } from '../../../_states/fromAdminDepartments.svelte';
-  import { updateProfSchema, type UpdateProfSchema } from '../../admin-departments-schema';
-  import * as Select from '$lib/components/ui/select';
+  import { updateProfSchema, type UpdateProfSchema } from '../../admin-records-schema';
   import * as Popover from '$lib/components/ui/popover';
   import Button from '$lib/components/ui/button/button.svelte';
   import SelectPicker from '$lib/components/general/SelectPicker.svelte';
+  import { page } from '$app/stores';
 
   interface Props {
     professor: ProfessorType;
@@ -26,36 +22,27 @@
 
   let { updateSignal = $bindable(), ...props }: Props = $props();
 
-  const departmentRoute = fromDepartmentsRouteState();
-
   const form = superForm(props.updateProfForm, {
     validators: zodClient(updateProfSchema),
     id: crypto.randomUUID(),
-    invalidateAll: false,
     onUpdate({ result }) {
       const { status, data } = result as ResultModel<{
         msg: string;
-        data: Departments;
       }>;
 
       switch (status) {
         case 200:
-          toast.success('Create Professor', { description: data.msg });
-          departmentRoute.setProfs(data.data);
+          toast.success('Update Professor', { description: data.msg });
           updateSignal = false;
           break;
         case 401:
-          toast.error('Create Professor', { description: data.msg });
+          toast.error('Update Professor', { description: data.msg });
           break;
       }
     }
   });
 
   const { form: formData, enhance, submitting } = form;
-
-  const selectedDepartment = $derived(
-    $formData.department ? { label: $formData.department, value: $formData.department } : undefined
-  );
 
   const loadValues = () => {
     $formData.department = props.professor.department;
@@ -92,18 +79,16 @@
       <Form.Field {form} name="department">
         <Form.Control>
           {#snippet children({ props })}
-            <Form.Label>Department</Form.Label>
-            <SelectPicker
-              placeholder="Select department"
-              bind:selected={$formData.department}
-              selections={[
-                {
-                  label: 'BSIT',
-                  value: 'BSIT'
-                }
-              ]}
-            />
+            <Form.Label>Program</Form.Label>
 
+            <SelectPicker
+              placeholder="Select program"
+              bind:selected={$formData.department}
+              selections={$page.data.adminLayoutQ.programs.map((item) => ({
+                label: item.name,
+                value: item.code
+              }))}
+            />
             <input type="hidden" name={props.name} bind:value={$formData.department} />
           {/snippet}
         </Form.Control>

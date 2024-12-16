@@ -2,7 +2,7 @@
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
   import type { ProfessorType } from '$lib/types';
   import { CircleEllipsis } from 'lucide-svelte';
-  import type { UpdateProfSchema } from '../admin-departments-schema';
+  import type { DeleteProfSchema, UpdateProfSchema } from '../admin-records-schema';
   import { type Infer, type SuperValidated } from 'sveltekit-superforms';
   import UpdateProf from './_operations/UpdateProf.svelte';
   import DeleteProf from './_operations/DeleteProf.svelte';
@@ -11,9 +11,10 @@
   interface Props {
     professor: ProfessorType;
     updateProfForm: SuperValidated<Infer<UpdateProfSchema>>;
+    deleteProfForm: SuperValidated<Infer<DeleteProfSchema>>;
   }
 
-  const { ...props }: Props = $props();
+  const { professor, updateProfForm, deleteProfForm }: Props = $props();
 
   let viewSignal = $state(false);
   let updateSignal = $state(false);
@@ -43,6 +44,6 @@
   </DropdownMenu.Content>
 </DropdownMenu.Root>
 
-<UpdateProf bind:updateSignal professor={props.professor} updateProfForm={props.updateProfForm} />
-<DeleteProf bind:deleteSignal professor={props.professor} />
-<ViewResult bind:viewSignal professor={props.professor} />
+<UpdateProf bind:updateSignal {professor} {updateProfForm} />
+<DeleteProf bind:deleteSignal {professor} {deleteProfForm} />
+<ViewResult bind:viewSignal {professor} />

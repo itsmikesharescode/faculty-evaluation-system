@@ -5,17 +5,15 @@
   import { Input } from '$lib/components/ui/input';
   import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
   import { zodClient } from 'sveltekit-superforms/adapters';
-  import { addProfSchema, type AddProfSchema } from '../admin-departments-schema';
+  import { addProfSchema, type AddProfSchema } from '../admin-records-schema';
   import { CircleHelp, Loader, X } from 'lucide-svelte';
   import Textarea from '$lib/components/ui/textarea/textarea.svelte';
-  import { fromDepartmentsRouteState } from '../../_states/fromAdminDepartments.svelte';
-  import type { Departments, ResultModel } from '$lib/types';
+  import type { ResultModel } from '$lib/types';
   import { toast } from 'svelte-sonner';
   import { fromDepRouteState } from '../_states/fromDepRoutes.svelte';
   import * as Popover from '$lib/components/ui/popover';
-  import * as Select from '$lib/components/ui/select/index.js';
-  import { departments } from '../_states/fromDepRoutes.svelte';
   import SelectPicker from '$lib/components/general/SelectPicker.svelte';
+  import { page } from '$app/stores';
 
   interface Props {
     addProfForm: SuperValidated<Infer<AddProfSchema>>;
@@ -23,7 +21,6 @@
 
   const { addProfForm }: Props = $props();
 
-  const departmentRoute = fromDepartmentsRouteState();
   const depRoute = fromDepRouteState();
 
   let open = $state(false);
@@ -31,14 +28,12 @@
   const form = superForm(addProfForm, {
     validators: zodClient(addProfSchema),
     id: crypto.randomUUID(),
-    invalidateAll: false,
     onUpdate({ result }) {
-      const { status, data } = result as ResultModel<{ msg: string; data: Departments }>;
+      const { status, data } = result as ResultModel<{ msg: string }>;
 
       switch (status) {
         case 200:
           toast.success('Create Professor', { description: data.msg });
-          departmentRoute.setProfs(data.data);
           open = false;
           break;
         case 401:
@@ -49,10 +44,6 @@
   });
 
   const { form: formData, enhance, submitting } = form;
-
-  const selectedDepartment = $derived(
-    $formData.department ? { label: $formData.department, value: $formData.department } : undefined
-  );
 </script>
 
 <Button onclick={() => (open = true)} class="max-w-fit">Add Professor</Button>
@@ -77,16 +68,15 @@
       <Form.Field {form} name="department">
         <Form.Control>
           {#snippet children({ props })}
-            <Form.Label>Department</Form.Label>
+            <Form.Label>Program</Form.Label>
             <SelectPicker
               bind:selected={$formData.department}
-              placeholder="Select department"
-              selections={[
-                {
-                  label: 'BSIT',
-                  value: 'BSIT'
-                }
-              ]}
+              placeholder="Select program"
+              selections={$page.data.adminLayoutQ.programs.map((item) => ({
+                label: item.name,
+                value: item.code
+              }))}
+              hasDescription={true}
             />
             <input type="hidden" name={props.name} bind:value={$formData.department} />
           {/snippet}

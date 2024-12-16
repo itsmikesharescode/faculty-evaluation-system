@@ -18,7 +18,7 @@
 
   const form = superForm(deleteProgramForm, {
     validators: zodClient(deleteProgramSchema),
-    id: 'delete-program-form',
+    id: crypto.randomUUID(),
     onUpdate({ result }) {
       const { status, data } = result as ResultModel<{ msg: string; data: StudentType[] }>;
       switch (status) {

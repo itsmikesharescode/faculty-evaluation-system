@@ -1,5 +1,6 @@
 <script lang="ts">
   import * as Select from '$lib/components/ui/select/index.js';
+  import Label from '../ui/label/label.svelte';
 
   interface Props {
     selections: {
@@ -17,8 +18,8 @@
     placeholder = 'Select item',
     hasDescription = false
   }: Props = $props();
-
-  const selectedValue = $derived(selections.find((item) => item.value === selected));
+  let value = $state(selected);
+  let selectedValue = $derived(selections.find((item) => item.value === selected));
 </script>
 
 <Select.Root
@@ -26,19 +27,24 @@
   onValueChange={(v) => {
     selected = v;
   }}
+  bind:value
 >
   <Select.Trigger>
-    {selectedValue ? selectedValue.label : placeholder}
+    <span class={selectedValue ? 'text-black' : 'text-muted-foreground'}
+      >{selectedValue?.label || placeholder}</span
+    >
   </Select.Trigger>
   <Select.Content>
     {#each selections as selection}
       <Select.Item value={selection.value}>
-        {#if hasDescription}
-          <span>{selection.label}</span>
-          <span>{selection.value}</span>
-        {:else}
-          <span>{selection.label}</span>
-        {/if}
+        <div class="flex flex-col">
+          {#if hasDescription}
+            <span>{selection.value}</span>
+            <span class="text-muted-foreground">{selection.label}</span>
+          {:else}
+            <span>{selection.label}</span>
+          {/if}
+        </div>
       </Select.Item>
     {/each}
   </Select.Content>

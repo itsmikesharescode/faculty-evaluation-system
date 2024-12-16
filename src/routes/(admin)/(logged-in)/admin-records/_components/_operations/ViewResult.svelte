@@ -1,10 +1,9 @@
 <script lang="ts">
   import * as AlertDialog from '$lib/components/ui/alert-dialog';
   import { Skeleton } from '$lib/components/ui/skeleton';
-  import { fromDepartmentsRouteState } from '../../../_states/fromAdminDepartments.svelte';
   import type { EvaluatedOrigType, ProfessorType } from '$lib/types';
   import { toast } from 'svelte-sonner';
-  import { Loader, X } from 'lucide-svelte';
+  import { X } from 'lucide-svelte';
   import ResultLineChart from '../ResultLineChart.svelte';
   import { fromSupabaseClient } from '../../../../../_states/fromSupabaseClient.svelte';
   import type { PostgrestSingleResponse } from '@supabase/supabase-js';
@@ -19,8 +18,6 @@
   let { viewSignal = $bindable(), professor }: Props = $props();
 
   const supabase = fromSupabaseClient();
-
-  const departmentRoute = fromDepartmentsRouteState();
 
   const getResults = async () => {
     type SummaryMapType = {
