@@ -4,22 +4,28 @@
   import RenderProfessor from './_components/RenderProfessors.svelte';
   import { fromAdminRouteState } from '../_states/fromAdminRoute.svelte';
   import { fromDepRouteState } from './_states/fromDepRoutes.svelte';
-  import Button from '$lib/components/ui/button/button.svelte';
+  import Button, { buttonVariants } from '$lib/components/ui/button/button.svelte';
   import Download from 'lucide-svelte/icons/download';
+  import ChevronLeft from 'lucide-svelte/icons/chevron-left';
   import * as XLSX from 'xlsx';
   import { getScoreDescription } from './_helpers/getScoreDescription';
+  import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
   import { page } from '$app/stores';
   const { data } = $props();
 
   const route = fromAdminRouteState();
-  const depRoute = fromDepRouteState();
   route.setRoute('/admin-departments');
 
-  /* const downloadExcel = () => {
-    const depRef = departmentRoute.getDepProf(depRoute.getRoute());
-    if (!depRef) return;
+  let activeProgram = $state($page.data.adminLayoutQ.programs[0].code);
+
+  const filteredProgram = $derived(
+    $page.data.adminLayoutQ.professors.filter((item) => item.department === activeProgram)
+  );
+
+  const specificDownload = () => {
+    if (!activeProgram) return;
     const worksheet = XLSX.utils.json_to_sheet(
-      depRef.map((prof) => {
+      filteredProgram.map((prof) => {
         return {
           Professor: prof.fullname,
           Subject: prof.subjects,
@@ -31,14 +37,29 @@
     );
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-    XLSX.writeFile(workbook, `${depRoute.getRoute()}_evaluation.xlsx`);
-  }; */
+    XLSX.writeFile(workbook, `${activeProgram}_evaluation.xlsx`);
+  };
 
-  let activeProgram = $state($page.data.adminLayoutQ.programs[0].code);
+  const downloadAll = () => {
+    if (!$page.data.adminLayoutQ.professors) return;
+    const worksheet = XLSX.utils.json_to_sheet(
+      $page.data.adminLayoutQ.professors.map((prof) => {
+        return {
+          Professor: prof.fullname,
+          Subject: prof.subjects,
+          Section: prof.sections,
+          Program: prof.department,
+          'Created at': prof.created_at,
+          'Final Grade': prof.final_grade ? getScoreDescription(Number(prof.final_grade)) : 'N/A'
+        };
+      })
+    );
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    XLSX.writeFile(workbook, `all_records.xlsx`);
+  };
 
-  const filteredProgram = $derived(
-    $page.data.adminLayoutQ.professors.filter((item) => item.department === activeProgram)
-  );
+  route.setRoute('/admin-records');
 </script>
 
 <div class="flex min-h-screen flex-col gap-[1.25rem] border-l-[1px] border-slate-300 p-[1.25rem]">
@@ -61,10 +82,30 @@
 
   <div class="flex items-center justify-between gap-2.5">
     <AddProfessor addProfForm={data.addProfForm} />
-    <Button class="flex items-center gap-[5px]">
-      <Download class="h-[15px] w-[15px]" />
-      Download
-    </Button>
+    <div class="">
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger class={buttonVariants({ variant: 'default' })}>
+          <ChevronLeft />
+          <span>Download</span>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content side="left">
+          <DropdownMenu.Group>
+            <DropdownMenu.Item onclick={specificDownload}>
+              <Download />
+              <span class="font-bold text-muted-foreground">
+                Download <span class="font-bold text-black">{activeProgram}</span> records
+              </span>
+            </DropdownMenu.Item>
+            <DropdownMenu.Item onclick={downloadAll}>
+              <Download />
+              <span class="font-bold text-muted-foreground">
+                Download <span class="font-bold text-black">All</span> records
+              </span>
+            </DropdownMenu.Item>
+          </DropdownMenu.Group>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
+    </div>
   </div>
 
   <RenderProfessor

@@ -6,7 +6,7 @@
   const { data } = $props();
 
   const route = fromAdminRouteState();
-  route.setRoute('/admin-manage-accounts');
+  route.setRoute('/admin-programs');
 </script>
 
 <div class="flex min-h-screen flex-col gap-[20px] border-l-[1px] border-slate-300 p-[10px]">
