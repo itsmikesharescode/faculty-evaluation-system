@@ -21,13 +21,13 @@
       title="Total Evaluated"
       selection="totalEvaluated"
       count={$page.data.adminLayoutQ.dashboard.total_evaluated ?? 0}
-      link="/admin-departments"
+      link="/admin-records"
     />
     <AdminCountCard
       title="Total Professor"
       selection="totalProfessors"
       count={$page.data.adminLayoutQ.dashboard.total_professor ?? 0}
-      link="/admin-departments"
+      link="/admin-records"
     />
   </div>
 </div>
