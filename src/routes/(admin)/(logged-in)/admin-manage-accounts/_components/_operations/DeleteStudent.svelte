@@ -20,7 +20,7 @@
   let deleteLoader = $state(false);
   const deleteAccountEvent: SubmitFunction = () => {
     deleteLoader = true;
-    return async ({ result }) => {
+    return async ({ result, update }) => {
       const { status, data } = result as ResultModel<{ msg: string; data: StudentType[] }>;
 
       switch (status) {
@@ -36,6 +36,8 @@
           deleteLoader = false;
           break;
       }
+
+      await update();
     };
   };
 </script>
