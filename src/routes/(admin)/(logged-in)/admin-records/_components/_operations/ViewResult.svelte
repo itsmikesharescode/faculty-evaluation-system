@@ -9,11 +9,17 @@
   import type { PostgrestSingleResponse } from '@supabase/supabase-js';
   import ResultBarChart from '../ResultBarChart.svelte';
   import { getScoreDescription } from '../../_helpers/getScoreDescription';
+  import Button from '$lib/components/ui/button/button.svelte';
+  import ChevronDown from 'lucide-svelte/icons/chevron-down';
+  import ChevronUp from 'lucide-svelte/icons/chevron-up';
+  import * as Popover from '$lib/components/ui/popover/index.js';
 
   interface Props {
     professor: ProfessorType;
     viewSignal: boolean;
   }
+
+  import { page } from '$app/state';
 
   let { viewSignal = $bindable(), professor }: Props = $props();
 
@@ -82,6 +88,35 @@
     ).toFixed(0);
 
     return Number(resultAvg);
+  };
+
+  let viewComments = $state(false);
+
+  const getComments = async () => {
+    if (!page.data.supabase) return null;
+
+    const { data, error } = await page.data.supabase
+      .from('evaluated_list_tb')
+      .select('student_id, comment')
+      .eq('professor_id', professor.id);
+
+    if (error) return null;
+
+    return data;
+  };
+
+  const getStudentInfo = async (studentId: string) => {
+    if (!page.data.supabase) return null;
+
+    const { data, error } = await page.data.supabase
+      .from('student_list_tb')
+      .select('*')
+      .eq('student_id', studentId)
+      .single();
+
+    if (error) return null;
+
+    return data;
   };
 </script>
 
@@ -154,6 +189,45 @@
           </div>
         {/if}
       {/await}
+
+      <Button size="sm" variant="outline" onclick={() => (viewComments = !viewComments)}>
+        View Comments
+        {#if viewComments}
+          <ChevronUp />
+        {:else}
+          <ChevronDown />
+        {/if}
+      </Button>
+
+      {#if viewComments}
+        <div class="mt-2 flex flex-wrap gap-1">
+          {#await getComments()}
+            <span>Loading...</span>
+          {:then comments}
+            {#each comments ?? [] as comment}
+              {#await getStudentInfo(comment.student_id)}
+                <span>Loading...</span>
+              {:then student}
+                <Popover.Root>
+                  <Popover.Trigger class="text-left">
+                    <div class="flex max-w-[200px] flex-col rounded-lg border-2 p-2">
+                      <span class="text-sm">{student.user_meta_data.fullname}</span>
+                      <span title="comment here" class="line-clamp-2 text-sm text-muted-foreground">
+                        {comment.comment}
+                      </span>
+                    </div>
+                  </Popover.Trigger>
+                  <Popover.Content class="max-h-[30dvh] overflow-auto">
+                    <span title="comment here" class="text-sm text-muted-foreground">
+                      {comment.comment}
+                    </span>
+                  </Popover.Content>
+                </Popover.Root>
+              {/await}
+            {/each}
+          {/await}
+        </div>
+      {/if}
     </div>
   </AlertDialog.Content>
 </AlertDialog.Root>

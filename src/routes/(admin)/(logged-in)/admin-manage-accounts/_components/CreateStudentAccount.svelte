@@ -202,10 +202,10 @@
                   placeholder="Select program"
                   bind:selected={$formData.course}
                   hasDescription
-                  selections={$page.data.adminLayoutQ.programs.map((item) => ({
+                  selections={$page.data.adminLayoutQ?.programs.map((item) => ({
                     label: item.name,
                     value: item.code
-                  }))}
+                  })) ?? []}
                 />
                 <input type="hidden" name={props.name} bind:value={$formData.course} />
               {/snippet}
