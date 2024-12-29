@@ -28,7 +28,6 @@
   const form = superForm(createStudentForm, {
     validators: zodClient(createStudentSchema),
     id: crypto.randomUUID(),
-    invalidateAll: false,
     onUpdate({ result }) {
       const { status, data } = result as ResultModel<{ msg: string; data: StudentType[] }>;
       switch (status) {
