@@ -35,6 +35,9 @@
     if (!dashboardRoute.getActiveProf()) return goto('/student-dashboard');
     clientCheck = false;
   });
+
+  //dirty workaround since the codebase is messy as fuck!
+  let comment = $state('');
 </script>
 
 {#if clientCheck}
@@ -111,14 +114,14 @@
               <Textarea
                 onchange={() => {}}
                 placeholder="Say something... {evaluationForm.evaluation_data.remark.title}"
-                bind:value={evaluationForm.evaluation_data.remark.value}
+                bind:value={comment}
               />
             </div>
           {/each}
 
           {#if percentage >= 100}
             <div class="flex justify-end">
-              <SubmitAnswer />
+              <SubmitAnswer {comment} />
             </div>
           {/if}
         </div>

@@ -14,12 +14,15 @@ export const actions: Actions = {
     const formData = await request.formData();
     const answersArr = JSON.parse(formData.get('answersArr') as string) as ParsedAnsType[] | null;
     const profObj = JSON.parse(formData.get('profObj') as string) as ProfessorType | null;
+    const comment = formData.get('comment') as string;
+
     if (answersArr && profObj && user) {
       const { error } = await supabase.from('evaluated_list_tb').insert([
         {
           student_id: user.id,
           professor_id: profObj.id,
-          answers_copy: answersArr
+          answers_copy: answersArr,
+          comment: comment
         }
       ]);
 

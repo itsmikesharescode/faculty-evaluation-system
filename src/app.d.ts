@@ -16,8 +16,8 @@ declare global {
       session: Session | null;
       supabase?: SupabaseClient;
       user?: User | null;
-      adminLayoutQ: AdminLayoutQueryType;
-      studentLayoutQ: StudentLayoutQueryType;
+      adminLayoutQ?: AdminLayoutQueryType;
+      studentLayoutQ?: StudentLayoutQueryType;
     }
     // interface PageState {}
     // interface Platform {}

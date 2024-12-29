@@ -9,6 +9,8 @@
   import { toast } from 'svelte-sonner';
   import { goto } from '$app/navigation';
 
+  let { comment }: { comment: string } = $props();
+
   const dashboardRoute = fromDashboardRouteState();
 
   let submitLoader = $state(false);
@@ -36,6 +38,7 @@
 
 <form method="post" action="?/submitAnsEvent" use:enhance={submitAnsEvent}>
   <input name="profObj" type="hidden" value={JSON.stringify(dashboardRoute.getActiveProf())} />
+  <input name="comment" type="hidden" value={comment} />
   <input
     name="answersArr"
     type="hidden"
