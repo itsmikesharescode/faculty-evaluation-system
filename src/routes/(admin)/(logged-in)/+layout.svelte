@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
   import { adminPaths } from '$lib';
   import { fromSupabaseClient, initSupabase } from '../../_states/fromSupabaseClient.svelte';
 
@@ -28,16 +28,16 @@
   const supabase = fromSupabaseClient();
 
   $effect(() => {
-    questionnaireRoute.setEvaluation($page.data.adminLayoutQ.evaluation_forms);
-    manageAccountRoute.setStudents($page.data.adminLayoutQ.students);
+    questionnaireRoute.setEvaluation(page.data.adminLayoutQ?.evaluation_forms ?? null);
+    manageAccountRoute.setStudents(page.data.adminLayoutQ?.students ?? null);
     supabase.setClient(data.supabase);
   });
 </script>
 
-{#if !($page.url.pathname === '/admin-login')}
+{#if !(page.url.pathname === '/admin-login')}
   <AdminNav {children} />
 {/if}
 
-{#if !adminPaths.includes($page.url.pathname)}
+{#if !adminPaths.includes(page.url.pathname)}
   {@render children()}
 {/if}

@@ -20,9 +20,12 @@ export const actions: Actions = {
   createProgramEvent: async ({ locals: { supabase }, request }) => {
     const form = await superValidate(request, zod(createProgramSchema));
     if (!form.valid) return fail(400, { form });
+
+    console.log(form.data);
     const { error } = await supabase.from('programs_tb').insert({
       name: form.data.name,
-      code: form.data.code
+      code: form.data.code,
+      color: form.data.color
     });
 
     if (error) return fail(401, { form, msg: error.message });

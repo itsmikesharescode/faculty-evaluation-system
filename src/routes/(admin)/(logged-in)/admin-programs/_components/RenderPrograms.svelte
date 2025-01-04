@@ -4,7 +4,7 @@
   import * as Table from '$lib/components/ui/table';
   import Actions from './Actions.svelte';
   import type { DeleteProgramSchema, UpdateProgramSchema } from '../admin-programs-schema';
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
 
   interface Props {
     updateProgramForm: SuperValidated<Infer<UpdateProgramSchema>>;
@@ -21,17 +21,21 @@
       <Table.Head class="w-fit"></Table.Head>
       <Table.Head class="truncate">Program Name</Table.Head>
       <Table.Head class="truncate">Program Code</Table.Head>
+      <Table.Head class="truncate">Color</Table.Head>
       <Table.Head class="truncate">Created At</Table.Head>
     </Table.Row>
   </Table.Header>
   <Table.Body>
-    {#each $page.data.adminLayoutQ.programs as program}
+    {#each page.data.adminLayoutQ?.programs ?? [] as program}
       <Table.Row>
         <Table.Cell>
           <Actions {program} {updateProgramForm} {deleteProgramForm} />
         </Table.Cell>
         <Table.Cell class="">{program.name}</Table.Cell>
         <Table.Cell class="">{program.code}</Table.Cell>
+        <Table.Cell class="">
+          <div class="size-6 rounded-full" style="background-color: {program.color}"></div>
+        </Table.Cell>
         <Table.Cell class="truncate">
           {new Date(program.created_at).toLocaleDateString()} @ {new Date(
             program.created_at

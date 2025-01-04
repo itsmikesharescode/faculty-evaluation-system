@@ -10,23 +10,23 @@
   import * as XLSX from 'xlsx';
   import { getScoreDescription } from './_helpers/getScoreDescription';
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
   const { data } = $props();
 
   const route = fromAdminRouteState();
   route.setRoute('/admin-departments');
 
-  let activeProgram = $state($page.data.adminLayoutQ.programs[0].code);
+  let activeProgram = $state(page.data.adminLayoutQ?.programs[0]?.code);
 
   const filteredProgram = $derived.by(() => {
-    const programCodes = $page.data.adminLayoutQ.programs.map((item) => item.code);
+    const programCodes = page.data.adminLayoutQ?.programs.map((item) => item.code);
 
     if (activeProgram === 'No Programs') {
-      return $page.data.adminLayoutQ.professors.filter(
-        (prof) => !programCodes.includes(prof.department)
+      return page.data.adminLayoutQ?.professors.filter(
+        (prof) => !programCodes?.includes(prof.department)
       );
     } else {
-      return $page.data.adminLayoutQ.professors.filter((item) => item.department === activeProgram);
+      return page.data.adminLayoutQ?.professors.filter((item) => item.department === activeProgram);
     }
   });
 
@@ -49,9 +49,9 @@
   };
 
   const downloadAll = () => {
-    if (!$page.data.adminLayoutQ.professors) return;
+    if (!page.data.adminLayoutQ?.professors) return;
     const worksheet = XLSX.utils.json_to_sheet(
-      $page.data.adminLayoutQ.professors.map((prof) => {
+      page.data.adminLayoutQ?.professors.map((prof) => {
         return {
           Professor: prof.fullname,
           Subject: prof.subjects,
@@ -74,12 +74,12 @@
   <div
     class="sticky top-[3.3rem] z-10 flex items-center gap-[1.25rem] overflow-auto bg-secondary p-[0.625rem]"
   >
-    {#each $page.data.adminLayoutQ.programs as program}
+    {#each page.data.adminLayoutQ?.programs ?? [] as program}
       <button
         onclick={() => {
           activeProgram = program.code;
         }}
-        class=" {activeProgram === program.code ? 'bg-primary text-white' : ''}
+        class=" {activeProgram === program.code ? `bg-[${program.color}] text-white` : ''}
 				flex items-center gap-[5px] px-[0.625rem] text-black"
       >
         {program.code}

@@ -47,6 +47,7 @@ export type Program = {
   created_at: string;
   name: string;
   code: string;
+  color: string;
 };
 
 export type EvaluatedType = {

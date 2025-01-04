@@ -1,7 +1,7 @@
 <script lang="ts">
   import { fromAdminRouteState } from '../_states/fromAdminRoute.svelte';
   import CreateProgram from './_components/CreateProgram.svelte';
-  import RenderStudents from './_components/RenderPrograms.svelte';
+  import RenderPrograms from './_components/RenderPrograms.svelte';
 
   const { data } = $props();
 
@@ -14,7 +14,7 @@
     <CreateProgram createProgramForm={data.createProgramForm} />
   </div>
 
-  <RenderStudents
+  <RenderPrograms
     updateProgramForm={data.updateProgramForm}
     deleteProgramForm={data.deleteProgramForm}
   />

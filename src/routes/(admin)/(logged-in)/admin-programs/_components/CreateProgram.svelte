@@ -90,6 +90,17 @@
         <Form.FieldErrors />
       </Form.Field>
 
+      <Form.Field {form} name="color">
+        <Form.Control>
+          {#snippet children({ props })}
+            <Form.Label>Program Color</Form.Label>
+            <Input type="color" {...props} bind:value={$formData.color} placeholder="#55511" />
+          {/snippet}
+        </Form.Control>
+        <Form.Description />
+        <Form.FieldErrors />
+      </Form.Field>
+
       <div class=" flex justify-end">
         <Form.Button disabled={$submitting} class="relative">
           {#if $submitting}
