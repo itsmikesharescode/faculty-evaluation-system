@@ -79,10 +79,10 @@
         onclick={() => {
           activeProgram = program.code;
         }}
-        class=" {activeProgram === program.code ? `bg-[${program.color}] text-white` : ''}
-				flex items-center gap-[5px] px-[0.625rem] text-black"
+        class="flex items-center gap-[5px] px-[0.625rem] text-black"
+        style={`background-color: ${program.color};`}
       >
-        {program.code}
+        <span class={`${activeProgram === program.code ? 'font-bold' : ''}`}>{program.code}</span>
         <MoveUpRight class="h-[15px] w-[15px]" />
       </button>
     {/each}
