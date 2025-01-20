@@ -143,46 +143,55 @@
         <Skeleton class="h-[40dvh] w-full rounded-none bg-slate-400" />
       {:then datas}
         {#if datas.averageArray.length}
-          <div class="flex flex-col gap-[1rem]">
-            <div class="flex flex-wrap gap-[1rem]">
-              {#each datas.averageArray as result}
-                <div class="bg-secondary p-[1rem]">
-                  <p class="text-sm font-semibold">{result.headerTitle}</p>
-                  <p class="text-sm">Score: <strong>{result.percentage.toFixed(0)} %</strong></p>
+          {#if datas.voteCount < 50}
+            <div class="flex h-[40dvh] flex-col items-center justify-center rounded-lg">
+              <span class="text-sm"> Votes are not visible till it reach 50 votes </span>
+              <span class="text-sm text-muted-foreground">
+                Current Votes: {datas.voteCount}
+              </span>
+            </div>
+          {:else}
+            <div class="flex flex-col gap-[1rem]">
+              <div class="flex flex-wrap gap-[1rem]">
+                {#each datas.averageArray as result}
+                  <div class="bg-secondary p-[1rem]">
+                    <p class="text-sm font-semibold">{result.headerTitle}</p>
+                    <p class="text-sm">Score: <strong>{result.percentage.toFixed(0)} %</strong></p>
+                  </div>
+                {/each}
+
+                <div class="bg-primary p-[1rem] text-white">
+                  <p class="text-sm font-semibold">Total Score</p>
+                  <p class="text-center">
+                    {calculateTotalAvg(datas.averageArray)} %
+                  </p>
                 </div>
-              {/each}
 
-              <div class="bg-primary p-[1rem] text-white">
-                <p class="text-sm font-semibold">Total Score</p>
-                <p class="text-center">
-                  {calculateTotalAvg(datas.averageArray)} %
-                </p>
+                <div class="bg-primary p-[1rem] text-white">
+                  <p class="text-sm font-semibold">Student Evaluated</p>
+                  <p class="text-center">
+                    {datas.voteCount}
+                  </p>
+                </div>
+
+                <div class="bg-primary p-[1rem] text-white">
+                  <p class="text-sm font-semibold">Final Grade</p>
+                  <p class="text-center">
+                    {getScoreDescription(calculateTotalAvg(datas.averageArray))}
+                  </p>
+                </div>
               </div>
 
-              <div class="bg-primary p-[1rem] text-white">
-                <p class="text-sm font-semibold">Student Evaluated</p>
-                <p class="text-center">
-                  {datas.voteCount}
-                </p>
-              </div>
-
-              <div class="bg-primary p-[1rem] text-white">
-                <p class="text-sm font-semibold">Final Grade</p>
-                <p class="text-center">
-                  {getScoreDescription(calculateTotalAvg(datas.averageArray))}
-                </p>
+              <div class="grid md:grid-cols-2">
+                <div class="h-[40dvh]">
+                  <ResultLineChart datas={datas.averageArray} {professor} />
+                </div>
+                <div class="h-[40dvh]">
+                  <ResultBarChart datas={datas.averageArray} {professor} />
+                </div>
               </div>
             </div>
-
-            <div class="grid md:grid-cols-2">
-              <div class="h-[40dvh]">
-                <ResultLineChart datas={datas.averageArray} {professor} />
-              </div>
-              <div class="h-[40dvh]">
-                <ResultBarChart datas={datas.averageArray} {professor} />
-              </div>
-            </div>
-          </div>
+          {/if}
         {:else}
           <div class="flex h-[40dvh] items-center justify-center">
             <p class="text-sm font-semibold text-muted-foreground">No Records</p>

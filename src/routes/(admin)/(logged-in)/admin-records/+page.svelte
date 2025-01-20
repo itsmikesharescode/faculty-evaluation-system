@@ -3,8 +3,7 @@
   import AddProfessor from './_components/AddProfessor.svelte';
   import RenderProfessor from './_components/RenderProfessors.svelte';
   import { fromAdminRouteState } from '../_states/fromAdminRoute.svelte';
-  import { fromDepRouteState } from './_states/fromDepRoutes.svelte';
-  import Button, { buttonVariants } from '$lib/components/ui/button/button.svelte';
+  import { buttonVariants } from '$lib/components/ui/button/button.svelte';
   import Download from 'lucide-svelte/icons/download';
   import ChevronLeft from 'lucide-svelte/icons/chevron-left';
   import * as XLSX from 'xlsx';
@@ -31,7 +30,7 @@
   });
 
   const specificDownload = () => {
-    if (!activeProgram) return;
+    if (!activeProgram || !filteredProgram) return;
     const worksheet = XLSX.utils.json_to_sheet(
       filteredProgram.map((prof) => {
         return {
@@ -128,7 +127,7 @@
   </div>
 
   <RenderProfessor
-    {filteredProgram}
+    filteredProgram={filteredProgram ?? []}
     updateProfForm={data.updateProfForm}
     deleteProfForm={data.deleteProfForm}
   />
